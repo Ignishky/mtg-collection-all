@@ -1,0 +1,5 @@
+### GET hello world
+GET http://localhost:9090/hello
+
+>>! {{$historyFolder}}/helloworld.json
+
