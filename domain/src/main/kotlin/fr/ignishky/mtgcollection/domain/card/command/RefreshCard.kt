@@ -1,0 +1,56 @@
+package fr.ignishky.mtgcollection.domain.card.command
+
+import fr.ignishky.framework.cqrs.command.Command
+import fr.ignishky.framework.cqrs.command.CommandHandler
+import fr.ignishky.framework.cqrs.event.Event
+import fr.ignishky.framework.cqrs.event.Payload
+import fr.ignishky.framework.domain.CorrelationId
+import fr.ignishky.mtgcollection.domain.card.event.CardCreated
+import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
+import fr.ignishky.mtgcollection.domain.card.model.Card
+import fr.ignishky.mtgcollection.domain.card.model.CardId
+import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
+import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.set.model.Set
+import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import jakarta.inject.Named
+import mu.KotlinLogging.logger
+import kotlin.reflect.KClass
+
+class RefreshCard : Command {
+
+    @Named
+    class RefreshCardHandler(
+        private val setStore: SetStorePort,
+        private val cardReferer: CardRefererPort,
+        private val cardStore: CardStorePort,
+    ) : CommandHandler<RefreshCard> {
+
+        private val logger = logger {}
+
+        override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
+            return setStore.getAll()
+                .flatMap { set -> processCards(set) }
+        }
+
+        private fun processCards(set: Set): List<Event<CardId, Card, out Payload>> {
+            logger.info { "Refreshing cards from ${set.code.value} ..." }
+            val knownCardsById = cardStore.get(set.code).associateBy { it.id }
+            return cardReferer.getCards(set.code)
+                .mapNotNull {
+                    if (!knownCardsById.contains(it.id)) {
+                        CardCreated(it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber)
+                    } else if (knownCardsById[it.id] != it) {
+                        CardUpdated(it.id, it.name, it.prices, it.images, it.collectionNumber)
+                    } else {
+                        null
+                    }
+                }
+        }
+
+        override fun listenTo(): KClass<out RefreshCard> {
+            return RefreshCard::class
+        }
+
+    }
+}

@@ -1,8 +1,6 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest
 
-import fr.ignishky.mtgcollection.domain.card.model.Card
-import fr.ignishky.mtgcollection.domain.card.model.CardId
-import fr.ignishky.mtgcollection.domain.card.model.CardName
+import fr.ignishky.mtgcollection.domain.card.model.*
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.RestController
@@ -12,7 +10,16 @@ import java.util.UUID.randomUUID
 internal class HelloWorldController : HelloWorldApi {
 
     override fun hello(): ResponseEntity<Card> {
-        return ok(Card(CardId(randomUUID()), CardName("My Card")))
+        return ok(
+            Card(
+                CardId(randomUUID().toString()),
+                CardName("My Card"),
+                CardSetCode(""),
+                CardImages(listOf()),
+                CardNumber(""),
+                CardPrices(Price(0, 0, 0, 0))
+            )
+        )
     }
 
 }

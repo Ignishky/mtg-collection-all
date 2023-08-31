@@ -1,12 +1,13 @@
 package fr.ignishky.mtgcollection.domain.card.model
 
-import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.NAME
+import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.SET_CODE
 
-data class CardName(
-    val value: String
+data class CardSetCode(
+    val value: String,
 ) : CardProperty {
+
     override fun propertyName(): CardProperty.PropertyName {
-        return NAME
+        return SET_CODE
     }
 
     override fun propertyValue(): Any {

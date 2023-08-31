@@ -1,7 +1,13 @@
 package fr.ignishky.mtgcollection.domain.card.model
 
-import java.util.UUID
+import fr.ignishky.framework.domain.AggregateId
 
 data class CardId(
-    val value: UUID,
-)
+    val value: String
+) : AggregateId {
+
+    override fun value(): String {
+        return value
+    }
+
+}
