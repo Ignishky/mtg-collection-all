@@ -1,0 +1,6 @@
+CREATE TABLE sets
+(
+    id   VARCHAR(36) PRIMARY KEY,
+    code VARCHAR(6)   NOT NULL,
+    name VARCHAR(255) NOT NULL
+);

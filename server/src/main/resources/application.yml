@@ -1,2 +1,5 @@
+scryfall:
+  base-url: "https://api.scryfall.com"
+
 server:
-  port: 9090
+  port: 8585

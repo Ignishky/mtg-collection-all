@@ -1,0 +1,25 @@
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "object": "set",
+      "id": "e1ef87ba-ba92-4573-817f-543b996d2851",
+      "code": "afr",
+      "mtgo_code": "afr",
+      "arena_code": "afr",
+      "tcgplayer_id": 2823,
+      "name": "Adventures in the Forgotten Realms",
+      "uri": "https://api.scryfall.com/sets/e1ef87ba-ba92-4573-817f-543b996d2851",
+      "scryfall_uri": "https://scryfall.com/sets/afr",
+      "search_uri": "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Aafr&unique=prints",
+      "released_at": "2021-07-23",
+      "set_type": "expansion",
+      "card_count": 422,
+      "digital": false,
+      "nonfoil_only": false,
+      "foil_only": false,
+      "icon_svg_uri": "https://scryfall.mtgc.test/sets/afr.svg?1111"
+    }
+  ]
+}

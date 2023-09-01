@@ -1,5 +1,12 @@
-### GET hello world
-GET http://localhost:9090/hello
+### Refresh-all
+PUT http://localhost:8585/refresh-all
 
->>! {{$historyFolder}}/helloworld.json
+### GET all sets
+GET http://localhost:8585/sets
 
+>>! {{$historyFolder}}/sets.json
+
+### GET given set
+GET http://localhost:8585/sets/mom
+
+>>! {{$historyFolder}}/set.json

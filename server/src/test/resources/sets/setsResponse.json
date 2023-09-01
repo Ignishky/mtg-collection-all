@@ -1,0 +1,16 @@
+{
+  "sets": [
+    {
+      "code": "afr",
+      "name": "Adventures in the Forgotten Realms",
+      "type": "expansion",
+      "icon": "https://scryfall.mtgc.test/sets/afr.svg"
+    },
+    {
+      "code": "khm",
+      "name": "Kaldheim",
+      "type": "expansion",
+      "icon": "https://scryfall.mtgc.test/sets/khm.svg"
+    }
+  ]
+}

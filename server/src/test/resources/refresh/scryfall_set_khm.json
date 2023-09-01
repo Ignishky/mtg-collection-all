@@ -1,0 +1,25 @@
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "object": "set",
+      "id": "43057fad-b1c1-437f-bc48-0045bce6d8c9",
+      "code": "khm",
+      "mtgo_code": "khm",
+      "arena_code": "khm",
+      "tcgplayer_id": 2750,
+      "name": "Kaldheim",
+      "uri": "https://api.scryfall.com/sets/43057fad-b1c1-437f-bc48-0045bce6d8c9",
+      "scryfall_uri": "https://scryfall.com/sets/khm",
+      "search_uri": "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Akhm&unique=prints",
+      "released_at": "2021-02-05",
+      "set_type": "expansion",
+      "card_count": 427,
+      "digital": false,
+      "nonfoil_only": false,
+      "foil_only": false,
+      "icon_svg_uri": "https://scryfall.mtgc.test/sets/khm.svg"
+    }
+  ]
+}
