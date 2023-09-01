@@ -23,7 +23,11 @@ tasks.withType<KotlinCompile> {
 }
 
 dependencies {
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
+    implementation("jakarta.inject:jakarta.inject-api:2.0.1")
+
     testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("org.assertj:assertj-core:3.23.1")
 }
 
