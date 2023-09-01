@@ -6,7 +6,7 @@ import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import io.mockk.justRun
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class CardCreatedTest {
 

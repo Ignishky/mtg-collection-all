@@ -9,8 +9,8 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 import java.time.LocalDate.parse
-import kotlin.test.Test
 
 class SetUpdatedTest {
 

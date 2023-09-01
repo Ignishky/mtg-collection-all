@@ -7,8 +7,8 @@ import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import io.mockk.justRun
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 import java.time.LocalDate.parse
-import kotlin.test.Test
 
 class SetCreatedTest {
 

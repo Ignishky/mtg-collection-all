@@ -11,5 +11,4 @@ dependencies {
     implementation("jakarta.inject:jakarta.inject-api:2.0.1")
 
     testImplementation("io.mockk:mockk:1.13.5")
-    testImplementation("org.assertj:assertj-core:3.23.1")
 }

@@ -7,7 +7,7 @@ import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class GetAllSetsTest {
 

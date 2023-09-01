@@ -7,13 +7,13 @@ import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import fr.ignishky.mtgcollection.domain.fixture.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.fixture.SetFixtures.afr
+import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class RefreshCardTest {
 
