@@ -1,7 +1,7 @@
 package fr.ignishky.mtgcollection.domain.set.command
 
 import fr.ignishky.framework.domain.CorrelationId
-import fr.ignishky.mtgcollection.domain.fixture.SetFixtures.afr
+import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.SetName

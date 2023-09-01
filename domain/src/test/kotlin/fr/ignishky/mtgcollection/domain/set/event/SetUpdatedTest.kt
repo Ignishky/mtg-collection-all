@@ -1,6 +1,6 @@
 package fr.ignishky.mtgcollection.domain.set.event
 
-import fr.ignishky.mtgcollection.domain.fixture.SetFixtures.afr
+import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedHandler
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort

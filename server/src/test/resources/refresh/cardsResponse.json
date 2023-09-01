@@ -15,22 +15,6 @@
         "eur": 4,
         "eurFoil": 8
       }
-    },
-    {
-      "name": "Flumph",
-      "image": "https://scryfall.mtgc.test/cards/flumph.svg",
-      "prices": {
-        "eur": 5,
-        "eurFoil": 9
-      }
-    },
-    {
-      "name": "Special Pegasus",
-      "image": "https://scryfall.mtgc.test/cards/specialPegasus.svg",
-      "prices": {
-        "eur": 6,
-        "eurFoil": 10
-      }
     }
   ]
 }

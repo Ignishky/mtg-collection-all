@@ -2,17 +2,15 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
+import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
+import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
+import fr.ignishky.mtgcollection.domain.SetFixtures.aafr
+import fr.ignishky.mtgcollection.domain.SetFixtures.afr
+import fr.ignishky.mtgcollection.domain.SetFixtures.khm
+import fr.ignishky.mtgcollection.domain.SetFixtures.pafr
+import fr.ignishky.mtgcollection.domain.SetFixtures.tkhm
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.aafr
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.afr
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.arboreaPegasus
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.axgardBraggart
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.flumph
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.khm
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.pafr
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.plus2Mace
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.specialPegasus
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.tkhm
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -48,8 +46,6 @@ internal class SetApiIT(
     private val plus2Mace = plus2Mace()
     private val arboreaPegasus = arboreaPegasus()
     private val axgardBraggart = axgardBraggart()
-    private val flumph = flumph()
-    private val specialPegasus = specialPegasus()
 
     @BeforeEach
     fun setUp() {
@@ -76,7 +72,7 @@ internal class SetApiIT(
     @Test
     fun `Should return cards from given set`() {
         // GIVEN
-        jdbc.save(listOf(afr), listOf(arboreaPegasus, specialPegasus, flumph, plus2Mace, axgardBraggart))
+        jdbc.save(listOf(afr), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/afr"))

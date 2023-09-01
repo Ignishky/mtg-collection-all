@@ -1,7 +1,7 @@
 package fr.ignishky.mtgcollection.domain.set.query
 
-import fr.ignishky.mtgcollection.domain.fixture.SetFixtures.afr
-import fr.ignishky.mtgcollection.domain.fixture.SetFixtures.khm
+import fr.ignishky.mtgcollection.domain.SetFixtures.afr
+import fr.ignishky.mtgcollection.domain.SetFixtures.khm
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import io.mockk.every

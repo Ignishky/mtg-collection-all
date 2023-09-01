@@ -7,8 +7,8 @@ import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import fr.ignishky.mtgcollection.domain.fixture.CardFixtures.plus2Mace
-import fr.ignishky.mtgcollection.domain.fixture.SetFixtures.afr
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
+import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import io.mockk.every
 import io.mockk.mockk

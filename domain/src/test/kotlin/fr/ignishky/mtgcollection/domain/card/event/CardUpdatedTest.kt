@@ -3,7 +3,7 @@ package fr.ignishky.mtgcollection.domain.card.event
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import fr.ignishky.mtgcollection.domain.fixture.CardFixtures.plus2Mace
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk

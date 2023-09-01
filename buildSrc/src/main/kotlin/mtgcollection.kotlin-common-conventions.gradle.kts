@@ -32,5 +32,11 @@ dependencies {
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeEngines("junit-vintage")
+    }
+
+    testLogging {
+        events("skipped", "failed")
+    }
 }

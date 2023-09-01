@@ -1,9 +1,9 @@
 package fr.ignishky.mtgcollection.domain.card.query
 
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import fr.ignishky.mtgcollection.domain.fixture.CardFixtures.arboreaPegasus
-import fr.ignishky.mtgcollection.domain.fixture.CardFixtures.plus2Mace
-import fr.ignishky.mtgcollection.domain.fixture.SetFixtures.afr
+import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
+import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
