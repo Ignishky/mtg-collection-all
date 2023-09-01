@@ -3,3 +3,12 @@ scryfall:
 
 server:
   port: 8585
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    defaultModelsExpandDepth: -1
+    path: /swagger-ui.html
+    syntaxHighlight:
+      theme: tomorrow-night
