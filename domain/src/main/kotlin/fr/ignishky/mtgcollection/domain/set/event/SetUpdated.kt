@@ -30,7 +30,7 @@ class SetUpdated(aggregateId: SetId, vararg properties: SetProperty) :
             SetName(payload.properties.getOrElse(NAME.name) { aggregate.name.value } as String),
             SetType(payload.properties.getOrElse(TYPE.name) { aggregate.type.value } as String),
             SetIcon(payload.properties.getOrElse(ICON.name) { aggregate.icon.value } as String),
-            SetReleasedAt(payload.properties.getOrElse(RELEASED_AT.name) { aggregate.releasedAt.value } as LocalDate),
+            SetReleasedAt(LocalDate.parse(payload.properties.getOrElse(RELEASED_AT.name) { aggregate.releasedAt.value.toString() } as String)),
         )
     }
 

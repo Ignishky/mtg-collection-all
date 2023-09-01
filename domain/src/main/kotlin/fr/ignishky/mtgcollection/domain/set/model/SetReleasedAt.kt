@@ -16,6 +16,6 @@ data class SetReleasedAt(
     }
 
     override fun propertyValue(): Any {
-        return value
+        return value.toString()
     }
 }
