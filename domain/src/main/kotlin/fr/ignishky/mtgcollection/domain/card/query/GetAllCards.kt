@@ -1,5 +1,6 @@
 package fr.ignishky.mtgcollection.domain.card.query
 
+import fr.ignishky.mtgcollection.domain.card.exception.NoCardFoundException
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.port.CardApiPort
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
@@ -10,7 +11,11 @@ import jakarta.inject.Named
 class GetAllCards(private val cardStore: CardStorePort) : CardApiPort {
 
     override fun getAll(setCode: SetCode): List<Card> {
-        return cardStore.get(setCode).sortedBy { card: Card -> card.collectionNumber }
+        val cards = cardStore.get(setCode)
+        if (cards.isEmpty()) {
+            throw NoCardFoundException(setCode)
+        }
+        return cards.sortedBy { card: Card -> card.collectionNumber }
     }
 
 }

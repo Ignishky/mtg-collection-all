@@ -85,4 +85,18 @@ internal class SetApiIT(
         )
     }
 
+    @Test
+    fun `Should return 404 from unknown set`() {
+        // GIVEN
+        jdbc.save(listOf(afr), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
+
+        // WHEN
+        val resultActions = mockMvc.perform(get("/sets/fake/cards"))
+
+        // THEN
+        resultActions.andExpectAll(
+            status().isNotFound,
+        )
+    }
+
 }
