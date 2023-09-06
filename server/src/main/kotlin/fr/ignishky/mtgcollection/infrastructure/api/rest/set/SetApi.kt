@@ -28,7 +28,7 @@ interface SetApi {
     )
     fun getAll(@RequestAttribute correlationId: CorrelationId): SetsResponse
 
-    @GetMapping("/{setCode}", produces = [APPLICATION_JSON_VALUE])
+    @GetMapping("/{setCode}/cards", produces = [APPLICATION_JSON_VALUE])
     @Operation(
         summary = "Retrieve the cards from the set of the given code",
         description = "The list is sorted by the cards collection number."

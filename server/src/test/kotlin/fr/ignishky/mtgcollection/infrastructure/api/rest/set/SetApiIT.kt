@@ -75,7 +75,7 @@ internal class SetApiIT(
         jdbc.save(listOf(afr), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
 
         // WHEN
-        val resultActions = mockMvc.perform(get("/sets/afr"))
+        val resultActions = mockMvc.perform(get("/sets/afr/cards"))
 
         // THEN
         resultActions.andExpectAll(
