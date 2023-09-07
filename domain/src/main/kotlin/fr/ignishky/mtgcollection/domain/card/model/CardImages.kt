@@ -8,10 +8,6 @@ data class CardImages(
 
     constructor(image: CardImage) : this(listOf(image))
 
-    fun containsAll(images: CardImages): Boolean {
-        return value.containsAll(images.value)
-    }
-
     override fun propertyName(): CardProperty.PropertyName {
         return IMAGES
     }
