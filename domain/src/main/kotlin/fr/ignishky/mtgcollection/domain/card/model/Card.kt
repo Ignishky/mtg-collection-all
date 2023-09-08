@@ -24,4 +24,10 @@ data class Card(
         return id
     }
 
+    fun isNotSimilar(other: Card): Boolean {
+        return name != other.name
+                || setCode != other.setCode
+                || images != other.images
+                || collectionNumber != other.collectionNumber
+    }
 }

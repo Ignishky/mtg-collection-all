@@ -6,6 +6,7 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated
+import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
@@ -30,18 +31,20 @@ class RefreshCard : Command {
 
         override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
             return setStore.getAll()
-                .flatMap { set -> processCards(set) }
+                .flatMap { set -> processSet(set) }
         }
 
-        private fun processCards(set: Set): List<Event<CardId, Card, out Payload>> {
+        private fun processSet(set: Set): List<Event<CardId, Card, out Payload>> {
             logger.info { "Refreshing cards from ${set.code.value} ..." }
             val knownCardsById = cardStore.get(set.code).associateBy { it.id }
             return cardReferer.getCards(set.code)
                 .mapNotNull {
                     if (!knownCardsById.contains(it.id)) {
                         CardCreated(it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber)
-                    } else if (knownCardsById[it.id] != it) {
+                    } else if (knownCardsById[it.id]!!.isNotSimilar(it)) {
                         CardUpdated(it.id, it.name, it.prices, it.images, it.collectionNumber)
+                    } else if(knownCardsById[it.id]!!.prices != it.prices){
+                        CardPricesUpdated(it.id, it.prices)
                     } else {
                         null
                     }
