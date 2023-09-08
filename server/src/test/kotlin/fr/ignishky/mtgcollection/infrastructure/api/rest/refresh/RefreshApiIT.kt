@@ -102,7 +102,7 @@ class RefreshApiIT(
         jdbc.save(
             listOf(khm.copy(icon = SetIcon("Old Icon"))),
             listOf(
-                axgardBraggart.copy(name = CardName("Old Name"), prices = CardPrices(Price(0, 0, 0, 0))),
+                axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
                 halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))
             )
         )
@@ -112,7 +112,7 @@ class RefreshApiIT(
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(toSetUpdatedEntity(khm), toCardUpdatedEntity(axgardBraggart), toCardUpdatedEntity(halvar))
+            .containsOnly(toSetUpdatedEntity(khm), toCardPricesUpdatedEntity(axgardBraggart), toCardUpdatedEntity(halvar))
         assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
@@ -190,6 +190,18 @@ class RefreshApiIT(
                     ","
                 ) { "{\"value\":\"${it.value}\"}" }
             }],\"COLLECTION_NUMBER\":\"${card.collectionNumber.value}\"}}",
+            correlationId.value
+        )
+    }
+
+    fun toCardPricesUpdatedEntity(card: Card): EventEntity {
+        return EventEntity(
+            0,
+            card.id.value,
+            "Card",
+            "CardPricesUpdated",
+            parse("1981-08-25T13:50:00Z"),
+            "{\"prices\":{\"scryfall\":{\"eur\":${card.prices.scryfall.eur},\"eurFoil\":${card.prices.scryfall.eurFoil},\"usd\":${card.prices.scryfall.usd},\"usdFoil\":${card.prices.scryfall.usdFoil}}}}",
             correlationId.value
         )
     }
