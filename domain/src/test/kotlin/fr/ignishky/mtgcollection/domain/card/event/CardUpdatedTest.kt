@@ -1,9 +1,9 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -18,13 +18,11 @@ class CardUpdatedTest {
         name = CardName("cardName"),
         images = CardImages(CardImage("cardImage")),
         collectionNumber = CardNumber("collectionNumber"),
-        prices = CardPrices(Price(550, 660, 770, 880)),
     )
 
     private val event = CardUpdated(
         existingCard.id,
         CardName("cardName"),
-        CardPrices(Price(550, 660, 770, 880)),
         CardImages(CardImage("cardImage")),
         CardNumber("collectionNumber"),
     )

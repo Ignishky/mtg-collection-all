@@ -55,7 +55,7 @@ class RefreshCardTest {
                     plus2Mace.setCode,
                     plus2Mace.prices,
                     plus2Mace.images,
-                    plus2Mace.collectionNumber
+                    plus2Mace.collectionNumber,
                 )
             )
     }
@@ -63,50 +63,81 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new name`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace)
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(name = CardName("new name")))
+        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(
-                CardUpdated(
-                    plus2Mace.id,
-                    CardName("new name"),
-                    plus2Mace.prices,
-                    plus2Mace.images,
-                    plus2Mace.collectionNumber
-                )
-            )
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.name))
+    }
+
+    @Test
+    fun `Should return CardUpdated event for card with new setCode`() {
+        every { setStore.getAll() } returns listOf(afr)
+        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+
+        val events = handler.handle(RefreshCard(), correlationId)
+
+        assertThat(events)
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.setCode))
     }
 
     @Test
     fun `Should return CardUpdated event for card with new images`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace)
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(CardImage("new image"))))
+        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(CardImage("new image"))))
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(
-                CardUpdated(
-                    plus2Mace.id,
-                    plus2Mace.name,
-                    plus2Mace.prices,
-                    CardImages(CardImage("new image")),
-                    plus2Mace.collectionNumber
-                )
-            )
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.images))
     }
 
     @Test
     fun `Should return CardUpdated event for card with new collection number`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace)
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("new collection number")))
+        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("new collection number")))
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+
+        val events = handler.handle(RefreshCard(), correlationId)
+
+        assertThat(events)
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.collectionNumber))
+    }
+
+    @Test
+    fun `Should return CardPricesUpdated event for card with only new prices`() {
+        every { setStore.getAll() } returns listOf(afr)
+        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+
+        val events = handler.handle(RefreshCard(), correlationId)
+
+        assertThat(events)
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
+            .containsOnly(CardPricesUpdated(plus2Mace.id, plus2Mace.prices))
+    }
+
+    @Test
+    fun `Should return events for card with all new field values`() {
+        every { setStore.getAll() } returns listOf(afr)
+        every { cardStore.get(afr.code) } returns listOf(
+            plus2Mace.copy(
+                name = CardName("old name"),
+                setCode = CardSetCode("old set code"),
+                images = CardImages(CardImage("new image")),
+                collectionNumber = CardNumber("new collection number"),
+                prices = CardPrices(Price(110, 220, 330, 440)),
+            )
+        )
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
 
@@ -116,26 +147,14 @@ class RefreshCardTest {
                 CardUpdated(
                     plus2Mace.id,
                     plus2Mace.name,
-                    plus2Mace.prices,
+                    plus2Mace.setCode,
                     plus2Mace.images,
-                    CardNumber("new collection number")
+                    plus2Mace.collectionNumber,
+                ),
+                CardPricesUpdated(
+                    plus2Mace.id,
+                    plus2Mace.prices
                 )
-            )
-    }
-
-    @Test
-    fun `Should return CardPricesUpdated event for card with only new prices`() {
-        every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace)
-        val updatedPrices = CardPrices(Price(110, 220, 330, 440))
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(prices = updatedPrices))
-
-        val events = handler.handle(RefreshCard(), correlationId)
-
-        assertThat(events)
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(
-                CardPricesUpdated(plus2Mace.id, updatedPrices)
             )
     }
 

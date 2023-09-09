@@ -5,6 +5,7 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.SetName
+import fr.ignishky.mtgcollection.domain.set.model.SetType
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import io.mockk.every
@@ -44,14 +45,14 @@ class RefreshSetTest {
 
     @Test
     fun `Should return SetUpdated event when a referer set is stored differently`() {
-        every { setStore.getAll() } returns listOf(afr().copy(name = SetName("Old name")))
+        every { setStore.getAll() } returns listOf(afr().copy(name = SetName("Old name"), type = SetType("Old type")))
         every { setReferer.getAllSets() } returns listOf(afr())
 
         val events = handler.handle(RefreshSet(), correlationId)
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(SetUpdated(afr().id, afr().code, afr().name, afr().type, afr().icon, afr().releasedAt))
+            .containsOnly(SetUpdated(afr().id, afr().name, afr().type))
     }
 
     @Test

@@ -38,17 +38,25 @@ class RefreshCard : Command {
             logger.info { "Refreshing cards from ${set.code.value} ..." }
             val knownCardsById = cardStore.get(set.code).associateBy { it.id }
             return cardReferer.getCards(set.code)
-                .mapNotNull {
+                .flatMap {
                     if (!knownCardsById.contains(it.id)) {
-                        CardCreated(it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber)
-                    } else if (knownCardsById[it.id]!!.isNotSimilar(it)) {
-                        CardUpdated(it.id, it.name, it.prices, it.images, it.collectionNumber)
-                    } else if(knownCardsById[it.id]!!.prices != it.prices){
-                        CardPricesUpdated(it.id, it.prices)
+                        listOf(CardCreated(it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber))
                     } else {
-                        null
+                        cardUpdated(knownCardsById[it.id]!!, it)
                     }
                 }
+        }
+
+        private fun cardUpdated(knownCard: Card, newCard: Card): List<Event<CardId, Card, out Payload>> {
+            var result = listOf<Event<CardId, Card, out Payload>>()
+            val delta = knownCard.updatedFields(newCard)
+            if (delta.isNotEmpty()) {
+                result = result.plus(CardUpdated(newCard.id, *delta.toTypedArray()))
+            }
+            if (knownCard.prices != newCard.prices) {
+                result = result.plus(CardPricesUpdated(newCard.id, newCard.prices))
+            }
+            return result
         }
 
         override fun listenTo(): KClass<out RefreshCard> {

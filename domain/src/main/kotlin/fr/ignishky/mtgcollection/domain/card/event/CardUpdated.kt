@@ -7,7 +7,6 @@ import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayloa
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.*
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
@@ -29,7 +28,7 @@ class CardUpdated(aggregateId: CardId, vararg properties: CardProperty) :
             CardSetCode(payload.properties.getOrElse(SET_CODE.name) { aggregate.setCode.value } as String),
             CardImages(payload.properties.getOrElse(IMAGES.name) { aggregate.images.value } as List<CardImage>),
             CardNumber(payload.properties.getOrElse(COLLECTION_NUMBER.name) { aggregate.collectionNumber.value } as String),
-            CardPrices(payload.properties.getOrElse(PRICES.name) { aggregate.prices.scryfall } as Price),
+            aggregate.prices,
         )
     }
 

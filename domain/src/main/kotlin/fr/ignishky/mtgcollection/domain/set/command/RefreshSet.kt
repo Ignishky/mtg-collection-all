@@ -6,6 +6,7 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
+import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import jakarta.inject.Named
@@ -29,14 +30,21 @@ class RefreshSet : Command {
 
             return setReferer.getAllSets()
                 .mapNotNull {
-                    if (!knownSetsById.containsKey(it.id)) {
+                    if (knownSetsById[it.id] == null) {
                         SetCreated(it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
-                    } else if (knownSetsById[it.id] != it) {
-                        SetUpdated(it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
                     } else {
-                        null
+                        setUpdated(knownSetsById[it.id]!!, it)
                     }
                 }
+        }
+
+        private fun setUpdated(knownSet: Set, newSet: Set): SetUpdated? {
+            val delta = knownSet.updatedFields(newSet)
+            return if (delta.isNotEmpty()) {
+                SetUpdated(newSet.id, *delta.toTypedArray())
+            } else {
+                null
+            }
         }
 
         override fun listenTo(): KClass<RefreshSet> {

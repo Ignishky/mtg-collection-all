@@ -1,6 +1,7 @@
 package fr.ignishky.mtgcollection.domain.card.model
 
 import fr.ignishky.framework.domain.Aggregate
+import kotlin.reflect.full.memberProperties
 
 data class Card(
     val id: CardId,
@@ -24,10 +25,15 @@ data class Card(
         return id
     }
 
-    fun isNotSimilar(other: Card): Boolean {
-        return name != other.name
-                || setCode != other.setCode
-                || images != other.images
-                || collectionNumber != other.collectionNumber
+    fun updatedFields(newCard: Card): List<CardProperty> {
+        var result = listOf<CardProperty>()
+        for (prop in Card::class.memberProperties) {
+            val newProperty = prop.call(newCard)!!
+            if (CardProperty::class.java.isAssignableFrom(newProperty::class.java) && prop.call(this) != newProperty) {
+                result = result.plus(newProperty as CardProperty)
+            }
+        }
+        return result
     }
+
 }

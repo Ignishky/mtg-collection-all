@@ -13,6 +13,7 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.khm
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
+import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.mapper.CardEntityMapper.toCardEntity
@@ -100,7 +101,7 @@ class RefreshApiIT(
         mockServerBuilder.prepareSets("scryfall_set_khm.json")
         mockServerBuilder.prepareCards("khm")
         jdbc.save(
-            listOf(khm.copy(icon = SetIcon("Old Icon"))),
+            listOf(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
             listOf(
                 axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
                 halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))
@@ -112,7 +113,11 @@ class RefreshApiIT(
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(toSetUpdatedEntity(khm), toCardPricesUpdatedEntity(axgardBraggart), toCardUpdatedEntity(halvar))
+            .containsOnly(
+                toSetUpdatedEntity(khm),
+                toCardPricesUpdatedEntity(axgardBraggart),
+                toCardUpdatedEntity(halvar)
+            )
         assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
@@ -135,7 +140,11 @@ class RefreshApiIT(
                 toCardCreatedEntity(valor),
             )
         assertThat(jdbc.getSets()).containsOnly(toSetEntity(afr))
-        assertThat(jdbc.getCards()).containsOnly(toCardEntity(plus2mace), toCardEntity(arboreaPegasus), toCardEntity(valor))
+        assertThat(jdbc.getCards()).containsOnly(
+            toCardEntity(plus2mace),
+            toCardEntity(arboreaPegasus),
+            toCardEntity(valor)
+        )
     }
 
     fun toSetCreatedEntity(set: Set): EventEntity {
@@ -157,7 +166,7 @@ class RefreshApiIT(
             "Set",
             "SetUpdated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"properties\":{\"CODE\":\"${set.code.value}\",\"NAME\":\"${set.name.value}\",\"TYPE\":\"${set.type.value}\",\"ICON\":\"${set.icon.value}\",\"RELEASED_AT\":\"${set.releasedAt.value}\"}}",
+            "{\"properties\":{\"ICON\":\"${set.icon.value}\",\"NAME\":\"${set.name.value}\"}}",
             correlationId.value
         )
     }
@@ -185,11 +194,11 @@ class RefreshApiIT(
             "Card",
             "CardUpdated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"properties\":{\"NAME\":\"${card.name.value}\",\"PRICES\":{\"eur\":${card.prices.scryfall.eur},\"eurFoil\":${card.prices.scryfall.eurFoil},\"usd\":${card.prices.scryfall.usd},\"usdFoil\":${card.prices.scryfall.usdFoil}},\"IMAGES\":[${
+            "{\"properties\":{\"COLLECTION_NUMBER\":\"${card.collectionNumber.value}\",\"IMAGES\":[${
                 card.images.value.joinToString(
                     ","
                 ) { "{\"value\":\"${it.value}\"}" }
-            }],\"COLLECTION_NUMBER\":\"${card.collectionNumber.value}\"}}",
+            }]}}",
             correlationId.value
         )
     }

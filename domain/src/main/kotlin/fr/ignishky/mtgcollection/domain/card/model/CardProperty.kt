@@ -11,6 +11,5 @@ sealed interface CardProperty {
         SET_CODE,
         IMAGES,
         COLLECTION_NUMBER,
-        PRICES,
     }
 }
