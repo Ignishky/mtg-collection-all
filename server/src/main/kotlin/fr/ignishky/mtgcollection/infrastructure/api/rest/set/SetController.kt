@@ -33,6 +33,7 @@ class SetController(
         val cards = cardApiPort.getAll(SetCode(setCode))
             .map {
                 CardResponse(
+                    it.id.value,
                     it.name.value,
                     it.images.value[0].value,
                     CardsResponse.PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil)
