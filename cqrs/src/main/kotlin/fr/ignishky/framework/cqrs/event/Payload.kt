@@ -1,3 +1,7 @@
 package fr.ignishky.framework.cqrs.event
 
-interface Payload 
+interface Payload {
+
+    fun asEvent(aggregateId: String): Event<*, *, *>
+
+}

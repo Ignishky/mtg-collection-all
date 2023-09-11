@@ -13,7 +13,7 @@ import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetEventStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
 import kotlin.reflect.KClass
@@ -22,7 +22,7 @@ class RefreshCard : Command {
 
     @Named
     class RefreshCardHandler(
-        private val setStore: SetStorePort,
+        private val setStore: SetEventStorePort,
         private val cardReferer: CardRefererPort,
         private val cardStore: CardStorePort,
     ) : CommandHandler<RefreshCard> {

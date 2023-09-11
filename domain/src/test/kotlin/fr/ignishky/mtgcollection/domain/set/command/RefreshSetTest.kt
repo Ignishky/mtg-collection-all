@@ -6,8 +6,8 @@ import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.domain.set.model.SetType
+import fr.ignishky.mtgcollection.domain.set.port.SetEventStorePort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -18,7 +18,7 @@ class RefreshSetTest {
     private val correlationId = CorrelationId("test-correlation-id")
 
     private val setReferer = mockk<SetRefererPort>()
-    private val setStore = mockk<SetStorePort>()
+    private val setStore = mockk<SetEventStorePort>()
     private val handler = RefreshSet.RefreshSetHandler(setReferer, setStore)
 
     @Test

@@ -57,7 +57,11 @@ class CardCreated(
         val scryfallUsdFoil: Long,
         val images: List<String>,
         val collectionNumber: String,
-    ) : Payload
+    ) : Payload {
+        override fun asEvent(aggregateId: String): Event<*, *, *> {
+            TODO("Not yet implemented")
+        }
+    }
 
     @Named
     class CardCreatedHandler(

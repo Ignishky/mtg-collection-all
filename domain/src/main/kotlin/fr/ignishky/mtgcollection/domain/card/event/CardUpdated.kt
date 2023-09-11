@@ -46,6 +46,10 @@ class CardUpdated(aggregateId: CardId, vararg properties: CardProperty) :
             }
         }
 
+        override fun asEvent(aggregateId: String): Event<*, *, *> {
+            TODO("Not yet implemented")
+        }
+
     }
 
     @Named

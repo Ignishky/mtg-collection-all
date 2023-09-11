@@ -28,7 +28,11 @@ class CardPricesUpdated(aggregateId: CardId, prices: CardPrices) :
 
     data class PricesUpdatedPayload(
         val prices: CardPrices,
-    ) : Payload
+    ) : Payload {
+        override fun asEvent(aggregateId: String): Event<*, *, *> {
+            TODO("Not yet implemented")
+        }
+    }
 
     @Named
     class CardPricesUpdatedHandler(private val cardStore: CardStorePort) : EventHandler<CardPricesUpdated> {

@@ -7,6 +7,7 @@ import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedPayload
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
+import fr.ignishky.mtgcollection.domain.set.model.SetProperty.PropertyName
 import fr.ignishky.mtgcollection.domain.set.model.SetProperty.PropertyName.*
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import jakarta.inject.Named
@@ -39,6 +40,7 @@ class SetUpdated(aggregateId: SetId, vararg properties: SetProperty) :
     data class SetUpdatedPayload(
         val properties: Map<String, String>,
     ) : Payload {
+        constructor() : this(HashMap())
 
         companion object {
             fun from(vararg properties: SetProperty): SetUpdatedPayload {
@@ -46,6 +48,16 @@ class SetUpdated(aggregateId: SetId, vararg properties: SetProperty) :
                     properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
                 )
             }
+        }
+
+        override fun asEvent(aggregateId: String): Event<*, *, *> {
+            val setProperties = properties
+                .map { (name, value) -> PropertyName.valueOf(name).withValue(value) }
+                .toTypedArray()
+            return SetUpdated(
+                SetId(aggregateId),
+                *setProperties
+            )
         }
 
     }

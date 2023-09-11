@@ -12,8 +12,7 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.model.SetIcon
-import fr.ignishky.mtgcollection.domain.set.model.SetName
+import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.mapper.CardEntityMapper.toCardEntity
@@ -85,12 +84,14 @@ class RefreshApiIT(
         val mockServerBuilder = MockServerBuilder(mockServer)
         mockServerBuilder.prepareSets("scryfall_set_khm.json")
         mockServerBuilder.prepareCards("khm")
-        jdbc.save(listOf(khm), listOf(axgardBraggart, halvar))
+        jdbc.save(listOf(toSetCreatedEntity(khm)), listOf(khm), listOf(axgardBraggart, halvar))
 
         val resultActions = mockMvc.perform(put("/refresh-all"))
 
         resultActions.andExpect(status().isNoContent)
-        assertThat(jdbc.getEvents()).isEmpty()
+        assertThat(jdbc.getEvents())
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
+            .containsOnly(toSetCreatedEntity(khm))
         assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
@@ -100,8 +101,10 @@ class RefreshApiIT(
         val mockServerBuilder = MockServerBuilder(mockServer)
         mockServerBuilder.prepareSets("scryfall_set_khm.json")
         mockServerBuilder.prepareCards("khm")
+        val createdKHM = khm.copy(code = SetCode("CCode"))
         jdbc.save(
-            listOf(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+            listOf(toSetCreatedEntity(createdKHM)),
+            listOf(createdKHM),
             listOf(
                 axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
                 halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))
@@ -114,6 +117,7 @@ class RefreshApiIT(
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
             .containsOnly(
+                toSetCreatedEntity(createdKHM),
                 toSetUpdatedEntity(khm),
                 toCardPricesUpdatedEntity(axgardBraggart),
                 toCardUpdatedEntity(halvar)
@@ -166,7 +170,7 @@ class RefreshApiIT(
             "Set",
             "SetUpdated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"properties\":{\"ICON\":\"${set.icon.value}\",\"NAME\":\"${set.name.value}\"}}",
+            "{\"properties\":{\"CODE\":\"${set.code.value}\"}}",
             correlationId.value
         )
     }

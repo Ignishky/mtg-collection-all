@@ -14,7 +14,14 @@ import java.time.Instant.now
 import java.time.LocalDate
 import kotlin.reflect.KClass
 
-class SetCreated(aggregateId: SetId, code: SetCode, name: SetName, type: SetType, icon: SetIcon, releasedAt: SetReleasedAt) :
+class SetCreated(
+    aggregateId: SetId,
+    code: SetCode,
+    name: SetName,
+    type: SetType,
+    icon: SetIcon,
+    releasedAt: SetReleasedAt
+) :
     Event<SetId, Set, SetCreatedPayload>(
         0,
         aggregateId,
@@ -46,7 +53,20 @@ class SetCreated(aggregateId: SetId, code: SetCode, name: SetName, type: SetType
         val type: String,
         val icon: String,
         val releasedAt: String,
-    ) : Payload
+    ) : Payload {
+        constructor() : this("", "", "", "", "")
+
+        override fun asEvent(aggregateId: String): Event<*, *, *> {
+            return SetCreated(
+                SetId(aggregateId),
+                SetCode(code),
+                SetName(name),
+                SetType(type),
+                SetIcon(icon),
+                SetReleasedAt(LocalDate.parse(releasedAt))
+            )
+        }
+    }
 
     @Named
     class SetCreatedHandler(private val setStore: SetStorePort) : EventHandler<SetCreated> {
