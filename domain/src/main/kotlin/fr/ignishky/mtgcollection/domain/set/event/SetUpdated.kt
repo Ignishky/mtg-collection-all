@@ -26,16 +26,16 @@ class SetUpdated(aggregateId: SetId, vararg properties: SetProperty) :
     override fun apply(aggregate: Set): Set {
         return Set(
             aggregate.id,
-            SetCode(payload.properties.getOrElse(CODE.name) { aggregate.code.value } as String),
-            SetName(payload.properties.getOrElse(NAME.name) { aggregate.name.value } as String),
-            SetType(payload.properties.getOrElse(TYPE.name) { aggregate.type.value } as String),
-            SetIcon(payload.properties.getOrElse(ICON.name) { aggregate.icon.value } as String),
-            SetReleasedAt(LocalDate.parse(payload.properties.getOrElse(RELEASED_AT.name) { aggregate.releasedAt.value.toString() } as String)),
+            SetCode(payload.properties.getOrElse(CODE.name) { aggregate.code.value }),
+            SetName(payload.properties.getOrElse(NAME.name) { aggregate.name.value }),
+            SetType(payload.properties.getOrElse(TYPE.name) { aggregate.type.value }),
+            SetIcon(payload.properties.getOrElse(ICON.name) { aggregate.icon.value }),
+            SetReleasedAt(LocalDate.parse(payload.properties.getOrElse(RELEASED_AT.name) { aggregate.releasedAt.value.toString() })),
         )
     }
 
     data class SetUpdatedPayload(
-        val properties: Map<String, Any>,
+        val properties: Map<String, String>,
     ) : Payload {
 
         companion object {

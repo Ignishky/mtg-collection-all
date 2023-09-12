@@ -4,7 +4,7 @@ sealed interface SetProperty {
 
     fun propertyName(): PropertyName
 
-    fun propertyValue(): Any
+    fun propertyValue(): String
 
     enum class PropertyName {
         NAME,

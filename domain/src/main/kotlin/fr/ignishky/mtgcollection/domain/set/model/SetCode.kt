@@ -10,7 +10,7 @@ data class SetCode(
         return CODE
     }
 
-    override fun propertyValue(): Any {
+    override fun propertyValue(): String {
         return value
     }
 

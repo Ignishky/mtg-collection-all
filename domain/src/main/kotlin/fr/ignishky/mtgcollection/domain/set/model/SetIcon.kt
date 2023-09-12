@@ -10,7 +10,7 @@ data class SetIcon(
         return ICON
     }
 
-    override fun propertyValue(): Any {
+    override fun propertyValue(): String {
         return value
     }
 

@@ -10,7 +10,7 @@ data class SetType(
         return TYPE
     }
 
-    override fun propertyValue(): Any {
+    override fun propertyValue(): String {
         return value
     }
 

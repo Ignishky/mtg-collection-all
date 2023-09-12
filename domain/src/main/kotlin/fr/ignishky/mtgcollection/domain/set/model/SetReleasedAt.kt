@@ -15,7 +15,7 @@ data class SetReleasedAt(
         return RELEASED_AT
     }
 
-    override fun propertyValue(): Any {
+    override fun propertyValue(): String {
         return value.toString()
     }
 }
