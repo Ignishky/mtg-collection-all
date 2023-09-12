@@ -21,7 +21,7 @@ class JdbcUtils(private val template: JdbcTemplate) {
     }
 
     fun save(sets: List<Set>, cards: List<Card>) {
-        sets.map {
+        sets.forEach {
             template.update(
                 "INSERT INTO sets VALUES (?, ?, ?, ?, ?, ?)",
                 it.id.value,
@@ -32,7 +32,7 @@ class JdbcUtils(private val template: JdbcTemplate) {
                 it.releasedAt.value,
             )
         }
-        cards.map {
+        cards.forEach {
             template.update(
                 "INSERT INTO cards VALUES (?, ?, ?, ?, ?, ?)",
                 it.id.value,
