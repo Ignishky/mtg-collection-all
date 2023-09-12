@@ -3,6 +3,7 @@ package fr.ignishky.mtgcollection.domain.card.event
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
+import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
@@ -21,8 +22,8 @@ class CardPricesUpdated(aggregateId: CardId, prices: CardPrices) :
         Instant.now(),
     ) {
 
-    override fun apply(aggregate: Card): Card {
-        return aggregate.copy(prices = payload.prices)
+    override fun apply(aggregate: Aggregate<*>): Card {
+        return (aggregate as Card).copy(prices = payload.prices)
     }
 
     data class PricesUpdatedPayload(

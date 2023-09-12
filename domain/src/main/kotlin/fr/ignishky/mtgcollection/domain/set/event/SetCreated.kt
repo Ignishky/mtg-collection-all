@@ -3,6 +3,7 @@ package fr.ignishky.mtgcollection.domain.set.event
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
+import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedPayload
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
@@ -28,7 +29,7 @@ class SetCreated(aggregateId: SetId, code: SetCode, name: SetName, type: SetType
         now(),
     ) {
 
-    override fun apply(aggregate: Set): Set {
+    override fun apply(aggregate: Aggregate<*>): Set {
         return Set(
             aggregateId,
             SetCode(payload.code),

@@ -3,10 +3,10 @@ package fr.ignishky.mtgcollection.domain.card.event
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
+import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
@@ -37,7 +37,7 @@ class CardCreated(
         now(),
     ) {
 
-    override fun apply(aggregate: Card): Card {
+    override fun apply(aggregate: Aggregate<*>): Card {
         return Card(
             aggregateId,
             CardName(payload.name),

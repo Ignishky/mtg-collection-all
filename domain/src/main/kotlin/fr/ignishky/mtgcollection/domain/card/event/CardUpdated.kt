@@ -3,6 +3,7 @@ package fr.ignishky.mtgcollection.domain.card.event
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
+import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.*
@@ -21,7 +22,8 @@ class CardUpdated(aggregateId: CardId, vararg properties: CardProperty) :
         now(),
     ) {
 
-    override fun apply(aggregate: Card): Card {
+    override fun apply(aggregate: Aggregate<*>): Card {
+        aggregate as Card
         return Card(
             aggregateId,
             CardName(payload.properties.getOrElse(NAME.name) { aggregate.name.value } as String),
