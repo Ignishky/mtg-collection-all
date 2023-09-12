@@ -14,16 +14,16 @@ data class EventEntity(
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(columnDefinition = "bigserial")
-    private val id: Long = 0,
+    val id: Long = 0,
     @Column(name = "aggregate_id")
-    private val aggregateId: String,
+    val aggregateId: String,
     @Column(name = "aggregate_name")
-    private val aggregateName: String,
-    private val label: String,
-    private val instant: ZonedDateTime,
-    private val payload: String,
+    val aggregateName: String,
+    val label: String,
+    val instant: ZonedDateTime,
+    val payload: String,
     @Column(name = "correlation_id")
-    private val correlationId: String,
+    val correlationId: String,
 ) {
 
     constructor() : this(0, "", "", "", ofInstant(EPOCH, UTC), "", "")
