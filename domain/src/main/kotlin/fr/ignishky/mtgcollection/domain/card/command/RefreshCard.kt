@@ -10,8 +10,8 @@ import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
+import fr.ignishky.mtgcollection.domain.card.port.CardEventStorePort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetEventStorePort
 import jakarta.inject.Named
@@ -24,14 +24,14 @@ class RefreshCard : Command {
     class RefreshCardHandler(
         private val setStore: SetEventStorePort,
         private val cardReferer: CardRefererPort,
-        private val cardStore: CardStorePort,
+        private val cardStore: CardEventStorePort,
     ) : CommandHandler<RefreshCard> {
 
         private val logger = logger {}
 
         override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
             return setStore.getAll()
-                .flatMap { set -> processSet(set) }
+                .flatMap(::processSet)
         }
 
         private fun processSet(set: Set): List<Event<CardId, Card, out Payload>> {

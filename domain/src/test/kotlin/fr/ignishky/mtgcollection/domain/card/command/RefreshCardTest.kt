@@ -8,8 +8,8 @@ import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
+import fr.ignishky.mtgcollection.domain.card.port.CardEventStorePort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import fr.ignishky.mtgcollection.domain.set.port.SetEventStorePort
 import io.mockk.every
 import io.mockk.mockk
@@ -24,7 +24,7 @@ class RefreshCardTest {
 
     private val setStore = mockk<SetEventStorePort>()
     private val cardReferer = mockk<CardRefererPort>()
-    private val cardStore = mockk<CardStorePort>()
+    private val cardStore = mockk<CardEventStorePort>()
     private val handler = RefreshCardHandler(setStore, cardReferer, cardStore)
 
     @Test
