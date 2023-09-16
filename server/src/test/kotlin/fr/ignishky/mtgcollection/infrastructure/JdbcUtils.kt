@@ -27,8 +27,8 @@ class JdbcUtils(private val template: JdbcTemplate) {
                 it.id.value,
                 it.code.value,
                 it.name.value,
-                it.icon.value,
                 it.type.value,
+                it.icon.value,
                 it.releasedAt.value,
             )
         }
