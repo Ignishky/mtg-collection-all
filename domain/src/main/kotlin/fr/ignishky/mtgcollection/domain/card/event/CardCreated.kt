@@ -60,7 +60,9 @@ class CardCreated(
         val scryfallUsdFoil: Long,
         val images: List<String>,
         val collectionNumber: String,
-    ) : Payload
+    ) : Payload {
+        constructor() : this("", "", 0, 0, 0, 0, listOf(), "")
+    }
 
     @Named
     class CardCreatedHandler(

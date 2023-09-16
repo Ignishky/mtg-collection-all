@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.refresh
 
-import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
 import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
@@ -10,7 +9,12 @@ import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
+import fr.ignishky.mtgcollection.domain.card.event.CardCreated
+import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
+import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
+import fr.ignishky.mtgcollection.domain.set.event.SetCreated
+import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.domain.set.model.SetName
@@ -31,7 +35,6 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.Instant.parse
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -70,11 +73,11 @@ class RefreshApiIT(
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreatedEntity(khm),
-                toCardCreatedEntity(axgardBraggart),
-                toCardCreatedEntity(halvar),
+                toSetCreated(khm),
+                toCardCreated(axgardBraggart),
+                toCardCreated(halvar),
             )
         assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
@@ -112,11 +115,11 @@ class RefreshApiIT(
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetUpdatedEntity(khm),
-                toCardPricesUpdatedEntity(axgardBraggart),
-                toCardUpdatedEntity(halvar)
+                toSetUpdated(khm),
+                toCardPricesUpdated(axgardBraggart),
+                toCardUpdated(halvar),
             )
         assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
@@ -132,12 +135,12 @@ class RefreshApiIT(
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreatedEntity(afr),
-                toCardCreatedEntity(plus2mace),
-                toCardCreatedEntity(arboreaPegasus),
-                toCardCreatedEntity(valor),
+                toSetCreated(afr),
+                toCardCreated(plus2mace),
+                toCardCreated(arboreaPegasus),
+                toCardCreated(valor),
             )
         assertThat(jdbc.getSets()).containsOnly(toSetEntity(afr))
         assertThat(jdbc.getCards()).containsOnly(
@@ -147,68 +150,14 @@ class RefreshApiIT(
         )
     }
 
-    fun toSetCreatedEntity(set: Set): EventEntity {
-        return EventEntity(
-            0,
-            set.id.value,
-            "Set",
-            "SetCreated",
-            parse("1981-08-25T13:50:00Z"),
-            "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\",\"type\":\"${set.type.value}\",\"icon\":\"${set.icon.value}\",\"releasedAt\":\"${set.releasedAt.value}\"}",
-            correlationId.value
-        )
-    }
+    fun toSetCreated(set: Set) = SetCreated(correlationId, set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
 
-    fun toSetUpdatedEntity(set: Set): EventEntity {
-        return EventEntity(
-            0,
-            set.id.value,
-            "Set",
-            "SetUpdated",
-            parse("1981-08-25T13:50:00Z"),
-            "{\"properties\":{\"ICON\":\"${set.icon.value}\",\"NAME\":\"${set.name.value}\"}}",
-            correlationId.value
-        )
-    }
+    fun toSetUpdated(set: Set) = SetUpdated(correlationId, set.id, set.name, set.icon)
 
-    fun toCardCreatedEntity(card: Card): EventEntity {
-        return EventEntity(
-            0,
-            card.id.value,
-            "Card",
-            "CardCreated",
-            parse("1981-08-25T13:50:00Z"),
-            "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"scryfallEur\":${card.prices.scryfall.eur},\"scryfallEurFoil\":${card.prices.scryfall.eurFoil},\"scryfallUsd\":${card.prices.scryfall.usd},\"scryfallUsdFoil\":${card.prices.scryfall.usdFoil},\"images\":[${
-                card.images.value.joinToString(",") { "\"${it.value}\"" }
-            }],\"collectionNumber\":\"${card.collectionNumber.value}\"}",
-            correlationId.value
-        )
-    }
+    fun toCardCreated(card: Card) = CardCreated(correlationId, card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber)
 
-    fun toCardUpdatedEntity(card: Card): EventEntity {
-        return EventEntity(
-            0,
-            card.id.value,
-            "Card",
-            "CardUpdated",
-            parse("1981-08-25T13:50:00Z"),
-            "{\"properties\":{\"COLLECTION_NUMBER\":\"${card.collectionNumber.value}\",\"IMAGES\":[${
-                card.images.value.joinToString(",") { "\"${it.value}\"" }
-            }]}}",
-            correlationId.value
-        )
-    }
+    fun toCardUpdated(card: Card) = CardUpdated(correlationId, card.id, card.collectionNumber, card.images)
 
-    fun toCardPricesUpdatedEntity(card: Card): EventEntity {
-        return EventEntity(
-            0,
-            card.id.value,
-            "Card",
-            "CardPricesUpdated",
-            parse("1981-08-25T13:50:00Z"),
-            "{\"scryfallEur\":${card.prices.scryfall.eur},\"scryfallEurFoil\":${card.prices.scryfall.eurFoil},\"scryfallUsd\":${card.prices.scryfall.usd},\"scryfallUsdFoil\":${card.prices.scryfall.usdFoil}}",
-            correlationId.value
-        )
-    }
+    fun toCardPricesUpdated(card: Card) = CardPricesUpdated(correlationId, card.id, card.prices)
 
 }

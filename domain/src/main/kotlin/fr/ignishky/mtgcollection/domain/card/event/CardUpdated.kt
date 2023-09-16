@@ -53,6 +53,8 @@ class CardUpdated(
         val properties: Map<String, Any>,
     ) : Payload {
 
+        constructor(): this(HashMap())
+
         companion object {
             fun from(vararg properties: CardProperty): CardUpdatedPayload {
                 return CardUpdatedPayload(

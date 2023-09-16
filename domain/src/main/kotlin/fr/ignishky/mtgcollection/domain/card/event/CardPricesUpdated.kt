@@ -47,7 +47,9 @@ class CardPricesUpdated(
         val scryfallEurFoil: Long,
         val scryfallUsd: Long,
         val scryfallUsdFoil: Long,
-    ) : Payload
+    ) : Payload {
+        constructor() : this(0, 0, 0, 0)
+    }
 
     @Named
     class CardPricesUpdatedHandler(private val cardStore: CardStorePort) : EventHandler<CardPricesUpdated> {

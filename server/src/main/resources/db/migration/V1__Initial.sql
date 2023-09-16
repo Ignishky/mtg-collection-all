@@ -5,7 +5,7 @@ CREATE TABLE events
     aggregate_name VARCHAR     NOT NULL,
     label          VARCHAR     NOT NULL,
     instant        TIMESTAMP WITH TIME ZONE,
-    payload        VARCHAR     NOT NULL,
+    payload        JSONB       NOT NULL,
     correlation_id VARCHAR(36) NOT NULL
 );
 

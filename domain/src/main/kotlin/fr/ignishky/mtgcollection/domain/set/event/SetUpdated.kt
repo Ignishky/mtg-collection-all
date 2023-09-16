@@ -46,6 +46,8 @@ class SetUpdated(
         val properties: Map<String, String>,
     ) : Payload {
 
+        constructor() : this(HashMap())
+
         companion object {
             fun from(vararg properties: SetProperty): SetUpdatedPayload {
                 return SetUpdatedPayload(

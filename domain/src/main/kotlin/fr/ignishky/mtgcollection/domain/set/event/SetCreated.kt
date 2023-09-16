@@ -56,7 +56,9 @@ class SetCreated(
         val type: String,
         val icon: String,
         val releasedAt: String,
-    ) : Payload
+    ) : Payload {
+        constructor() : this("", "", "", "", "")
+    }
 
     @Named
     class SetCreatedHandler(private val setStore: SetStorePort) : EventHandler<SetCreated> {

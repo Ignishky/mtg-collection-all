@@ -1,7 +1,7 @@
 package fr.ignishky.mtgcollection.infrastructure
 
-import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
-import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntityRowMapper
+import com.fasterxml.jackson.databind.ObjectMapper
+import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.CardEntity
@@ -12,7 +12,10 @@ import jakarta.inject.Named
 import org.springframework.jdbc.core.JdbcTemplate
 
 @Named
-class JdbcUtils(private val template: JdbcTemplate) {
+class JdbcUtils(
+    private val objectMapper: ObjectMapper,
+    private val template: JdbcTemplate,
+) {
 
     fun dropAll() {
         template.execute("TRUNCATE TABLE events")
@@ -38,15 +41,15 @@ class JdbcUtils(private val template: JdbcTemplate) {
                 it.id.value,
                 it.name.value,
                 it.setCode.value,
-                it.images.value.joinToString { (value) -> value },
+                it.images.value.joinToString { it.value },
                 it.collectionNumber.value,
                 "${it.prices.scryfall.eur}|${it.prices.scryfall.eurFoil}|${it.prices.scryfall.usd}|${it.prices.scryfall.usdFoil}"
             )
         }
     }
 
-    fun getEvents(): List<EventEntity> {
-        return template.query("SELECT * FROM events", EventEntityRowMapper())
+    fun getEvents(): List<Event<*, *, *>> {
+        return template.query("SELECT * FROM events", EventRowMapper(objectMapper))
     }
 
     fun getSets(): List<SetEntity> {
