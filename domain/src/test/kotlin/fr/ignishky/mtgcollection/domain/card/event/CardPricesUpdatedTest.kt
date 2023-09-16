@@ -1,5 +1,6 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
+import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.CardFixtures
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated.CardPricesUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
@@ -16,6 +17,7 @@ class CardPricesUpdatedTest {
 
     private val existingCard = CardFixtures.plus2Mace()
     private val event = CardPricesUpdated(
+        CorrelationId("CardPricesUpdated_CorrelationId"),
         existingCard.id,
         CardPrices(Price(550, 660, 770, 880)),
     )

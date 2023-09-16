@@ -1,5 +1,6 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
+import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
@@ -12,6 +13,7 @@ class CardCreatedTest {
 
     private val emptyCard = Card()
     private val event = CardCreated(
+        CorrelationId("CardCreated_CorrelationId"),
         CardId("cardId"),
         CardName("cardName"),
         CardSetCode("setCode"),

@@ -4,22 +4,28 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
+import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging
-import java.time.Instant
+import java.time.Instant.now
 import kotlin.reflect.KClass
 
-class CardPricesUpdated(aggregateId: CardId, prices: CardPrices) :
+class CardPricesUpdated(
+    correlationId: CorrelationId,
+    aggregateId: CardId,
+    prices: CardPrices,
+) :
     Event<CardId, Card, CardPricesUpdated.PricesUpdatedPayload>(
         0,
         aggregateId,
         Card::class,
         PricesUpdatedPayload(prices),
-        Instant.now(),
+        now(),
+        correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>): Card {

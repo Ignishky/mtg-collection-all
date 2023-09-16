@@ -4,6 +4,7 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
+import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.*
@@ -13,13 +14,18 @@ import mu.KotlinLogging
 import java.time.Instant.now
 import kotlin.reflect.KClass
 
-class CardUpdated(aggregateId: CardId, vararg properties: CardProperty) :
+class CardUpdated(
+    correlationId: CorrelationId,
+    aggregateId: CardId,
+    vararg properties: CardProperty,
+) :
     Event<CardId, Card, CardUpdatedPayload>(
         0,
         aggregateId,
         Card::class,
         CardUpdatedPayload.from(*properties),
         now(),
+        correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>): Card {

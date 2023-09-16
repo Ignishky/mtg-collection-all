@@ -31,17 +31,17 @@ class RefreshSet : Command {
             return setReferer.getAllSets()
                 .mapNotNull {
                     if (knownSetsById[it.id] == null) {
-                        SetCreated(it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
+                        SetCreated(correlationId, it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
                     } else {
-                        setUpdated(knownSetsById[it.id]!!, it)
+                        setUpdated(knownSetsById[it.id]!!, it, correlationId)
                     }
                 }
         }
 
-        private fun setUpdated(knownSet: Set, newSet: Set): SetUpdated? {
+        private fun setUpdated(knownSet: Set, newSet: Set, correlationId: CorrelationId): SetUpdated? {
             val delta = knownSet.updatedFields(newSet)
             return if (delta.isNotEmpty()) {
-                SetUpdated(newSet.id, *delta.toTypedArray())
+                SetUpdated(correlationId, newSet.id, *delta.toTypedArray())
             } else {
                 null
             }

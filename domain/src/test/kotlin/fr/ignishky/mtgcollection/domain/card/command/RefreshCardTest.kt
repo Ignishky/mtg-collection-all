@@ -50,6 +50,7 @@ class RefreshCardTest {
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
                 CardCreated(
+                    correlationId,
                     plus2Mace.id,
                     plus2Mace.name,
                     plus2Mace.setCode,
@@ -70,7 +71,7 @@ class RefreshCardTest {
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.name))
+            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.name))
     }
 
     @Test
@@ -83,7 +84,7 @@ class RefreshCardTest {
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.setCode))
+            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.setCode))
     }
 
     @Test
@@ -96,7 +97,7 @@ class RefreshCardTest {
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.images))
+            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.images))
     }
 
     @Test
@@ -109,7 +110,7 @@ class RefreshCardTest {
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.collectionNumber))
+            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.collectionNumber))
     }
 
     @Test
@@ -122,7 +123,7 @@ class RefreshCardTest {
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardPricesUpdated(plus2Mace.id, plus2Mace.prices))
+            .containsOnly(CardPricesUpdated(correlationId, plus2Mace.id, plus2Mace.prices))
     }
 
     @Test
@@ -145,6 +146,7 @@ class RefreshCardTest {
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
                 CardUpdated(
+                    correlationId,
                     plus2Mace.id,
                     plus2Mace.name,
                     plus2Mace.setCode,
@@ -152,6 +154,7 @@ class RefreshCardTest {
                     plus2Mace.collectionNumber,
                 ),
                 CardPricesUpdated(
+                    correlationId,
                     plus2Mace.id,
                     plus2Mace.prices
                 )

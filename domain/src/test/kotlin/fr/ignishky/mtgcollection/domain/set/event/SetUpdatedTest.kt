@@ -1,5 +1,6 @@
 package fr.ignishky.mtgcollection.domain.set.event
 
+import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedHandler
 import fr.ignishky.mtgcollection.domain.set.model.*
@@ -23,6 +24,7 @@ class SetUpdatedTest {
         releasedAt = SetReleasedAt(parse("2023-06-12")),
     )
     private val event = SetUpdated(
+        CorrelationId("SetUpdated_CorrelationId"),
         existingSet.id,
         SetCode("updatedCode"),
         SetName("updatedName"),
@@ -56,7 +58,7 @@ class SetUpdatedTest {
         every { setStore.get(existingSet.id) } returns existingSet
         justRun { setStore.store(existingSet.copy(code = SetCode("updatedCode"))) }
 
-        handler.handle(SetUpdated(existingSet.id, SetCode("updatedCode")))
+        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetCode("updatedCode")))
 
         verify { setStore.store(existingSet.copy(code = SetCode("updatedCode"))) }
     }
@@ -66,7 +68,7 @@ class SetUpdatedTest {
         every { setStore.get(existingSet.id) } returns existingSet
         justRun { setStore.store(existingSet.copy(name = SetName("updatedName"))) }
 
-        handler.handle(SetUpdated(existingSet.id, SetName("updatedName")))
+        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetName("updatedName")))
 
         verify { setStore.store(existingSet.copy(name = SetName("updatedName"))) }
     }
@@ -76,7 +78,7 @@ class SetUpdatedTest {
         every { setStore.get(existingSet.id) } returns existingSet
         justRun { setStore.store(existingSet.copy(type = SetType("updatedType"))) }
 
-        handler.handle(SetUpdated(existingSet.id, SetType("updatedType")))
+        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetType("updatedType")))
 
         verify { setStore.store(existingSet.copy(type = SetType("updatedType"))) }
     }
@@ -86,7 +88,7 @@ class SetUpdatedTest {
         every { setStore.get(existingSet.id) } returns existingSet
         justRun { setStore.store(existingSet.copy(icon = SetIcon("updatedIcon"))) }
 
-        handler.handle(SetUpdated(existingSet.id, SetIcon("updatedIcon")))
+        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetIcon("updatedIcon")))
 
         verify { setStore.store(existingSet.copy(icon = SetIcon("updatedIcon"))) }
     }
@@ -96,7 +98,7 @@ class SetUpdatedTest {
         every { setStore.get(existingSet.id) } returns existingSet
         justRun { setStore.store(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
 
-        handler.handle(SetUpdated(existingSet.id, SetReleasedAt(parse("2023-06-12"))))
+        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetReleasedAt(parse("2023-06-12"))))
 
         verify { setStore.store(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
     }

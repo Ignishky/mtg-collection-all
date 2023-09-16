@@ -40,7 +40,7 @@ class RefreshSetTest {
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(SetCreated(afr().id, afr().code, afr().name, afr().type, afr().icon, afr().releasedAt))
+            .containsOnly(SetCreated(correlationId, afr().id, afr().code, afr().name, afr().type, afr().icon, afr().releasedAt))
     }
 
     @Test
@@ -52,7 +52,7 @@ class RefreshSetTest {
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(SetUpdated(afr().id, afr().name, afr().type))
+            .containsOnly(SetUpdated(correlationId, afr().id, afr().name, afr().type))
     }
 
     @Test

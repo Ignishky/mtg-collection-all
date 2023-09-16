@@ -31,30 +31,30 @@ class RefreshCard : Command {
 
         override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
             return setStore.getAll()
-                .flatMap { set -> processSet(set) }
+                .flatMap { set -> processSet(set, correlationId) }
         }
 
-        private fun processSet(set: Set): List<Event<CardId, Card, out Payload>> {
+        private fun processSet(set: Set, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {
             logger.info { "Refreshing cards from ${set.code.value} ..." }
             val knownCardsById = cardStore.get(set.code).associateBy { it.id }
             return cardReferer.getCards(set.code)
                 .flatMap {
                     if (!knownCardsById.contains(it.id)) {
-                        listOf(CardCreated(it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber))
+                        listOf(CardCreated(correlationId, it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber))
                     } else {
-                        cardUpdated(knownCardsById[it.id]!!, it)
+                        cardUpdated(knownCardsById[it.id]!!, it, correlationId)
                     }
                 }
         }
 
-        private fun cardUpdated(knownCard: Card, newCard: Card): List<Event<CardId, Card, out Payload>> {
+        private fun cardUpdated(knownCard: Card, newCard: Card, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {
             var result = listOf<Event<CardId, Card, out Payload>>()
             val delta = knownCard.updatedFields(newCard)
             if (delta.isNotEmpty()) {
-                result = result.plus(CardUpdated(newCard.id, *delta.toTypedArray()))
+                result = result.plus(CardUpdated(correlationId, newCard.id, *delta.toTypedArray()))
             }
             if (knownCard.prices != newCard.prices) {
-                result = result.plus(CardPricesUpdated(newCard.id, newCard.prices))
+                result = result.plus(CardPricesUpdated(correlationId, newCard.id, newCard.prices))
             }
             return result
         }

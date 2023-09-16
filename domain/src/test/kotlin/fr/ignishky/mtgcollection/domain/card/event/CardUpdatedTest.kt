@@ -1,5 +1,6 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
+import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
@@ -21,6 +22,7 @@ class CardUpdatedTest {
     )
 
     private val event = CardUpdated(
+        CorrelationId("CardUpdated_CorrelationId"),
         existingCard.id,
         CardName("cardName"),
         CardImages(listOf(CardImage("cardImage"))),
@@ -52,7 +54,7 @@ class CardUpdatedTest {
         every { cardStore.get(existingCard.id) } returns existingCard
         justRun { cardStore.store(existingCard.copy(name = CardName("updatedName"))) }
 
-        handler.handle(CardUpdated(existingCard.id, CardName("updatedName")))
+        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardName("updatedName")))
 
         verify { cardStore.store(existingCard.copy(name = CardName("updatedName"))) }
     }
@@ -62,7 +64,7 @@ class CardUpdatedTest {
         every { cardStore.get(existingCard.id) } returns existingCard
         justRun { cardStore.store(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
 
-        handler.handle(CardUpdated(existingCard.id, CardSetCode("updatedSetCode")))
+        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardSetCode("updatedSetCode")))
 
         verify { cardStore.store(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
     }

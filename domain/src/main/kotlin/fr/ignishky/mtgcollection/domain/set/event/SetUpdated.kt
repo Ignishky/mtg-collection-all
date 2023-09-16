@@ -4,6 +4,7 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
+import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedPayload
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
@@ -15,13 +16,18 @@ import java.time.Instant.now
 import java.time.LocalDate
 import kotlin.reflect.KClass
 
-class SetUpdated(aggregateId: SetId, vararg properties: SetProperty) :
+class SetUpdated(
+    correlationId: CorrelationId,
+    aggregateId: SetId,
+    vararg properties: SetProperty,
+) :
     Event<SetId, Set, SetUpdatedPayload>(
         0,
         aggregateId,
         Set::class,
         SetUpdatedPayload.from(*properties),
         now(),
+        correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>): Set {
