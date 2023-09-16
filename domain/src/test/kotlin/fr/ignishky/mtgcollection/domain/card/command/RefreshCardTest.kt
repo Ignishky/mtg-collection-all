@@ -89,7 +89,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new images`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(CardImage("new image"))))
+        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("new image")))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -132,7 +132,7 @@ class RefreshCardTest {
             plus2Mace.copy(
                 name = CardName("old name"),
                 setCode = CardSetCode("old set code"),
-                images = CardImages(CardImage("new image")),
+                images = CardImages(listOf(CardImage("new image"))),
                 collectionNumber = CardNumber("new collection number"),
                 prices = CardPrices(Price(110, 220, 330, 440)),
             )

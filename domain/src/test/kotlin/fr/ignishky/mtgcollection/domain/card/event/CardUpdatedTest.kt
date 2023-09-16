@@ -16,14 +16,14 @@ class CardUpdatedTest {
     private val existingCard = plus2Mace()
     private val updatedCard = existingCard.copy(
         name = CardName("cardName"),
-        images = CardImages(CardImage("cardImage")),
+        images = CardImages(listOf(CardImage("cardImage"))),
         collectionNumber = CardNumber("collectionNumber"),
     )
 
     private val event = CardUpdated(
         existingCard.id,
         CardName("cardName"),
-        CardImages(CardImage("cardImage")),
+        CardImages(listOf(CardImage("cardImage"))),
         CardNumber("collectionNumber"),
     )
 

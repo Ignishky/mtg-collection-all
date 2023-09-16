@@ -16,7 +16,7 @@ class CardCreatedTest {
         CardName("cardName"),
         CardSetCode("setCode"),
         CardPrices(Price(110, 220, 330, 440)),
-        CardImages(CardImage("cardImage")),
+        CardImages(listOf(CardImage("cardImage"))),
         CardNumber("collectionNumber"),
     )
 
@@ -29,7 +29,7 @@ class CardCreatedTest {
                 CardId("cardId"),
                 CardName("cardName"),
                 CardSetCode("setCode"),
-                CardImages(CardImage("cardImage")),
+                CardImages(listOf(CardImage("cardImage"))),
                 CardNumber("collectionNumber"),
                 CardPrices(Price(110, 220, 330, 440)),
             )
@@ -47,7 +47,7 @@ class CardCreatedTest {
                     CardId("cardId"),
                     CardName("cardName"),
                     CardSetCode("setCode"),
-                    CardImages(CardImage("cardImage")),
+                    CardImages(listOf(CardImage("cardImage"))),
                     CardNumber("collectionNumber"),
                     CardPrices(Price(110, 220, 330, 440)),
                 )

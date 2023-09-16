@@ -9,7 +9,7 @@ object CardFixtures {
             CardId("e882c9f9-bf30-46b6-bedc-379d2c80e5cb"),
             CardName("+2 Mace"),
             CardSetCode("afr"),
-            CardImages(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg")),
+            CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg"))),
             CardNumber("1"),
             CardPrices(Price(2, 7, 2, 3)),
         )
@@ -20,7 +20,7 @@ object CardFixtures {
             CardId("fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97"),
             CardName("Arborea Pegasus"),
             CardSetCode("afr"),
-            CardImages(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg")),
+            CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg"))),
             CardNumber("2"),
             CardPrices(Price(4, 8, 1, 6)),
         )
@@ -31,7 +31,7 @@ object CardFixtures {
             CardId("89bc162c-bdf1-43f7-882f-d8cee4f3f415"),
             CardName("Valor Singer"),
             CardSetCode("afr"),
-            CardImages(CardImage("https://scryfall.mtgc.test/cards/valorSinger.svg")),
+            CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/valorSinger.svg"))),
             CardNumber("165"),
             CardPrices(Price(1, 14, 1, 3)),
         )
@@ -42,7 +42,7 @@ object CardFixtures {
             CardId("4de5ff64-6fe7-4fc5-be27-cdbaa14545ab"),
             CardName("Axgard Braggart"),
             CardSetCode("khm"),
-            CardImages(CardImage("https://scryfall.mtgc.test/cards/axgardBraggart.svg")),
+            CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/axgardBraggart.svg"))),
             CardNumber("1"),
             CardPrices(Price(1, 2, 0, 0)),
         )

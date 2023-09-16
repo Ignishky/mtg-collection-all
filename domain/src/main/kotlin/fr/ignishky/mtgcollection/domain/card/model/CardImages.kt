@@ -6,8 +6,6 @@ data class CardImages(
     val value: List<CardImage>
 ) : CardProperty {
 
-    constructor(image: CardImage) : this(listOf(image))
-
     override fun propertyName(): CardProperty.PropertyName {
         return IMAGES
     }
