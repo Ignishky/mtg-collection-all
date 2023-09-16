@@ -11,6 +11,6 @@ data class CardImages(
     }
 
     override fun propertyValue(): Any {
-        return value
+        return value.map { it.value }
     }
 }

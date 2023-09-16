@@ -34,10 +34,19 @@ class CardUpdated(
             aggregateId,
             CardName(payload.properties.getOrElse(NAME.name) { aggregate.name.value } as String),
             CardSetCode(payload.properties.getOrElse(SET_CODE.name) { aggregate.setCode.value } as String),
-            CardImages(payload.properties.getOrElse(IMAGES.name) { aggregate.images.value } as List<CardImage>),
+            getCardImages(aggregate),
             CardNumber(payload.properties.getOrElse(COLLECTION_NUMBER.name) { aggregate.collectionNumber.value } as String),
             aggregate.prices,
         )
+    }
+
+    private fun getCardImages(aggregate: Card): CardImages {
+        return if (payload.properties.containsKey(IMAGES.name)) {
+            val images = payload.properties[IMAGES.name] as List<String>
+            CardImages(images.map { CardImage(it) })
+        } else {
+            aggregate.images
+        }
     }
 
     data class CardUpdatedPayload(

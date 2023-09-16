@@ -179,9 +179,7 @@ class RefreshApiIT(
             "CardCreated",
             parse("1981-08-25T13:50:00Z"),
             "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"scryfallEur\":${card.prices.scryfall.eur},\"scryfallEurFoil\":${card.prices.scryfall.eurFoil},\"scryfallUsd\":${card.prices.scryfall.usd},\"scryfallUsdFoil\":${card.prices.scryfall.usdFoil},\"images\":[${
-                card.images.value.joinToString(
-                    ","
-                ) { "\"${it.value}\"" }
+                card.images.value.joinToString(",") { "\"${it.value}\"" }
             }],\"collectionNumber\":\"${card.collectionNumber.value}\"}",
             correlationId.value
         )
@@ -195,9 +193,7 @@ class RefreshApiIT(
             "CardUpdated",
             parse("1981-08-25T13:50:00Z"),
             "{\"properties\":{\"COLLECTION_NUMBER\":\"${card.collectionNumber.value}\",\"IMAGES\":[${
-                card.images.value.joinToString(
-                    ","
-                ) { "{\"value\":\"${it.value}\"}" }
+                card.images.value.joinToString(",") { "\"${it.value}\"" }
             }]}}",
             correlationId.value
         )
