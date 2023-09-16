@@ -8,6 +8,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
+import fr.ignishky.mtgcollection.domain.card.model.Price
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging
@@ -19,21 +20,33 @@ class CardPricesUpdated(
     aggregateId: CardId,
     prices: CardPrices,
 ) :
-    Event<CardId, Card, CardPricesUpdated.PricesUpdatedPayload>(
+    Event<CardId, Card, CardPricesUpdated.CardPricesUpdatedPayload>(
         0,
         aggregateId,
         Card::class,
-        PricesUpdatedPayload(prices),
+        CardPricesUpdatedPayload(prices.scryfall.eur, prices.scryfall.eurFoil, prices.scryfall.usd, prices.scryfall.usdFoil),
         now(),
         correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>): Card {
-        return (aggregate as Card).copy(prices = payload.prices)
+        return (aggregate as Card).copy(
+            prices = CardPrices(
+                Price(
+                    payload.scryfallEur,
+                    payload.scryfallEurFoil,
+                    payload.scryfallUsd,
+                    payload.scryfallUsdFoil
+                )
+            )
+        )
     }
 
-    data class PricesUpdatedPayload(
-        val prices: CardPrices,
+    data class CardPricesUpdatedPayload(
+        val scryfallEur: Long,
+        val scryfallEurFoil: Long,
+        val scryfallUsd: Long,
+        val scryfallUsdFoil: Long,
     ) : Payload
 
     @Named

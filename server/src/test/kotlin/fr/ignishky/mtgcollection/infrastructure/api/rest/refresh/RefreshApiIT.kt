@@ -206,7 +206,7 @@ class RefreshApiIT(
             "Card",
             "CardPricesUpdated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"prices\":{\"scryfall\":{\"eur\":${card.prices.scryfall.eur},\"eurFoil\":${card.prices.scryfall.eurFoil},\"usd\":${card.prices.scryfall.usd},\"usdFoil\":${card.prices.scryfall.usdFoil}}}}",
+            "{\"scryfallEur\":${card.prices.scryfall.eur},\"scryfallEurFoil\":${card.prices.scryfall.eurFoil},\"scryfallUsd\":${card.prices.scryfall.usd},\"scryfallUsdFoil\":${card.prices.scryfall.usdFoil}}",
             correlationId.value
         )
     }
