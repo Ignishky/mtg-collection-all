@@ -86,12 +86,24 @@ class RefreshApiIT(
         val mockServerBuilder = MockServerBuilder(mockServer)
         mockServerBuilder.prepareSets("scryfall_set_khm.json")
         mockServerBuilder.prepareCards("khm")
-        jdbc.save(listOf(khm), listOf(axgardBraggart, halvar))
+        jdbc.save(
+            listOf(
+                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toSetUpdated(khm),
+            ),
+            listOf(khm),
+            listOf(axgardBraggart, halvar)
+        )
 
         val resultActions = mockMvc.perform(put("/refresh-all"))
 
         resultActions.andExpect(status().isNoContent)
-        assertThat(jdbc.getEvents()).isEmpty()
+        assertThat(jdbc.getEvents())
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
+            .containsOnly(
+                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toSetUpdated(khm)
+            )
         assertThat(jdbc.getSets()).containsOnly(khm)
         assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
     }
@@ -102,6 +114,9 @@ class RefreshApiIT(
         mockServerBuilder.prepareSets("scryfall_set_khm.json")
         mockServerBuilder.prepareCards("khm")
         jdbc.save(
+            listOf(
+                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+            ),
             listOf(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
             listOf(
                 axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
@@ -115,6 +130,7 @@ class RefreshApiIT(
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
+                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
                 toSetUpdated(khm),
                 toCardPricesUpdated(axgardBraggart),
                 toCardUpdated(halvar),

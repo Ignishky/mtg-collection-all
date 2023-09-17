@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure
+package fr.ignishky.mtgcollection.infrastructure.spi.postgres.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.framework.cqrs.event.Event

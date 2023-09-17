@@ -1,12 +1,15 @@
 package fr.ignishky.mtgcollection.infrastructure
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.CardRowMapper
+import fr.ignishky.mtgcollection.infrastructure.spi.postgres.event.EventRowMapper
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.SetRowMapper
 import jakarta.inject.Named
 import org.springframework.jdbc.core.JdbcTemplate
+import java.sql.Date
 
 @Named
 class JdbcUtils(
@@ -18,6 +21,21 @@ class JdbcUtils(
         template.execute("TRUNCATE TABLE events")
         template.execute("TRUNCATE TABLE sets")
         template.execute("TRUNCATE TABLE cards")
+    }
+
+    fun save(events: List<Event<*, *, *>>, sets: List<Set>, cards: List<Card>) {
+        events.forEach {
+            template.update(
+                "INSERT INTO events (aggregate_id, aggregate_name, label, instant, payload, correlation_id) VALUES (?, ?, ?, ?, ?::jsonb, ?)",
+                it.aggregateId.value(),
+                it.aggregateClass.simpleName,
+                it::class.simpleName,
+                Date(it.instant.toEpochMilli()),
+                objectMapper.writeValueAsString(it.payload),
+                it.correlationId.value,
+            )
+        }
+        save(sets, cards)
     }
 
     fun save(sets: List<Set>, cards: List<Card>) {
