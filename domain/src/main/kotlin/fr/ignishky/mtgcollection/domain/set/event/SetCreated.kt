@@ -65,7 +65,7 @@ class SetCreated(
         override fun handle(event: Event<*, *, *>) {
             val setCreated = event as SetCreated
             logger.info { "Creating set '${setCreated.payload.name}'..." }
-            setStore.store(setCreated.apply(Set()))
+            setStore.add(setCreated.apply(Set()))
         }
 
         override fun listenTo() = SetCreated::class

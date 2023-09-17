@@ -46,7 +46,7 @@ class SetCreatedTest {
     @Test
     fun `Should handle created event`() {
         justRun {
-            setStore.store(
+            setStore.add(
                 emptySet.copy(
                     id = SetId("createdId"),
                     code = SetCode("createdCode"),

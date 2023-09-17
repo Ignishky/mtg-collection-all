@@ -64,7 +64,7 @@ class SetUpdated(
             val setUpdated = event as SetUpdated
             val existingSet = setStore.get(setUpdated.aggregateId)
             logger.info { "Updating set '${existingSet.name.value}'..." }
-            setStore.store(setUpdated.apply(existingSet))
+            setStore.update(setUpdated.apply(existingSet))
         }
 
         override fun listenTo() = SetUpdated::class

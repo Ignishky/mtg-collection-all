@@ -5,7 +5,9 @@ import fr.ignishky.mtgcollection.domain.set.model.SetId
 
 interface SetStorePort {
 
-    fun store(set: Set)
+    fun add(set: Set)
+
+    fun update(set: Set)
 
     fun getAll(): List<Set>
 

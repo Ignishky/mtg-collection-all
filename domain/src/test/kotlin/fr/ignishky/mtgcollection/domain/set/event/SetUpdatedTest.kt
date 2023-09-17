@@ -46,61 +46,61 @@ class SetUpdatedTest {
     @Test
     fun `Should handle full updated set event`() {
         every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.store(updatedSet) }
+        justRun { setStore.update(updatedSet) }
 
         handler.handle(event)
 
-        verify { setStore.store(updatedSet) }
+        verify { setStore.update(updatedSet) }
     }
 
     @Test
     fun `Should handle only code updated set event`() {
         every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.store(existingSet.copy(code = SetCode("updatedCode"))) }
+        justRun { setStore.update(existingSet.copy(code = SetCode("updatedCode"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetCode("updatedCode")))
 
-        verify { setStore.store(existingSet.copy(code = SetCode("updatedCode"))) }
+        verify { setStore.update(existingSet.copy(code = SetCode("updatedCode"))) }
     }
 
     @Test
     fun `Should handle only name updated set event`() {
         every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.store(existingSet.copy(name = SetName("updatedName"))) }
+        justRun { setStore.update(existingSet.copy(name = SetName("updatedName"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetName("updatedName")))
 
-        verify { setStore.store(existingSet.copy(name = SetName("updatedName"))) }
+        verify { setStore.update(existingSet.copy(name = SetName("updatedName"))) }
     }
 
     @Test
     fun `Should handle only type updated set event`() {
         every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.store(existingSet.copy(type = SetType("updatedType"))) }
+        justRun { setStore.update(existingSet.copy(type = SetType("updatedType"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetType("updatedType")))
 
-        verify { setStore.store(existingSet.copy(type = SetType("updatedType"))) }
+        verify { setStore.update(existingSet.copy(type = SetType("updatedType"))) }
     }
 
     @Test
     fun `Should handle only icon updated set event`() {
         every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.store(existingSet.copy(icon = SetIcon("updatedIcon"))) }
+        justRun { setStore.update(existingSet.copy(icon = SetIcon("updatedIcon"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetIcon("updatedIcon")))
 
-        verify { setStore.store(existingSet.copy(icon = SetIcon("updatedIcon"))) }
+        verify { setStore.update(existingSet.copy(icon = SetIcon("updatedIcon"))) }
     }
 
     @Test
     fun `Should handle only releasedAt updated set event`() {
         every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.store(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
+        justRun { setStore.update(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetReleasedAt(parse("2023-06-12"))))
 
-        verify { setStore.store(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
+        verify { setStore.update(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
     }
 
     @Test

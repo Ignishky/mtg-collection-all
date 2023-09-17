@@ -21,7 +21,6 @@ import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.mapper.CardEntityMapper.toCardEntity
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.model.mapper.SetEntityMapper.toSetEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -79,7 +78,7 @@ class RefreshApiIT(
                 toCardCreated(axgardBraggart),
                 toCardCreated(halvar),
             )
-        assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
+        assertThat(jdbc.getSets()).containsOnly(khm)
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
 
@@ -94,7 +93,7 @@ class RefreshApiIT(
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents()).isEmpty()
-        assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
+        assertThat(jdbc.getSets()).containsOnly(khm)
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
 
@@ -121,7 +120,7 @@ class RefreshApiIT(
                 toCardPricesUpdated(axgardBraggart),
                 toCardUpdated(halvar),
             )
-        assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
+        assertThat(jdbc.getSets()).containsOnly(khm)
         assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
 
@@ -142,7 +141,7 @@ class RefreshApiIT(
                 toCardCreated(arboreaPegasus),
                 toCardCreated(valor),
             )
-        assertThat(jdbc.getSets()).containsOnly(toSetEntity(afr))
+        assertThat(jdbc.getSets()).containsOnly(afr)
         assertThat(jdbc.getCards()).containsOnly(
             toCardEntity(plus2mace),
             toCardEntity(arboreaPegasus),
