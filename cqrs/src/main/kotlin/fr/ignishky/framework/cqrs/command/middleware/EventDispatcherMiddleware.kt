@@ -8,7 +8,7 @@ import fr.ignishky.framework.domain.CorrelationId
 
 class EventDispatcherMiddleware(
     next: CommandMiddleware,
-    handlers: List<EventHandler<out Event<*, *, *>>>
+    handlers: List<EventHandler<out Event<*, *, *>>>,
 ) : CommandMiddleware(next) {
 
     private val handlersByEvent = handlers.associateBy { it.listenTo() }
@@ -24,12 +24,10 @@ class EventDispatcherMiddleware(
     }
 
     class Builder(
-        private val handlers: List<EventHandler<out Event<*, *, out Payload>>>
+        private val handlers: List<EventHandler<out Event<*, *, out Payload>>>,
     ) : CommandMiddlewareBuilder {
 
-        override fun chain(next: CommandMiddleware): EventDispatcherMiddleware {
-            return EventDispatcherMiddleware(next, handlers)
-        }
+        override fun chain(next: CommandMiddleware) = EventDispatcherMiddleware(next, handlers)
 
     }
 

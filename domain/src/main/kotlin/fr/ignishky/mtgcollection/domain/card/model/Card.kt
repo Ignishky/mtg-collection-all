@@ -21,12 +21,10 @@ data class Card(
         CardPrices(Price(0, 0, 0, 0)),
     )
 
-    override fun id(): CardId {
-        return id
-    }
+    override fun id() = id
 
     fun updatedFields(newCard: Card): List<CardProperty> {
-        var result = listOf<CardProperty>()
+        var result = emptyList<CardProperty>()
         for (prop in Card::class.memberProperties) {
             val newProperty = prop.call(newCard)!!
             if (CardProperty::class.java.isAssignableFrom(newProperty::class.java) && prop.call(this) != newProperty) {

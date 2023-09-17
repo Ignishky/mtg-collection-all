@@ -3,11 +3,11 @@ package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.set
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ScryfallSet(
-    val data: List<ScryfallSetData>
+    val data: List<ScryfallSetData>,
 ) {
 
     @Suppress("unused")
-    constructor() : this(listOf())
+    constructor() : this(emptyList())
 
     data class ScryfallSetData(
         val id: String,

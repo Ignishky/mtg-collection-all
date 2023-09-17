@@ -13,7 +13,6 @@ import jakarta.inject.Named
 import mu.KotlinLogging.logger
 import java.time.Instant.now
 import java.time.LocalDate
-import kotlin.reflect.KClass
 
 class SetCreated(
     correlationId: CorrelationId,
@@ -39,16 +38,14 @@ class SetCreated(
         correlationId,
     ) {
 
-    override fun apply(aggregate: Aggregate<*>): Set {
-        return Set(
-            aggregateId,
-            SetCode(payload.code),
-            SetName(payload.name),
-            SetType(payload.type),
-            SetIcon(payload.icon),
-            SetReleasedAt(LocalDate.parse(payload.releasedAt)),
-        )
-    }
+    override fun apply(aggregate: Aggregate<*>) = Set(
+        aggregateId,
+        SetCode(payload.code),
+        SetName(payload.name),
+        SetType(payload.type),
+        SetIcon(payload.icon),
+        SetReleasedAt(LocalDate.parse(payload.releasedAt)),
+    )
 
     data class SetCreatedPayload(
         val code: String,
@@ -71,9 +68,7 @@ class SetCreated(
             setStore.store(setCreated.apply(Set()))
         }
 
-        override fun listenTo(): KClass<SetCreated> {
-            return SetCreated::class
-        }
+        override fun listenTo() = SetCreated::class
 
     }
 

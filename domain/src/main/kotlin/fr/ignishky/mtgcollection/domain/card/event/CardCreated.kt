@@ -11,7 +11,6 @@ import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
-import kotlin.reflect.KClass
 
 class CardCreated(
     correlationId: CorrelationId,
@@ -40,16 +39,14 @@ class CardCreated(
         correlationId,
     ) {
 
-    override fun apply(aggregate: Aggregate<*>): Card {
-        return Card(
-            aggregateId,
-            CardName(payload.name),
-            CardSetCode(payload.setCode),
-            CardImages(payload.images.map { CardImage(it) }),
-            CardNumber(payload.collectionNumber),
-            CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
-        )
-    }
+    override fun apply(aggregate: Aggregate<*>) = Card(
+        aggregateId,
+        CardName(payload.name),
+        CardSetCode(payload.setCode),
+        CardImages(payload.images.map { CardImage(it) }),
+        CardNumber(payload.collectionNumber),
+        CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
+    )
 
     data class CardCreatedPayload(
         val name: String,
@@ -61,12 +58,12 @@ class CardCreated(
         val images: List<String>,
         val collectionNumber: String,
     ) : Payload {
-        constructor() : this("", "", 0, 0, 0, 0, listOf(), "")
+        constructor() : this("", "", 0, 0, 0, 0, emptyList(), "")
     }
 
     @Named
     class CardCreatedHandler(
-        private val cardStore: CardStorePort
+        private val cardStore: CardStorePort,
     ) : EventHandler<CardCreated> {
 
         private val logger = KotlinLogging.logger {}
@@ -77,9 +74,7 @@ class CardCreated(
             cardStore.store(cardCreated.apply(Card()))
         }
 
-        override fun listenTo(): KClass<CardCreated> {
-            return CardCreated::class
-        }
+        override fun listenTo() = CardCreated::class
 
     }
 

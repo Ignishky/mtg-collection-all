@@ -3,7 +3,7 @@ package fr.ignishky.mtgcollection.domain.card.model
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.COLLECTION_NUMBER
 
 data class CardNumber(
-    val value: String
+    val value: String,
 ) : CardProperty, Comparable<CardNumber> {
 
     override fun compareTo(other: CardNumber): Int {
@@ -16,11 +16,8 @@ data class CardNumber(
         return a.compareTo(b)
     }
 
-    override fun propertyName(): CardProperty.PropertyName {
-        return COLLECTION_NUMBER
-    }
+    override fun propertyName() = COLLECTION_NUMBER
 
-    override fun propertyValue(): Any {
-        return value
-    }
+    override fun propertyValue() = value
+
 }

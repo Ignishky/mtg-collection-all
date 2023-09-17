@@ -14,13 +14,13 @@ import java.lang.Long.parseLong
 @Named
 class ScryfallCardReferer(
     private val restTemplate: RestTemplate,
-    private val properties: ScryfallProperties
+    private val properties: ScryfallProperties,
 ) : CardRefererPort {
 
     private val logger = logger {}
 
     override fun getCards(code: SetCode): List<Card> {
-        var scryfallCards = listOf<ScryfallCard.ScryfallCardData>()
+        var scryfallCards = emptyList<ScryfallCard.ScryfallCardData>()
 
         try {
             var response = restTemplate.getForObject<ScryfallCard>("${properties.baseUrl}/cards/search?order=set&q=e:${code.value}&unique=prints")

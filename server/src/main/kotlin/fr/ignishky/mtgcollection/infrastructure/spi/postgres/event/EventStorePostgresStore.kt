@@ -37,9 +37,7 @@ class EventStorePostgresStore(
             ps.setString(6, event.correlationId.value)
         }
 
-        override fun getBatchSize(): Int {
-            return if (events.size < 100) events.size else 100
-        }
+        override fun getBatchSize() = if (events.size < 100) events.size else 100
     }
 
 }

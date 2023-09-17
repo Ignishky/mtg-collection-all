@@ -18,8 +18,6 @@ protected constructor(
 
     abstract fun apply(aggregate: Aggregate<*>): A
 
-    override fun toString(): String {
-        return "Event($id, $aggregateId, $aggregateClass, $payload, $instant, $correlationId)"
-    }
+    override fun toString() = "Event($id, $aggregateId, $aggregateClass, $payload, $instant, $correlationId)"
 
 }

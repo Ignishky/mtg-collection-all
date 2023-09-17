@@ -12,22 +12,20 @@ import java.time.LocalDate.parse
 @Named
 class ScryfallSetReferer(
     private val restTemplate: RestTemplate,
-    private val properties: ScryfallProperties
+    private val properties: ScryfallProperties,
 ) : SetRefererPort {
 
-    override fun getAllSets(): List<Set> {
-        return restTemplate.getForObject<ScryfallSet>("${properties.baseUrl}/sets")
-            .data
-            .map {
-                Set(
-                    SetId(it.id),
-                    SetCode(it.code),
-                    SetName(it.name),
-                    SetType(it.setType),
-                    SetIcon(it.iconSvgUri.split("?")[0]),
-                    SetReleasedAt(parse(it.releasedAt)),
-                )
-            }
-    }
+    override fun getAllSets() = restTemplate.getForObject<ScryfallSet>("${properties.baseUrl}/sets")
+        .data
+        .map {
+            Set(
+                SetId(it.id),
+                SetCode(it.code),
+                SetName(it.name),
+                SetType(it.setType),
+                SetIcon(it.iconSvgUri.split("?")[0]),
+                SetReleasedAt(parse(it.releasedAt)),
+            )
+        }
 
 }

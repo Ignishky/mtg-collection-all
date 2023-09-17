@@ -12,13 +12,12 @@ sealed interface CardProperty {
         IMAGES,
         COLLECTION_NUMBER;
 
-        fun withValue(value: Any): CardProperty {
-            return when(this) {
-                NAME -> CardName(value as String)
-                SET_CODE -> CardSetCode(value as String)
-                IMAGES -> CardImages((value as List<String>).map { CardImage(it) })
-                COLLECTION_NUMBER -> CardNumber(value as String)
-            }
+        fun withValue(value: Any) = when (this) {
+            NAME -> CardName(value as String)
+            SET_CODE -> CardSetCode(value as String)
+            IMAGES -> CardImages((value as List<String>).map { CardImage(it) })
+            COLLECTION_NUMBER -> CardNumber(value as String)
         }
     }
+
 }

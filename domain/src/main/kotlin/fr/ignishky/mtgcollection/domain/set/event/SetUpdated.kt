@@ -14,7 +14,6 @@ import jakarta.inject.Named
 import mu.KotlinLogging.logger
 import java.time.Instant.now
 import java.time.LocalDate
-import kotlin.reflect.KClass
 
 class SetUpdated(
     correlationId: CorrelationId,
@@ -49,11 +48,9 @@ class SetUpdated(
         constructor() : this(HashMap())
 
         companion object {
-            fun from(vararg properties: SetProperty): SetUpdatedPayload {
-                return SetUpdatedPayload(
-                    properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
-                )
-            }
+            fun from(vararg properties: SetProperty) = SetUpdatedPayload(
+                properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
+            )
         }
 
     }
@@ -70,9 +67,7 @@ class SetUpdated(
             setStore.store(setUpdated.apply(existingSet))
         }
 
-        override fun listenTo(): KClass<SetUpdated> {
-            return SetUpdated::class
-        }
+        override fun listenTo() = SetUpdated::class
 
     }
 

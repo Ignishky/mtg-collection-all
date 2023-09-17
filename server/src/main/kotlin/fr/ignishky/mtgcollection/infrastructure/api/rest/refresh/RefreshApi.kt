@@ -19,7 +19,7 @@ interface RefreshApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "OK - Everything is up to date")
-        ]
+        ],
     )
     fun loadAll(@RequestAttribute correlationId: CorrelationId): ResponseEntity<Void>
 

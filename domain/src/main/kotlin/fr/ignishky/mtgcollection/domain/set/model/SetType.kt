@@ -3,15 +3,11 @@ package fr.ignishky.mtgcollection.domain.set.model
 import fr.ignishky.mtgcollection.domain.set.model.SetProperty.PropertyName.TYPE
 
 data class SetType(
-    val value: String
+    val value: String,
 ) : SetProperty {
 
-    override fun propertyName(): SetProperty.PropertyName {
-        return TYPE
-    }
+    override fun propertyName() = TYPE
 
-    override fun propertyValue(): String {
-        return value
-    }
+    override fun propertyValue() = value
 
 }

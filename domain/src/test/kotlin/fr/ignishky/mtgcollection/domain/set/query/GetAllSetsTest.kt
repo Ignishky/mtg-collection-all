@@ -15,7 +15,7 @@ class GetAllSetsTest {
 
     @Test
     fun `Should return empty list when no sets are stored`() {
-        every { setStore.getAll() } returns listOf()
+        every { setStore.getAll() } returns emptyList()
 
         val result = GetAllSets(setStore).getAll()
 

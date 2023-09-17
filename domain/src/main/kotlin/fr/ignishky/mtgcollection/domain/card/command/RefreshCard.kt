@@ -16,7 +16,6 @@ import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
-import kotlin.reflect.KClass
 
 class RefreshCard : Command {
 
@@ -29,10 +28,8 @@ class RefreshCard : Command {
 
         private val logger = logger {}
 
-        override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
-            return setStore.getAll()
-                .flatMap { set -> processSet(set, correlationId) }
-        }
+        override fun handle(command: Command, correlationId: CorrelationId) = setStore.getAll()
+            .flatMap { set -> processSet(set, correlationId) }
 
         private fun processSet(set: Set, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {
             logger.info { "Refreshing cards from ${set.code.value} ..." }
@@ -48,7 +45,7 @@ class RefreshCard : Command {
         }
 
         private fun cardUpdated(knownCard: Card, newCard: Card, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {
-            var result = listOf<Event<CardId, Card, out Payload>>()
+            var result = emptyList<Event<CardId, Card, out Payload>>()
             val delta = knownCard.updatedFields(newCard)
             if (delta.isNotEmpty()) {
                 result = result.plus(CardUpdated(correlationId, newCard.id, *delta.toTypedArray()))
@@ -59,9 +56,8 @@ class RefreshCard : Command {
             return result
         }
 
-        override fun listenTo(): KClass<out RefreshCard> {
-            return RefreshCard::class
-        }
+        override fun listenTo() = RefreshCard::class
 
     }
+
 }

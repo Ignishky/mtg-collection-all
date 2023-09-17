@@ -41,7 +41,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardCreated event for new card`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf()
+        every { cardStore.get(afr.code) } returns emptyList()
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -156,7 +156,7 @@ class RefreshCardTest {
                 CardPricesUpdated(
                     correlationId,
                     plus2Mace.id,
-                    plus2Mace.prices
+                    plus2Mace.prices,
                 )
             )
     }

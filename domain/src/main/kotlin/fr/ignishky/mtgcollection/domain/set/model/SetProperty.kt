@@ -15,14 +15,13 @@ sealed interface SetProperty {
         ICON,
         RELEASED_AT;
 
-        fun withValue(value: String): SetProperty {
-            return when(this) {
-                NAME -> SetName(value)
-                CODE -> SetCode(value)
-                TYPE -> SetType(value)
-                ICON -> SetIcon(value)
-                RELEASED_AT -> SetReleasedAt(LocalDate.parse(value))
-            }
+        fun withValue(value: String) = when (this) {
+            NAME -> SetName(value)
+            CODE -> SetCode(value)
+            TYPE -> SetType(value)
+            ICON -> SetIcon(value)
+            RELEASED_AT -> SetReleasedAt(LocalDate.parse(value))
         }
     }
+
 }

@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.configuration
 
-import fr.ignishky.framework.cqrs.command.CommandBus
 import fr.ignishky.framework.cqrs.command.CommandHandler
 import fr.ignishky.framework.cqrs.command.DirectCommandBus
 import fr.ignishky.framework.cqrs.command.middleware.CommandDispatcherMiddleware
@@ -18,24 +17,20 @@ import org.springframework.context.annotation.Configuration
 class FrameworkConfiguration {
 
     @Bean
-    fun correlationIdGenerator(): CorrelationIdGenerator {
-        return CorrelationIdGenerator()
-    }
+    fun correlationIdGenerator() = CorrelationIdGenerator()
 
     @Bean
     fun commandBus(
         eventRepository: EventRepository,
         eventHandlers: List<EventHandler<out Event<*, *, *>>>,
-        commandHandlers: List<CommandHandler<*>>
-    ): CommandBus {
-        return DirectCommandBus(
-            setOf(
-                LoggingCommandBusMiddleware.Builder(),
-                EventPersistenceMiddleware.Builder(eventRepository),
-                EventDispatcherMiddleware.Builder(eventHandlers),
-                CommandDispatcherMiddleware.Builder(commandHandlers)
-            )
+        commandHandlers: List<CommandHandler<*>>,
+    ) = DirectCommandBus(
+        setOf(
+            LoggingCommandBusMiddleware.Builder(),
+            EventPersistenceMiddleware.Builder(eventRepository),
+            EventDispatcherMiddleware.Builder(eventHandlers),
+            CommandDispatcherMiddleware.Builder(commandHandlers)
         )
-    }
+    )
 
 }

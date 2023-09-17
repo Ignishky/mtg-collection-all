@@ -19,19 +19,19 @@ interface SetApi {
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
     @Operation(
         summary = "Retrieve the list of all the sets",
-        description = "The list is sorted from the most recent set to the oldest."
+        description = "The list is sorted from the most recent set to the oldest.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "OK - The sets list")
-        ]
+        ],
     )
     fun getAll(@RequestAttribute correlationId: CorrelationId): SetsResponse
 
     @GetMapping("/{setCode}/cards", produces = [APPLICATION_JSON_VALUE])
     @Operation(
         summary = "Retrieve the cards from the set of the given code",
-        description = "The list is sorted by the cards collection number."
+        description = "The list is sorted by the cards collection number.",
     )
     @ApiResponses(
         value = [
@@ -39,9 +39,9 @@ interface SetApi {
             ApiResponse(
                 responseCode = "404",
                 description = "NOT FOUND - The given setCode is not valid",
-                content = [Content()]
+                content = [Content()],
             )
-        ]
+        ],
     )
     fun getCards(@RequestAttribute correlationId: CorrelationId, @PathVariable setCode: String): CardsResponse
 

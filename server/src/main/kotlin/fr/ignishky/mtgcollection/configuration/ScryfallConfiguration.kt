@@ -14,15 +14,11 @@ import org.springframework.web.client.RestTemplate
 class ScryfallConfiguration {
 
     @Bean
-    fun restTemplate(builder: RestTemplateBuilder): RestTemplate {
-        return builder.build()
-    }
+    fun restTemplate(builder: RestTemplateBuilder) = builder.build()
 
     @Bean
-    fun objectMapper(): ObjectMapper {
-        return ObjectMapper()
-            .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .setSerializationInclusion(NON_EMPTY)
-    }
+    fun objectMapper() = ObjectMapper()
+        .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .setSerializationInclusion(NON_EMPTY)
 
 }

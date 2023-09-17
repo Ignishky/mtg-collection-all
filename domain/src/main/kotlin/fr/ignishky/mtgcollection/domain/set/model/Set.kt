@@ -15,12 +15,10 @@ data class Set(
 
     constructor() : this(SetId(""), SetCode(""), SetName(""), SetType(""), SetIcon(""), SetReleasedAt(EPOCH))
 
-    override fun id(): SetId {
-        return id
-    }
+    override fun id() = id
 
     fun updatedFields(newSet: Set): List<SetProperty> {
-        var result = listOf<SetProperty>()
+        var result = emptyList<SetProperty>()
         for (prop in Set::class.memberProperties) {
             val newProperty = prop.call(newSet)!!
             if (prop.call(this) != newProperty) {

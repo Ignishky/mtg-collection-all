@@ -8,7 +8,7 @@ import mu.KotlinLogging.logger
 
 class EventPersistenceMiddleware(
     next: CommandMiddleware,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
 ) : CommandMiddleware(next) {
 
     private val logger = logger {}
@@ -23,12 +23,9 @@ class EventPersistenceMiddleware(
         return events
     }
 
-    class Builder(private val eventRepository: EventRepository) :
-        CommandMiddlewareBuilder {
+    class Builder(private val eventRepository: EventRepository) : CommandMiddlewareBuilder {
 
-        override fun chain(next: CommandMiddleware): CommandMiddleware {
-            return EventPersistenceMiddleware(next, eventRepository)
-        }
+        override fun chain(next: CommandMiddleware) = EventPersistenceMiddleware(next, eventRepository)
     }
 
 }

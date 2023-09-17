@@ -1,7 +1,7 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
 data class SetsResponse(
-    val sets: List<SetResponse>
+    val sets: List<SetResponse>,
 ) {
 
     data class SetResponse(

@@ -1,12 +1,9 @@
 package fr.ignishky.mtgcollection.infrastructure
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.CardEntity
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.mapper.CardEntityRowMapper
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.model.SetEntity
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.model.mapper.SetEntityRowMapper
 import jakarta.inject.Named
 import org.springframework.jdbc.core.JdbcTemplate
@@ -43,21 +40,15 @@ class JdbcUtils(
                 it.setCode.value,
                 it.images.value.joinToString { it.value },
                 it.collectionNumber.value,
-                "${it.prices.scryfall.eur}|${it.prices.scryfall.eurFoil}|${it.prices.scryfall.usd}|${it.prices.scryfall.usdFoil}"
+                "${it.prices.scryfall.eur}|${it.prices.scryfall.eurFoil}|${it.prices.scryfall.usd}|${it.prices.scryfall.usdFoil}",
             )
         }
     }
 
-    fun getEvents(): List<Event<*, *, *>> {
-        return template.query("SELECT * FROM events", EventRowMapper(objectMapper))
-    }
+    fun getEvents() = template.query("SELECT * FROM events", EventRowMapper(objectMapper))
 
-    fun getSets(): List<SetEntity> {
-        return template.query("SELECT * FROM sets", SetEntityRowMapper())
-    }
+    fun getSets() = template.query("SELECT * FROM sets", SetEntityRowMapper())
 
-    fun getCards(): List<CardEntity> {
-        return template.query("SELECT * FROM cards", CardEntityRowMapper())
-    }
+    fun getCards() = template.query("SELECT * FROM cards", CardEntityRowMapper())
 
 }

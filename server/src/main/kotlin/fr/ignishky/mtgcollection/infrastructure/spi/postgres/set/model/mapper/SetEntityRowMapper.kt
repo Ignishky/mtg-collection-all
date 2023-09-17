@@ -7,15 +7,13 @@ import java.time.LocalDate
 
 class SetEntityRowMapper : RowMapper<SetEntity> {
 
-    override fun mapRow(rs: ResultSet, rowNum: Int): SetEntity {
-        return SetEntity(
-            rs.getString("id"),
-            rs.getString("code"),
-            rs.getString("name"),
-            rs.getString("type"),
-            rs.getString("icon"),
-            LocalDate.parse(rs.getString("released_at")),
-        )
-    }
+    override fun mapRow(rs: ResultSet, rowNum: Int) = SetEntity(
+        rs.getString("id"),
+        rs.getString("code"),
+        rs.getString("name"),
+        rs.getString("type"),
+        rs.getString("icon"),
+        LocalDate.parse(rs.getString("released_at")),
+    )
 
 }

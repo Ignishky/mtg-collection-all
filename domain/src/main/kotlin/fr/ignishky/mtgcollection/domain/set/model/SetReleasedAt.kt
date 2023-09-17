@@ -4,18 +4,13 @@ import fr.ignishky.mtgcollection.domain.set.model.SetProperty.PropertyName.RELEA
 import java.time.LocalDate
 
 data class SetReleasedAt(
-    val value: LocalDate
+    val value: LocalDate,
 ) : SetProperty, Comparable<SetReleasedAt> {
 
-    override fun compareTo(other: SetReleasedAt): Int {
-        return value.compareTo(other.value)
-    }
+    override fun compareTo(other: SetReleasedAt) = value.compareTo(other.value)
 
-    override fun propertyName(): SetProperty.PropertyName {
-        return RELEASED_AT
-    }
+    override fun propertyName() = RELEASED_AT
 
-    override fun propertyValue(): String {
-        return value.toString()
-    }
+    override fun propertyValue() = value.toString()
+
 }

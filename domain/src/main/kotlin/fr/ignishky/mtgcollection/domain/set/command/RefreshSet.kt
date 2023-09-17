@@ -11,14 +11,13 @@ import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
-import kotlin.reflect.KClass
 
 class RefreshSet : Command {
 
     @Named
     class RefreshSetHandler(
         private val setReferer: SetRefererPort,
-        private val setStore: SetStorePort
+        private val setStore: SetStorePort,
     ) : CommandHandler<RefreshSet> {
 
         private val logger = logger {}
@@ -47,9 +46,7 @@ class RefreshSet : Command {
             }
         }
 
-        override fun listenTo(): KClass<RefreshSet> {
-            return RefreshSet::class
-        }
+        override fun listenTo() = RefreshSet::class
 
     }
 

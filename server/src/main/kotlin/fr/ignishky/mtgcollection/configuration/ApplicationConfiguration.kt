@@ -11,15 +11,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class ApplicationConfiguration {
 
     @Bean
-    fun corsConfigurer(): WebMvcConfigurer? {
-        return object : WebMvcConfigurer {
-            override fun addCorsMappings(registry: CorsRegistry) {
-                registry.addMapping("/sets/**").allowedMethods("GET")
-                    .allowedOrigins(
-                        "http://localhost:3000", // dev mode
-                        "http://localhost:5000", // build mode
-                    )
-            }
+    fun corsConfigurer() = object : WebMvcConfigurer {
+        override fun addCorsMappings(registry: CorsRegistry) {
+            registry.addMapping("/sets/**").allowedMethods("GET")
+                .allowedOrigins(
+                    "http://localhost:3000", // dev mode
+                    "http://localhost:5000", // build mode
+                )
         }
     }
 

@@ -8,8 +8,6 @@ abstract class CommandMiddleware internal constructor(private val next: CommandM
 
     abstract fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>>
 
-    protected fun next(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
-        return next!!.handle(command, correlationId)
-    }
+    protected fun next(command: Command, correlationId: CorrelationId) = next!!.handle(command, correlationId)
 
 }

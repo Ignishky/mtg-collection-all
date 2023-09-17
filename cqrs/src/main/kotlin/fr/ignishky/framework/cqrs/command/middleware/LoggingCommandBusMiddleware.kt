@@ -23,9 +23,7 @@ class LoggingCommandBusMiddleware(next: CommandMiddleware) : CommandMiddleware(n
 
     class Builder : CommandMiddlewareBuilder {
 
-        override fun chain(next: CommandMiddleware): CommandMiddleware {
-            return LoggingCommandBusMiddleware(next)
-        }
+        override fun chain(next: CommandMiddleware) = LoggingCommandBusMiddleware(next)
 
     }
 

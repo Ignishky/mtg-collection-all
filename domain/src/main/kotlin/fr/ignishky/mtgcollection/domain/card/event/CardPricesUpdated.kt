@@ -13,7 +13,6 @@ import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
-import kotlin.reflect.KClass
 
 class CardPricesUpdated(
     correlationId: CorrelationId,
@@ -29,18 +28,9 @@ class CardPricesUpdated(
         correlationId,
     ) {
 
-    override fun apply(aggregate: Aggregate<*>): Card {
-        return (aggregate as Card).copy(
-            prices = CardPrices(
-                Price(
-                    payload.scryfallEur,
-                    payload.scryfallEurFoil,
-                    payload.scryfallUsd,
-                    payload.scryfallUsdFoil
-                )
-            )
-        )
-    }
+    override fun apply(aggregate: Aggregate<*>) = (aggregate as Card).copy(
+        prices = CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil))
+    )
 
     data class CardPricesUpdatedPayload(
         val scryfallEur: Long,
@@ -63,9 +53,7 @@ class CardPricesUpdated(
             cardStore.store(cardPricesUpdated.apply(existingCard))
         }
 
-        override fun listenTo(): KClass<CardPricesUpdated> {
-            return CardPricesUpdated::class
-        }
+        override fun listenTo() = CardPricesUpdated::class
 
     }
 

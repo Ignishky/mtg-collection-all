@@ -6,11 +6,8 @@ data class CardSetCode(
     val value: String,
 ) : CardProperty {
 
-    override fun propertyName(): CardProperty.PropertyName {
-        return SET_CODE
-    }
+    override fun propertyName() = SET_CODE
 
-    override fun propertyValue(): Any {
-        return value
-    }
+    override fun propertyValue() = value
+
 }

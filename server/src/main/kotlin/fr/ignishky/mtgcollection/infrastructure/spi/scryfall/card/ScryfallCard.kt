@@ -11,7 +11,7 @@ data class ScryfallCard(
 ) {
 
     @Suppress("unused")
-    constructor() : this(false, "", listOf())
+    constructor() : this(false, "", emptyList())
 
     data class ScryfallCardData(
         val id: String,

@@ -5,9 +5,8 @@ interface CommandMiddlewareBuilder {
     fun chain(next: CommandMiddleware): CommandMiddleware
 
     companion object {
-        fun build(builders: List<CommandMiddlewareBuilder>): CommandMiddleware {
-            return builders.foldRight(CircuitBreakerMiddleware())
-            { builder: CommandMiddlewareBuilder, next: CommandMiddleware -> builder.chain(next) }
-        }
+        fun build(builders: List<CommandMiddlewareBuilder>) = builders.foldRight(CircuitBreakerMiddleware())
+        { builder: CommandMiddlewareBuilder, next: CommandMiddleware -> builder.chain(next) }
     }
+
 }

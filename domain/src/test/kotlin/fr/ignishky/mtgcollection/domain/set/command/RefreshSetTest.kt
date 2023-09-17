@@ -33,7 +33,7 @@ class RefreshSetTest {
 
     @Test
     fun `Should return SetCreated event when a referer set is not stored`() {
-        every { setStore.getAll() } returns listOf()
+        every { setStore.getAll() } returns emptyList()
         every { setReferer.getAllSets() } returns listOf(afr())
 
         val events = handler.handle(RefreshSet(), correlationId)

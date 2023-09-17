@@ -16,15 +16,10 @@ class SetPostgresStore(
         setRepository.save(toSetEntity(set))
     }
 
-    override fun getAll(): List<Set> {
-        return setRepository.findAll()
-            .map { fromSetEntity(it) }
-    }
+    override fun getAll() = setRepository.findAll().map { fromSetEntity(it) }
 
-    override fun get(id: SetId): Set {
-        return setRepository.findById(id.value)
-            .map { fromSetEntity(it) }
-            .get()
-    }
+    override fun get(id: SetId) = setRepository.findById(id.value)
+        .map { fromSetEntity(it) }
+        .get()
 
 }

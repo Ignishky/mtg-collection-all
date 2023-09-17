@@ -10,11 +10,9 @@ class GetAllSets(
     private val setStore: SetStorePort,
 ) : SetApiPort {
 
-    override fun getAll(): List<Set> {
-        return setStore.getAll()
-            .filter { hasOwnIcon(it) }
-            .sortedByDescending { it.releasedAt }
-    }
+    override fun getAll() = setStore.getAll()
+        .filter { hasOwnIcon(it) }
+        .sortedByDescending { it.releasedAt }
 
     private fun hasOwnIcon(it: Set) = it.icon.value.contains(it.code.value)
 

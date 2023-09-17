@@ -10,7 +10,7 @@ import org.springframework.http.HttpMethod.GET
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
 class MockServerBuilder(
-    private val mockServer: MockServerClient
+    private val mockServer: MockServerClient,
 ) {
 
     fun prepareSets(fileName: String) {

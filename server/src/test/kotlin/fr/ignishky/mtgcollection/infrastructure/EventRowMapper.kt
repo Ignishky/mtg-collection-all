@@ -23,16 +23,14 @@ class EventRowMapper(
     private val objectMapper: ObjectMapper,
 ) : RowMapper<Event<*, *, *>> {
 
-    override fun mapRow(rs: ResultSet, rowNum: Int): Event<*, *, *> {
-        return when (val label = rs.getString("label")) {
-            "SetCreated" -> toSetCreated(rs)
-            "SetUpdated" -> toSetUpdated(rs)
-            "CardCreated" -> toCardCreated(rs)
-            "CardUpdated" -> toCardUpdated(rs)
-            "CardPricesUpdated" -> toCardPricesUpdated(rs)
-            else -> {
-                throw IllegalArgumentException("unexpected event type $label")
-            }
+    override fun mapRow(rs: ResultSet, rowNum: Int) = when (val label = rs.getString("label")) {
+        "SetCreated" -> toSetCreated(rs)
+        "SetUpdated" -> toSetUpdated(rs)
+        "CardCreated" -> toCardCreated(rs)
+        "CardUpdated" -> toCardUpdated(rs)
+        "CardPricesUpdated" -> toCardPricesUpdated(rs)
+        else -> {
+            throw IllegalArgumentException("unexpected event type $label")
         }
     }
 

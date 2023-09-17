@@ -6,8 +6,6 @@ import java.util.UUID.randomUUID
 @Named
 open class CorrelationIdGenerator {
 
-    open fun generate(): CorrelationId {
-        return CorrelationId(randomUUID().toString())
-    }
+    open fun generate() = CorrelationId(randomUUID().toString())
 
 }

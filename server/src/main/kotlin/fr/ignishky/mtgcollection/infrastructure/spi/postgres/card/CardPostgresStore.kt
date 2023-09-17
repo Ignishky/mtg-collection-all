@@ -15,14 +15,10 @@ class CardPostgresStore(private val cardRepository: CardRepository) : CardStoreP
         cardRepository.save(toCardEntity(card))
     }
 
-    override fun get(id: CardId): Card {
-        return cardRepository.findById(id.value)
-            .map { toCard(it) }
-            .get()
-    }
+    override fun get(id: CardId) = cardRepository.findById(id.value)
+        .map { toCard(it) }
+        .get()
 
-    override fun get(code: SetCode): List<Card> {
-        return cardRepository.findBySet(code.value).map { toCard(it) }
-    }
+    override fun get(code: SetCode) = cardRepository.findBySet(code.value).map { toCard(it) }
 
 }

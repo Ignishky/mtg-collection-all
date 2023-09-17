@@ -12,7 +12,6 @@ import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
-import kotlin.reflect.KClass
 
 class CardUpdated(
     correlationId: CorrelationId,
@@ -40,27 +39,22 @@ class CardUpdated(
         )
     }
 
-    private fun getCardImages(aggregate: Card): CardImages {
-        return if (payload.properties.containsKey(IMAGES.name)) {
-            val images = payload.properties[IMAGES.name] as List<String>
-            CardImages(images.map { CardImage(it) })
-        } else {
-            aggregate.images
-        }
+    private fun getCardImages(aggregate: Card) = if (payload.properties.containsKey(IMAGES.name)) {
+        CardImages((payload.properties[IMAGES.name] as List<String>).map { CardImage(it) })
+    } else {
+        aggregate.images
     }
 
     data class CardUpdatedPayload(
         val properties: Map<String, Any>,
     ) : Payload {
 
-        constructor(): this(HashMap())
+        constructor() : this(HashMap())
 
         companion object {
-            fun from(vararg properties: CardProperty): CardUpdatedPayload {
-                return CardUpdatedPayload(
-                    properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
-                )
-            }
+            fun from(vararg properties: CardProperty) = CardUpdatedPayload(
+                properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
+            )
         }
 
     }
@@ -77,9 +71,7 @@ class CardUpdated(
             cardStore.store(cardUpdated.apply(existingCard))
         }
 
-        override fun listenTo(): KClass<CardUpdated> {
-            return CardUpdated::class
-        }
+        override fun listenTo() = CardUpdated::class
 
     }
 
