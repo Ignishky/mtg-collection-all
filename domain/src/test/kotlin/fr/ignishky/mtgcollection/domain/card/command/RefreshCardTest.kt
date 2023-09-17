@@ -30,7 +30,7 @@ class RefreshCardTest {
     @Test
     fun `Should return no events when cards are up to date`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace)
+        every { cardStore.getAll(afr.code) } returns listOf(plus2Mace)
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -41,7 +41,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardCreated event for new card`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns emptyList()
+        every { cardStore.getAll(afr.code) } returns emptyList()
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -64,7 +64,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new name`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
+        every { cardStore.getAll(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -77,7 +77,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new setCode`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
+        every { cardStore.getAll(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -90,7 +90,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new images`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("new image")))))
+        every { cardStore.getAll(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("new image")))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -103,7 +103,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new collection number`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("new collection number")))
+        every { cardStore.getAll(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("new collection number")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -116,7 +116,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardPricesUpdated event for card with only new prices`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
+        every { cardStore.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -129,7 +129,7 @@ class RefreshCardTest {
     @Test
     fun `Should return events for card with all new field values`() {
         every { setStore.getAll() } returns listOf(afr)
-        every { cardStore.get(afr.code) } returns listOf(
+        every { cardStore.getAll(afr.code) } returns listOf(
             plus2Mace.copy(
                 name = CardName("old name"),
                 setCode = CardSetCode("old set code"),

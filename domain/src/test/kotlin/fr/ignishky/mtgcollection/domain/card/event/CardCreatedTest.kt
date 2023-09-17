@@ -44,7 +44,7 @@ class CardCreatedTest {
     @Test
     fun `Should handle created event`() {
         justRun {
-            cardStore.store(
+            cardStore.add(
                 emptyCard.copy(
                     CardId("cardId"),
                     CardName("cardName"),

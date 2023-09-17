@@ -33,7 +33,7 @@ class RefreshCard : Command {
 
         private fun processSet(set: Set, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {
             logger.info { "Refreshing cards from ${set.code.value} ..." }
-            val knownCardsById = cardStore.get(set.code).associateBy { it.id }
+            val knownCardsById = cardStore.getAll(set.code).associateBy { it.id }
             return cardReferer.getCards(set.code)
                 .flatMap {
                     if (!knownCardsById.contains(it.id)) {

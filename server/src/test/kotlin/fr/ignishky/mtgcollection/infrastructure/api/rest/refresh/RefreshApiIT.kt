@@ -20,7 +20,6 @@ import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.mapper.CardEntityMapper.toCardEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -79,7 +78,7 @@ class RefreshApiIT(
                 toCardCreated(halvar),
             )
         assertThat(jdbc.getSets()).containsOnly(khm)
-        assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
+        assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
     }
 
     @Test
@@ -94,7 +93,7 @@ class RefreshApiIT(
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents()).isEmpty()
         assertThat(jdbc.getSets()).containsOnly(khm)
-        assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
+        assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
     }
 
     @Test
@@ -121,7 +120,7 @@ class RefreshApiIT(
                 toCardUpdated(halvar),
             )
         assertThat(jdbc.getSets()).containsOnly(khm)
-        assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
+        assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
     }
 
     @Test
@@ -142,11 +141,7 @@ class RefreshApiIT(
                 toCardCreated(valor),
             )
         assertThat(jdbc.getSets()).containsOnly(afr)
-        assertThat(jdbc.getCards()).containsOnly(
-            toCardEntity(plus2mace),
-            toCardEntity(arboreaPegasus),
-            toCardEntity(valor)
-        )
+        assertThat(jdbc.getCards()).containsOnly(plus2mace, arboreaPegasus, valor)
     }
 
     fun toSetCreated(set: Set) = SetCreated(correlationId, set.id, set.code, set.name, set.type, set.icon, set.releasedAt)

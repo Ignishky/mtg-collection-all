@@ -50,7 +50,7 @@ class CardPricesUpdated(
             val cardPricesUpdated = event as CardPricesUpdated
             val existingCard = cardStore.get(cardPricesUpdated.aggregateId)
             logger.info { "Updating card prices '${existingCard.name.value}'..." }
-            cardStore.store(cardPricesUpdated.apply(existingCard))
+            cardStore.update(cardPricesUpdated.apply(existingCard))
         }
 
         override fun listenTo() = CardPricesUpdated::class

@@ -71,7 +71,7 @@ class CardCreated(
         override fun handle(event: Event<*, *, *>) {
             val cardCreated = event as CardCreated
             logger.info { "Creating card '${cardCreated.payload.name}'..." }
-            cardStore.store(cardCreated.apply(Card()))
+            cardStore.add(cardCreated.apply(Card()))
         }
 
         override fun listenTo() = CardCreated::class

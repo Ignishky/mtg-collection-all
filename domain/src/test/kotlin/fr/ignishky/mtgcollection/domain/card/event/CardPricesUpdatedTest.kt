@@ -38,11 +38,11 @@ class CardPricesUpdatedTest {
     @Test
     fun `Should handle prices updated card event`() {
         every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.store(updatedCard) }
+        justRun { cardStore.update(updatedCard) }
 
         handler.handle(event)
 
-        verify { cardStore.store(updatedCard) }
+        verify { cardStore.update(updatedCard) }
     }
 
 }

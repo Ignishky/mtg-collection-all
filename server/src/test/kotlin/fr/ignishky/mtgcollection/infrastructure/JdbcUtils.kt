@@ -3,7 +3,7 @@ package fr.ignishky.mtgcollection.infrastructure
 import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.mapper.CardEntityRowMapper
+import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.CardRowMapper
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.SetRowMapper
 import jakarta.inject.Named
 import org.springframework.jdbc.core.JdbcTemplate
@@ -49,6 +49,6 @@ class JdbcUtils(
 
     fun getSets() = template.query("SELECT * FROM sets", SetRowMapper())
 
-    fun getCards() = template.query("SELECT * FROM cards", CardEntityRowMapper())
+    fun getCards() = template.query("SELECT * FROM cards", CardRowMapper())
 
 }

@@ -23,7 +23,7 @@ class GetAllCardsTest {
 
     @Test
     fun `Should throw NoCardFoundException when setCode is unknown`() {
-        every { cardStore.get(SetCode("unknown")) } returns emptyList()
+        every { cardStore.getAll(SetCode("unknown")) } returns emptyList()
 
         assertThatThrownBy { query.getAll(SetCode("unknown")) }
             .isInstanceOf(NoCardFoundException::class.java)
@@ -31,7 +31,7 @@ class GetAllCardsTest {
 
     @Test
     fun `Should return sorted cards`() {
-        every { cardStore.get(afr.code) } returns listOf(arboreaPegasus, plus2Mace)
+        every { cardStore.getAll(afr.code) } returns listOf(arboreaPegasus, plus2Mace)
 
         val cards = query.getAll(afr.code)
 

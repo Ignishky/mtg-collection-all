@@ -42,31 +42,31 @@ class CardUpdatedTest {
     @Test
     fun `Should handle full updated card event`() {
         every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.store(updatedCard) }
+        justRun { cardStore.update(updatedCard) }
 
         handler.handle(event)
 
-        verify { cardStore.store(updatedCard) }
+        verify { cardStore.update(updatedCard) }
     }
 
     @Test
     fun `Should handle only name updated card event`() {
         every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.store(existingCard.copy(name = CardName("updatedName"))) }
+        justRun { cardStore.update(existingCard.copy(name = CardName("updatedName"))) }
 
         handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardName("updatedName")))
 
-        verify { cardStore.store(existingCard.copy(name = CardName("updatedName"))) }
+        verify { cardStore.update(existingCard.copy(name = CardName("updatedName"))) }
     }
 
     @Test
     fun `Should handle only set code updated card event`() {
         every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.store(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
+        justRun { cardStore.update(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
 
         handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardSetCode("updatedSetCode")))
 
-        verify { cardStore.store(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
+        verify { cardStore.update(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
     }
 
     @Test

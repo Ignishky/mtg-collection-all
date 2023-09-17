@@ -11,7 +11,7 @@ import jakarta.inject.Named
 class GetAllCards(private val cardStore: CardStorePort) : CardApiPort {
 
     override fun getAll(setCode: SetCode): List<Card> {
-        val cards = cardStore.get(setCode)
+        val cards = cardStore.getAll(setCode)
         if (cards.isEmpty()) {
             throw NoCardFoundException(setCode)
         }
