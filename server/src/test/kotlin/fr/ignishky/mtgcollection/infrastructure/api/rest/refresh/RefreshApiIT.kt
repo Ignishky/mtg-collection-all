@@ -90,9 +90,12 @@ class RefreshApiIT(
             listOf(
                 toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
                 toSetUpdated(khm),
+                toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
+                toCardUpdated(axgardBraggart),
+                toCardCreated(halvar),
             ),
             listOf(khm),
-            listOf(axgardBraggart, halvar)
+            listOf(axgardBraggart, halvar),
         )
 
         val resultActions = mockMvc.perform(put("/refresh-all"))
@@ -102,7 +105,10 @@ class RefreshApiIT(
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
                 toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
-                toSetUpdated(khm)
+                toSetUpdated(khm),
+                toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
+                toCardUpdated(axgardBraggart),
+                toCardCreated(halvar),
             )
         assertThat(jdbc.getSets()).containsOnly(khm)
         assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
@@ -116,11 +122,13 @@ class RefreshApiIT(
         jdbc.save(
             listOf(
                 toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
+                toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
             ),
             listOf(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
             listOf(
                 axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
-                halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))
+                halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber("")),
             )
         )
 
@@ -131,6 +139,8 @@ class RefreshApiIT(
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
                 toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
+                toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toSetUpdated(khm),
                 toCardPricesUpdated(axgardBraggart),
                 toCardUpdated(halvar),
