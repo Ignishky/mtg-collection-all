@@ -5,7 +5,6 @@ import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
@@ -41,32 +40,45 @@ class CardUpdatedTest {
 
     @Test
     fun `Should handle full updated card event`() {
-        every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.update(updatedCard) }
+        justRun {
+            cardStore.update(
+                updatedCard.id, listOf(
+                    CardName("cardName"),
+                    CardImages(listOf(CardImage("cardImage"))),
+                    CardNumber("collectionNumber"),
+                )
+            )
+        }
 
         handler.handle(event)
 
-        verify { cardStore.update(updatedCard) }
+        verify {
+            cardStore.update(
+                updatedCard.id, listOf(
+                    CardName("cardName"),
+                    CardImages(listOf(CardImage("cardImage"))),
+                    CardNumber("collectionNumber"),
+                )
+            )
+        }
     }
 
     @Test
     fun `Should handle only name updated card event`() {
-        every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.update(existingCard.copy(name = CardName("updatedName"))) }
+        justRun { cardStore.update(existingCard.id, listOf(CardName("updatedName"))) }
 
         handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardName("updatedName")))
 
-        verify { cardStore.update(existingCard.copy(name = CardName("updatedName"))) }
+        verify { cardStore.update(existingCard.id, listOf(CardName("updatedName"))) }
     }
 
     @Test
     fun `Should handle only set code updated card event`() {
-        every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.update(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
+        justRun { cardStore.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
 
         handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardSetCode("updatedSetCode")))
 
-        verify { cardStore.update(existingCard.copy(setCode = CardSetCode("updatedSetCode"))) }
+        verify { cardStore.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
     }
 
     @Test

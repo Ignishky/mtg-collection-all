@@ -6,7 +6,6 @@ import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated.CardPricesU
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.Price
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
-import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
@@ -37,12 +36,11 @@ class CardPricesUpdatedTest {
 
     @Test
     fun `Should handle prices updated card event`() {
-        every { cardStore.get(existingCard.id) } returns existingCard
-        justRun { cardStore.update(updatedCard) }
+        justRun { cardStore.update(updatedCard.id, CardPrices(Price(550, 660, 770, 880))) }
 
         handler.handle(event)
 
-        verify { cardStore.update(updatedCard) }
+        verify { cardStore.update(updatedCard.id, CardPrices(Price(550, 660, 770, 880))) }
     }
 
 }

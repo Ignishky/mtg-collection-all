@@ -4,7 +4,7 @@ sealed interface CardProperty {
 
     fun propertyName(): PropertyName
 
-    fun propertyValue(): Any
+    fun propertyValue(): String
 
     enum class PropertyName {
         NAME,
@@ -12,11 +12,11 @@ sealed interface CardProperty {
         IMAGES,
         COLLECTION_NUMBER;
 
-        fun withValue(value: Any) = when (this) {
-            NAME -> CardName(value as String)
-            SET_CODE -> CardSetCode(value as String)
-            IMAGES -> CardImages((value as List<String>).map { CardImage(it) })
-            COLLECTION_NUMBER -> CardNumber(value as String)
+        fun withValue(value: String) = when (this) {
+            NAME -> CardName(value)
+            SET_CODE -> CardSetCode(value)
+            IMAGES -> CardImages((value).split(", ").map { CardImage(it) })
+            COLLECTION_NUMBER -> CardNumber(value)
         }
     }
 

@@ -31,22 +31,22 @@ class CardUpdated(
         aggregate as Card
         return Card(
             aggregateId,
-            CardName(payload.properties.getOrElse(NAME.name) { aggregate.name.value } as String),
-            CardSetCode(payload.properties.getOrElse(SET_CODE.name) { aggregate.setCode.value } as String),
+            CardName(payload.properties.getOrElse(NAME.name) { aggregate.name.value }),
+            CardSetCode(payload.properties.getOrElse(SET_CODE.name) { aggregate.setCode.value }),
             getCardImages(aggregate),
-            CardNumber(payload.properties.getOrElse(COLLECTION_NUMBER.name) { aggregate.collectionNumber.value } as String),
+            CardNumber(payload.properties.getOrElse(COLLECTION_NUMBER.name) { aggregate.collectionNumber.value }),
             aggregate.prices,
         )
     }
 
     private fun getCardImages(aggregate: Card) = if (payload.properties.containsKey(IMAGES.name)) {
-        CardImages((payload.properties[IMAGES.name] as List<String>).map { CardImage(it) })
+        CardImages(payload.properties[IMAGES.name]!!.split(", ").map { CardImage(it) })
     } else {
         aggregate.images
     }
 
     data class CardUpdatedPayload(
-        val properties: Map<String, Any>,
+        val properties: Map<String, String>,
     ) : Payload {
 
         constructor() : this(HashMap())
@@ -57,6 +57,8 @@ class CardUpdated(
             )
         }
 
+        fun toProperties() = properties.map { CardProperty.PropertyName.valueOf(it.key).withValue(it.value) }
+
     }
 
     @Named
@@ -66,9 +68,8 @@ class CardUpdated(
 
         override fun handle(event: Event<*, *, *>) {
             val cardUpdated = event as CardUpdated
-            val existingCard = cardStore.get(cardUpdated.aggregateId)
-            logger.info { "Updating card '${existingCard.name.value}'..." }
-            cardStore.update(cardUpdated.apply(existingCard))
+            logger.info { "Updating card '${cardUpdated.aggregateId.value}'..." }
+            cardStore.update(cardUpdated.aggregateId, cardUpdated.payload.toProperties())
         }
 
         override fun listenTo() = CardUpdated::class

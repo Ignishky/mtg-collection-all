@@ -8,6 +8,6 @@ data class CardImages(
 
     override fun propertyName() = IMAGES
 
-    override fun propertyValue() = value.map { it.value }
+    override fun propertyValue() = value.map { it.value }.joinToString { it }
 
 }

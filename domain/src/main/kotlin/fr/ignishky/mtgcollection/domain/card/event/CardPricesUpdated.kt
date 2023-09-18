@@ -48,9 +48,18 @@ class CardPricesUpdated(
 
         override fun handle(event: Event<*, *, *>) {
             val cardPricesUpdated = event as CardPricesUpdated
-            val existingCard = cardStore.get(cardPricesUpdated.aggregateId)
-            logger.info { "Updating card prices '${existingCard.name.value}'..." }
-            cardStore.update(cardPricesUpdated.apply(existingCard))
+            logger.info { "Updating card prices '${cardPricesUpdated.aggregateId.value}'..." }
+            cardStore.update(
+                cardPricesUpdated.aggregateId,
+                CardPrices(
+                    Price(
+                        cardPricesUpdated.payload.scryfallEur,
+                        cardPricesUpdated.payload.scryfallEurFoil,
+                        cardPricesUpdated.payload.scryfallUsd,
+                        cardPricesUpdated.payload.scryfallUsdFoil
+                    )
+                )
+            )
         }
 
         override fun listenTo() = CardPricesUpdated::class

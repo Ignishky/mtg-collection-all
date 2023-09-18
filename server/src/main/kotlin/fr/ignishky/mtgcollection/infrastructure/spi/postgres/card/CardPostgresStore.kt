@@ -2,6 +2,8 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres.card
 
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
+import fr.ignishky.mtgcollection.domain.card.model.CardPrices
+import fr.ignishky.mtgcollection.domain.card.model.CardProperty
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
@@ -25,16 +27,19 @@ class CardPostgresStore(
         )
     }
 
-    override fun update(card: Card) {
-        val scryfall = card.prices.scryfall
+    override fun update(cardId: CardId, properties: List<CardProperty>) {
+        val arguments = properties.map { "${it.propertyName().name.lowercase()}='${it.propertyValue()}'" }.joinToString { it }
         jdbcTemplate.update(
-            "UPDATE cards SET name=?, set_code=?, images=?, collection_number=?, scryfall_prices=? WHERE id=?",
-            card.name.value,
-            card.setCode.value,
-            card.images.value.joinToString { it.value },
-            card.collectionNumber.value,
-            "${scryfall.eur}|${scryfall.eurFoil}|${scryfall.usd}|${scryfall.usdFoil}",
-            card.id.value
+            "UPDATE cards SET $arguments WHERE id=?",
+            cardId.value
+        )
+    }
+
+    override fun update(cardId: CardId, prices: CardPrices) {
+        jdbcTemplate.update(
+            "UPDATE cards SET scryfall_prices=? WHERE id=?",
+            "${prices.scryfall.eur}|${prices.scryfall.eurFoil}|${prices.scryfall.usd}|${prices.scryfall.usdFoil}",
+            cardId.value
         )
     }
 
