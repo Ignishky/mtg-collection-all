@@ -5,7 +5,6 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedHandler
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
-import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
@@ -45,62 +44,76 @@ class SetUpdatedTest {
 
     @Test
     fun `Should handle full updated set event`() {
-        every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.update(updatedSet) }
+        justRun {
+            setStore.update(
+                updatedSet.id, listOf(
+                    SetCode("updatedCode"),
+                    SetName("updatedName"),
+                    SetType("updatedType"),
+                    SetIcon("updatedIcon"),
+                    SetReleasedAt(parse("2023-06-12"))
+                )
+            )
+        }
 
         handler.handle(event)
 
-        verify { setStore.update(updatedSet) }
+        verify {
+            setStore.update(
+                updatedSet.id, listOf(
+                    SetCode("updatedCode"),
+                    SetName("updatedName"),
+                    SetType("updatedType"),
+                    SetIcon("updatedIcon"),
+                    SetReleasedAt(parse("2023-06-12"))
+                )
+            )
+        }
     }
 
     @Test
     fun `Should handle only code updated set event`() {
-        every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.update(existingSet.copy(code = SetCode("updatedCode"))) }
+        justRun { setStore.update(existingSet.id, listOf(SetCode("updatedCode"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetCode("updatedCode")))
 
-        verify { setStore.update(existingSet.copy(code = SetCode("updatedCode"))) }
+        verify { setStore.update(existingSet.id, listOf(SetCode("updatedCode"))) }
     }
 
     @Test
     fun `Should handle only name updated set event`() {
-        every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.update(existingSet.copy(name = SetName("updatedName"))) }
+        justRun { setStore.update(existingSet.id, listOf(SetName("updatedName"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetName("updatedName")))
 
-        verify { setStore.update(existingSet.copy(name = SetName("updatedName"))) }
+        verify { setStore.update(existingSet.id, listOf(SetName("updatedName"))) }
     }
 
     @Test
     fun `Should handle only type updated set event`() {
-        every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.update(existingSet.copy(type = SetType("updatedType"))) }
+        justRun { setStore.update(existingSet.id, listOf(SetType("updatedType"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetType("updatedType")))
 
-        verify { setStore.update(existingSet.copy(type = SetType("updatedType"))) }
+        verify { setStore.update(existingSet.id, listOf(SetType("updatedType"))) }
     }
 
     @Test
     fun `Should handle only icon updated set event`() {
-        every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.update(existingSet.copy(icon = SetIcon("updatedIcon"))) }
+        justRun { setStore.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetIcon("updatedIcon")))
 
-        verify { setStore.update(existingSet.copy(icon = SetIcon("updatedIcon"))) }
+        verify { setStore.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
     }
 
     @Test
     fun `Should handle only releasedAt updated set event`() {
-        every { setStore.get(existingSet.id) } returns existingSet
-        justRun { setStore.update(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
+        justRun { setStore.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetReleasedAt(parse("2023-06-12"))))
 
-        verify { setStore.update(existingSet.copy(releasedAt = SetReleasedAt(parse("2023-06-12")))) }
+        verify { setStore.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
     }
 
     @Test

@@ -53,6 +53,8 @@ class SetUpdated(
             )
         }
 
+        fun toProperties() = properties.map { SetProperty.PropertyName.valueOf(it.key).withValue(it.value) }
+
     }
 
     @Named
@@ -62,9 +64,8 @@ class SetUpdated(
 
         override fun handle(event: Event<*, *, *>) {
             val setUpdated = event as SetUpdated
-            val existingSet = setStore.get(setUpdated.aggregateId)
-            logger.info { "Updating set '${existingSet.name.value}'..." }
-            setStore.update(setUpdated.apply(existingSet))
+            logger.info { "Updating set '${setUpdated.aggregateId.value}'..." }
+            setStore.update(setUpdated.aggregateId, setUpdated.payload.toProperties())
         }
 
         override fun listenTo() = SetUpdated::class

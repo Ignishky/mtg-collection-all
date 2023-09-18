@@ -49,11 +49,10 @@ class EventRowMapper(
 
     private fun toSetUpdated(rs: ResultSet): SetUpdated {
         val payload = objectMapper.readValue(rs.getString("payload"), SetUpdatedPayload::class.java)
-        val properties = payload.properties.map { SetProperty.PropertyName.valueOf(it.key).withValue(it.value) }.toTypedArray()
         return SetUpdated(
             CorrelationId(rs.getString("correlation_id")),
             SetId(rs.getString("aggregate_id")),
-            *properties,
+            *payload.toProperties().toTypedArray<SetProperty>(),
         )
     }
 
