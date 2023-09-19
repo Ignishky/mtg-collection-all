@@ -8,7 +8,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.*
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
@@ -62,14 +62,16 @@ class CardUpdated(
     }
 
     @Named
-    class CardUpdatedHandler(private val cardStore: CardStorePort) : EventHandler<CardUpdated> {
+    class CardUpdatedHandler(
+        private val cardProjectionPort: CardProjectionPort,
+    ) : EventHandler<CardUpdated> {
 
         private val logger = KotlinLogging.logger {}
 
         override fun handle(event: Event<*, *, *>) {
             val cardUpdated = event as CardUpdated
             logger.info { "Updating card '${cardUpdated.aggregateId.value}'..." }
-            cardStore.update(cardUpdated.aggregateId, cardUpdated.payload.toProperties())
+            cardProjectionPort.update(cardUpdated.aggregateId, cardUpdated.payload.toProperties())
         }
 
         override fun listenTo() = CardUpdated::class

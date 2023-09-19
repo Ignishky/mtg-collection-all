@@ -5,7 +5,7 @@ import fr.ignishky.mtgcollection.domain.CardFixtures
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated.CardPricesUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.Price
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
@@ -31,16 +31,16 @@ class CardPricesUpdatedTest {
         assertThat(result).isEqualTo(updatedCard)
     }
 
-    private val cardStore = mockk<CardStorePort>()
-    private val handler = CardPricesUpdatedHandler(cardStore)
+    private val cardProjectionPort = mockk<CardProjectionPort>()
+    private val handler = CardPricesUpdatedHandler(cardProjectionPort)
 
     @Test
     fun `Should handle prices updated card event`() {
-        justRun { cardStore.update(updatedCard.id, CardPrices(Price(550, 660, 770, 880))) }
+        justRun { cardProjectionPort.update(updatedCard.id, CardPrices(Price(550, 660, 770, 880))) }
 
         handler.handle(event)
 
-        verify { cardStore.update(updatedCard.id, CardPrices(Price(550, 660, 770, 880))) }
+        verify { cardProjectionPort.update(updatedCard.id, CardPrices(Price(550, 660, 770, 880))) }
     }
 
 }

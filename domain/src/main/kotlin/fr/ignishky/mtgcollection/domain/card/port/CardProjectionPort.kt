@@ -6,7 +6,7 @@ import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 
-interface CardStorePort {
+interface CardProjectionPort {
 
     fun add(card: Card)
 

@@ -3,14 +3,14 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres.set
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetId
 import fr.ignishky.mtgcollection.domain.set.model.SetProperty
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import jakarta.inject.Named
 import org.springframework.jdbc.core.JdbcTemplate
 
 @Named
-class SetPostgresStore(
+class PostgresSetProjection(
     private val jdbcTemplate: JdbcTemplate,
-) : SetStorePort {
+) : SetProjectionPort {
 
     override fun add(set: Set) {
         jdbcTemplate.update(

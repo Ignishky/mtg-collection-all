@@ -3,7 +3,7 @@ package fr.ignishky.mtgcollection.domain.card.event
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import io.mockk.justRun
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -38,13 +38,13 @@ class CardCreatedTest {
         )
     }
 
-    private val cardStore = mockk<CardStorePort>()
-    private val handler = CardCreatedHandler(cardStore)
+    private val cardProjectionPort = mockk<CardProjectionPort>()
+    private val handler = CardCreatedHandler(cardProjectionPort)
 
     @Test
     fun `Should handle created event`() {
         justRun {
-            cardStore.add(
+            cardProjectionPort.add(
                 emptyCard.copy(
                     CardId("cardId"),
                     CardName("cardName"),

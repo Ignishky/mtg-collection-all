@@ -8,7 +8,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedPayload
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
 import java.time.Instant.now
@@ -58,14 +58,16 @@ class SetCreated(
     }
 
     @Named
-    class SetCreatedHandler(private val setStore: SetStorePort) : EventHandler<SetCreated> {
+    class SetCreatedHandler(
+        private val setProjectionPort: SetProjectionPort,
+    ) : EventHandler<SetCreated> {
 
         private val logger = logger {}
 
         override fun handle(event: Event<*, *, *>) {
             val setCreated = event as SetCreated
             logger.info { "Creating set '${setCreated.payload.name}'..." }
-            setStore.add(setCreated.apply(Set()))
+            setProjectionPort.add(setCreated.apply(Set()))
         }
 
         override fun listenTo() = SetCreated::class

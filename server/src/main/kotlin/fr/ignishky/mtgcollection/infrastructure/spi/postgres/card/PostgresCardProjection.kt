@@ -4,15 +4,15 @@ import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
 import org.springframework.jdbc.core.JdbcTemplate
 
 @Named
-class CardPostgresStore(
+class PostgresCardProjection(
     private val jdbcTemplate: JdbcTemplate,
-) : CardStorePort {
+) : CardProjectionPort {
 
     override fun add(card: Card) {
         val scryfall = card.prices.scryfall

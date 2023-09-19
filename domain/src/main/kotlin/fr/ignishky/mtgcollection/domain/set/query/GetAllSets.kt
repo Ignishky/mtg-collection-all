@@ -2,15 +2,15 @@ package fr.ignishky.mtgcollection.domain.set.query
 
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import jakarta.inject.Named
 
 @Named
 class GetAllSets(
-    private val setStore: SetStorePort,
+    private val setProjectionPort: SetProjectionPort,
 ) : SetApiPort {
 
-    override fun getAll() = setStore.getAll()
+    override fun getAll() = setProjectionPort.getAll()
         .filter { hasOwnIcon(it) }
         .sortedByDescending { it.releasedAt }
 

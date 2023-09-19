@@ -9,7 +9,7 @@ import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.Price
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
@@ -42,14 +42,16 @@ class CardPricesUpdated(
     }
 
     @Named
-    class CardPricesUpdatedHandler(private val cardStore: CardStorePort) : EventHandler<CardPricesUpdated> {
+    class CardPricesUpdatedHandler(
+        private val cardProjectionPort: CardProjectionPort,
+    ) : EventHandler<CardPricesUpdated> {
 
         private val logger = KotlinLogging.logger {}
 
         override fun handle(event: Event<*, *, *>) {
             val cardPricesUpdated = event as CardPricesUpdated
             logger.info { "Updating card prices '${cardPricesUpdated.aggregateId.value}'..." }
-            cardStore.update(
+            cardProjectionPort.update(
                 cardPricesUpdated.aggregateId,
                 CardPrices(
                     Price(

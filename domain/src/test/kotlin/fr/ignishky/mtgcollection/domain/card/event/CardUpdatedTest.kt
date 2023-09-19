@@ -4,7 +4,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
@@ -35,13 +35,13 @@ class CardUpdatedTest {
         assertThat(result).isEqualTo(updatedCard)
     }
 
-    private val cardStore = mockk<CardStorePort>()
-    private val handler = CardUpdatedHandler(cardStore)
+    private val cardProjectionPort = mockk<CardProjectionPort>()
+    private val handler = CardUpdatedHandler(cardProjectionPort)
 
     @Test
     fun `Should handle full updated card event`() {
         justRun {
-            cardStore.update(
+            cardProjectionPort.update(
                 updatedCard.id, listOf(
                     CardName("cardName"),
                     CardImages(listOf(CardImage("cardImage"))),
@@ -53,7 +53,7 @@ class CardUpdatedTest {
         handler.handle(event)
 
         verify {
-            cardStore.update(
+            cardProjectionPort.update(
                 updatedCard.id, listOf(
                     CardName("cardName"),
                     CardImages(listOf(CardImage("cardImage"))),
@@ -65,20 +65,20 @@ class CardUpdatedTest {
 
     @Test
     fun `Should handle only name updated card event`() {
-        justRun { cardStore.update(existingCard.id, listOf(CardName("updatedName"))) }
+        justRun { cardProjectionPort.update(existingCard.id, listOf(CardName("updatedName"))) }
 
         handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardName("updatedName")))
 
-        verify { cardStore.update(existingCard.id, listOf(CardName("updatedName"))) }
+        verify { cardProjectionPort.update(existingCard.id, listOf(CardName("updatedName"))) }
     }
 
     @Test
     fun `Should handle only set code updated card event`() {
-        justRun { cardStore.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
+        justRun { cardProjectionPort.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
 
         handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardSetCode("updatedSetCode")))
 
-        verify { cardStore.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
+        verify { cardProjectionPort.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
     }
 
     @Test

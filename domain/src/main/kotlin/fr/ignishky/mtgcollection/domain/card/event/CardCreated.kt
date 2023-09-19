@@ -7,7 +7,7 @@ import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
-import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Instant.now
@@ -63,7 +63,7 @@ class CardCreated(
 
     @Named
     class CardCreatedHandler(
-        private val cardStore: CardStorePort,
+        private val cardProjectionPort: CardProjectionPort,
     ) : EventHandler<CardCreated> {
 
         private val logger = KotlinLogging.logger {}
@@ -71,7 +71,7 @@ class CardCreated(
         override fun handle(event: Event<*, *, *>) {
             val cardCreated = event as CardCreated
             logger.info { "Creating card '${cardCreated.payload.name}'..." }
-            cardStore.add(cardCreated.apply(Card()))
+            cardProjectionPort.add(cardCreated.apply(Card()))
         }
 
         override fun listenTo() = CardCreated::class

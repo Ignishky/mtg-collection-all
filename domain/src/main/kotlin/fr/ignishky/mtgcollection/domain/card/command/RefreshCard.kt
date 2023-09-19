@@ -13,7 +13,7 @@ import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.port.CardEventStorePort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
 
@@ -21,14 +21,14 @@ class RefreshCard : Command {
 
     @Named
     class RefreshCardHandler(
-        private val setStore: SetStorePort,
+        private val setProjectionPort: SetProjectionPort,
         private val cardReferer: CardRefererPort,
         private val cardEventStorePort: CardEventStorePort,
     ) : CommandHandler<RefreshCard> {
 
         private val logger = logger {}
 
-        override fun handle(command: Command, correlationId: CorrelationId) = setStore.getAll()
+        override fun handle(command: Command, correlationId: CorrelationId) = setProjectionPort.getAll()
             .flatMap { set -> processSet(set, correlationId) }
 
         private fun processSet(set: Set, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {

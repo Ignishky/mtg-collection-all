@@ -4,7 +4,7 @@ import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetId
 import fr.ignishky.mtgcollection.domain.set.model.SetProperty
 
-interface SetStorePort {
+interface SetProjectionPort {
 
     fun add(set: Set)
 

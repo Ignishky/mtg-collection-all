@@ -4,7 +4,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedHandler
 import fr.ignishky.mtgcollection.domain.set.model.*
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
@@ -39,13 +39,13 @@ class SetUpdatedTest {
         assertThat(result).isEqualTo(updatedSet)
     }
 
-    private val setStore = mockk<SetStorePort>()
-    private val handler = SetUpdatedHandler(setStore)
+    private val setProjectionPort = mockk<SetProjectionPort>()
+    private val handler = SetUpdatedHandler(setProjectionPort)
 
     @Test
     fun `Should handle full updated set event`() {
         justRun {
-            setStore.update(
+            setProjectionPort.update(
                 updatedSet.id, listOf(
                     SetCode("updatedCode"),
                     SetName("updatedName"),
@@ -59,7 +59,7 @@ class SetUpdatedTest {
         handler.handle(event)
 
         verify {
-            setStore.update(
+            setProjectionPort.update(
                 updatedSet.id, listOf(
                     SetCode("updatedCode"),
                     SetName("updatedName"),
@@ -73,47 +73,47 @@ class SetUpdatedTest {
 
     @Test
     fun `Should handle only code updated set event`() {
-        justRun { setStore.update(existingSet.id, listOf(SetCode("updatedCode"))) }
+        justRun { setProjectionPort.update(existingSet.id, listOf(SetCode("updatedCode"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetCode("updatedCode")))
 
-        verify { setStore.update(existingSet.id, listOf(SetCode("updatedCode"))) }
+        verify { setProjectionPort.update(existingSet.id, listOf(SetCode("updatedCode"))) }
     }
 
     @Test
     fun `Should handle only name updated set event`() {
-        justRun { setStore.update(existingSet.id, listOf(SetName("updatedName"))) }
+        justRun { setProjectionPort.update(existingSet.id, listOf(SetName("updatedName"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetName("updatedName")))
 
-        verify { setStore.update(existingSet.id, listOf(SetName("updatedName"))) }
+        verify { setProjectionPort.update(existingSet.id, listOf(SetName("updatedName"))) }
     }
 
     @Test
     fun `Should handle only type updated set event`() {
-        justRun { setStore.update(existingSet.id, listOf(SetType("updatedType"))) }
+        justRun { setProjectionPort.update(existingSet.id, listOf(SetType("updatedType"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetType("updatedType")))
 
-        verify { setStore.update(existingSet.id, listOf(SetType("updatedType"))) }
+        verify { setProjectionPort.update(existingSet.id, listOf(SetType("updatedType"))) }
     }
 
     @Test
     fun `Should handle only icon updated set event`() {
-        justRun { setStore.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
+        justRun { setProjectionPort.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetIcon("updatedIcon")))
 
-        verify { setStore.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
+        verify { setProjectionPort.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
     }
 
     @Test
     fun `Should handle only releasedAt updated set event`() {
-        justRun { setStore.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
+        justRun { setProjectionPort.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
 
         handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetReleasedAt(parse("2023-06-12"))))
 
-        verify { setStore.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
+        verify { setProjectionPort.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
     }
 
     @Test

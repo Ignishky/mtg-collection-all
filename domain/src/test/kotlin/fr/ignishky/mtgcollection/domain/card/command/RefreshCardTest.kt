@@ -10,7 +10,7 @@ import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardEventStorePort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -22,14 +22,14 @@ class RefreshCardTest {
     private val afr = afr()
     private val plus2Mace = plus2Mace()
 
-    private val setStore = mockk<SetStorePort>()
+    private val setProjectionPort = mockk<SetProjectionPort>()
     private val cardReferer = mockk<CardRefererPort>()
     private val cardEventStorePort = mockk<CardEventStorePort>()
-    private val handler = RefreshCardHandler(setStore, cardReferer, cardEventStorePort)
+    private val handler = RefreshCardHandler(setProjectionPort, cardReferer, cardEventStorePort)
 
     @Test
     fun `Should return no events when cards are up to date`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace)
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
@@ -40,7 +40,7 @@ class RefreshCardTest {
 
     @Test
     fun `Should return CardCreated event for new card`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns emptyList()
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
@@ -63,7 +63,7 @@ class RefreshCardTest {
 
     @Test
     fun `Should return CardUpdated event for card with new name`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
@@ -76,7 +76,7 @@ class RefreshCardTest {
 
     @Test
     fun `Should return CardUpdated event for card with new setCode`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
@@ -89,7 +89,7 @@ class RefreshCardTest {
 
     @Test
     fun `Should return CardUpdated event for card with new images`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("new image")))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
@@ -102,7 +102,7 @@ class RefreshCardTest {
 
     @Test
     fun `Should return CardUpdated event for card with new collection number`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("new collection number")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
@@ -115,7 +115,7 @@ class RefreshCardTest {
 
     @Test
     fun `Should return CardPricesUpdated event for card with only new prices`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
@@ -128,7 +128,7 @@ class RefreshCardTest {
 
     @Test
     fun `Should return events for card with all new field values`() {
-        every { setStore.getAll() } returns listOf(afr)
+        every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardEventStorePort.getAll(afr.code) } returns listOf(
             plus2Mace.copy(
                 name = CardName("old name"),

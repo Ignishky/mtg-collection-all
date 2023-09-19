@@ -4,7 +4,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedHandler
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import io.mockk.justRun
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -40,13 +40,13 @@ class SetCreatedTest {
         )
     }
 
-    private val setStore = mockk<SetStorePort>()
-    private val handler = SetCreatedHandler(setStore)
+    private val setProjectionPort = mockk<SetProjectionPort>()
+    private val handler = SetCreatedHandler(setProjectionPort)
 
     @Test
     fun `Should handle created event`() {
         justRun {
-            setStore.add(
+            setProjectionPort.add(
                 emptySet.copy(
                     id = SetId("createdId"),
                     code = SetCode("createdCode"),
