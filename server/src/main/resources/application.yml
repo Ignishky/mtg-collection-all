@@ -1,5 +1,11 @@
 management:
   endpoints:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+    prometheus:
+      enabled: true
     web:
       exposure:
         include: "*"

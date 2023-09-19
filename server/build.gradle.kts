@@ -16,6 +16,7 @@ dependencies {
 
     runtimeOnly("org.flywaydb:flyway-core")
     runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     testImplementation(testFixtures(project(":domain")))
     testImplementation("org.mock-server:mockserver-junit-jupiter:5.15.0")
