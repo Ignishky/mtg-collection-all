@@ -57,6 +57,7 @@ class RefreshCardTest {
                     plus2Mace.prices,
                     plus2Mace.images,
                     plus2Mace.collectionNumber,
+                    plus2Mace.finishes,
                 )
             )
     }

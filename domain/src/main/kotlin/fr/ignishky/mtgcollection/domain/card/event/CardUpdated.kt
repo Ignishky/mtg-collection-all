@@ -36,6 +36,7 @@ class CardUpdated(
             getCardImages(aggregate),
             CardNumber(payload.properties.getOrElse(COLLECTION_NUMBER.name) { aggregate.collectionNumber.value }),
             aggregate.prices,
+            getCardFinishes(aggregate),
         )
     }
 
@@ -43,6 +44,12 @@ class CardUpdated(
         CardImages(payload.properties[IMAGES.name]!!.split(", ").map { CardImage(it) })
     } else {
         aggregate.images
+    }
+
+    private fun getCardFinishes(aggregate: Card) = if (payload.properties.containsKey(FINISHES.name)) {
+        CardFinishes(payload.properties[FINISHES.name]!!.split(", ").map { CardFinish(it) })
+    } else {
+        aggregate.finishes
     }
 
     data class CardUpdatedPayload(

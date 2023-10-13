@@ -1,0 +1,2 @@
+ALTER TABLE cards
+    ADD COLUMN finishes VARCHAR NOT NULL DEFAULT ''

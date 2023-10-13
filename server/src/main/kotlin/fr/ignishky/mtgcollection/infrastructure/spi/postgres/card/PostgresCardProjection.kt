@@ -17,13 +17,14 @@ class PostgresCardProjection(
     override fun add(card: Card) {
         val scryfall = card.prices.scryfall
         jdbcTemplate.update(
-            "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes) VALUES (?, ?, ?, ?, ?, ?, ?)",
             card.id.value,
             card.name.value,
             card.setCode.value,
             card.images.value.joinToString { it.value },
             card.collectionNumber.value,
             "${scryfall.eur}|${scryfall.eurFoil}|${scryfall.usd}|${scryfall.usdFoil}",
+            card.finishes.value.joinToString { it.value }
         )
     }
 

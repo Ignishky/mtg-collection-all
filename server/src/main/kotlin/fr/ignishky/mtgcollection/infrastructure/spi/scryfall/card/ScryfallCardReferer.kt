@@ -54,6 +54,7 @@ class ScryfallCardReferer(
                         parseLong(it.prices.usdFoil?.replace(".", "") ?: "0"),
                     ),
                 ),
+                CardFinishes(it.finishes.map { CardFinish(it) }),
             )
         }
     }

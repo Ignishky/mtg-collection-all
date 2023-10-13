@@ -11,6 +11,7 @@ object CardFixtures {
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg"))),
         CardNumber("1"),
         CardPrices(Price(2, 7, 2, 3)),
+        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
     fun arboreaPegasus() = Card(
@@ -20,6 +21,7 @@ object CardFixtures {
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg"))),
         CardNumber("2"),
         CardPrices(Price(4, 8, 1, 6)),
+        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
     fun valorSinger() = Card(
@@ -29,6 +31,7 @@ object CardFixtures {
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/valorSinger.svg"))),
         CardNumber("165"),
         CardPrices(Price(1, 14, 1, 3)),
+        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
     fun axgardBraggart() = Card(
@@ -38,6 +41,7 @@ object CardFixtures {
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/axgardBraggart.svg"))),
         CardNumber("1"),
         CardPrices(Price(1, 2, 0, 0)),
+        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
     fun halvar() = Card(
@@ -52,6 +56,7 @@ object CardFixtures {
         ),
         CardNumber("15"),
         CardPrices(Price(796, 699, 692, 647)),
+        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
 }

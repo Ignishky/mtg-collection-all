@@ -20,6 +20,7 @@ class CardCreatedTest {
         CardPrices(Price(110, 220, 330, 440)),
         CardImages(listOf(CardImage("cardImage"))),
         CardNumber("collectionNumber"),
+        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
     @Test
@@ -28,12 +29,13 @@ class CardCreatedTest {
 
         assertThat(result).isEqualTo(
             emptyCard.copy(
-                CardId("cardId"),
-                CardName("cardName"),
-                CardSetCode("setCode"),
-                CardImages(listOf(CardImage("cardImage"))),
-                CardNumber("collectionNumber"),
-                CardPrices(Price(110, 220, 330, 440)),
+                id = CardId("cardId"),
+                name = CardName("cardName"),
+                setCode = CardSetCode("setCode"),
+                images = CardImages(listOf(CardImage("cardImage"))),
+                collectionNumber = CardNumber("collectionNumber"),
+                prices = CardPrices(Price(110, 220, 330, 440)),
+                finishes = CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
             )
         )
     }
@@ -46,12 +48,13 @@ class CardCreatedTest {
         justRun {
             cardProjectionPort.add(
                 emptyCard.copy(
-                    CardId("cardId"),
-                    CardName("cardName"),
-                    CardSetCode("setCode"),
-                    CardImages(listOf(CardImage("cardImage"))),
-                    CardNumber("collectionNumber"),
-                    CardPrices(Price(110, 220, 330, 440)),
+                    id = CardId("cardId"),
+                    name = CardName("cardName"),
+                    setCode = CardSetCode("setCode"),
+                    images = CardImages(listOf(CardImage("cardImage"))),
+                    collectionNumber = CardNumber("collectionNumber"),
+                    prices = CardPrices(Price(110, 220, 330, 440)),
+                    finishes = CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
                 )
             )
         }

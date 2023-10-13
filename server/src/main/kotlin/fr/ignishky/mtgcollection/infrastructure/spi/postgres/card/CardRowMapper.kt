@@ -15,6 +15,7 @@ class CardRowMapper : RowMapper<Card> {
             CardImages(rs.getString("images").split(", ").map { CardImage(it) }),
             CardNumber(rs.getString("collection_number")),
             CardPrices(Price(prices[0], prices[1], prices[2], prices[3])),
+            CardFinishes(rs.getString("finishes").split(", ").map { CardFinish(it) }),
         )
     }
 

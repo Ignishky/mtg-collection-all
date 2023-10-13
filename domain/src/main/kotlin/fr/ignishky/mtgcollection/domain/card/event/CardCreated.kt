@@ -20,6 +20,7 @@ class CardCreated(
     prices: CardPrices,
     images: CardImages,
     collectionNumber: CardNumber,
+    finishes: CardFinishes,
 ) :
     Event<CardId, Card, CardCreatedPayload>(
         0,
@@ -34,6 +35,7 @@ class CardCreated(
             prices.scryfall.usdFoil,
             images.value.map { it.value },
             collectionNumber.value,
+            finishes.value.map { it.value }
         ),
         now(),
         correlationId,
@@ -46,6 +48,7 @@ class CardCreated(
         CardImages(payload.images.map { CardImage(it) }),
         CardNumber(payload.collectionNumber),
         CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
+        CardFinishes(payload.finishes.map { CardFinish(it) }),
     )
 
     data class CardCreatedPayload(
@@ -57,8 +60,9 @@ class CardCreated(
         val scryfallUsdFoil: Long,
         val images: List<String>,
         val collectionNumber: String,
+        val finishes: List<String>,
     ) : Payload {
-        constructor() : this("", "", 0, 0, 0, 0, emptyList(), "")
+        constructor() : this("", "", 0, 0, 0, 0, emptyList(), "", emptyList())
     }
 
     @Named

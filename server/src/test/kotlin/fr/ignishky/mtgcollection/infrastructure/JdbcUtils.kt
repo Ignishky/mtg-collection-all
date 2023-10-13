@@ -52,13 +52,14 @@ class JdbcUtils(
         }
         cards.forEach {
             template.update(
-                "INSERT INTO cards VALUES (?, ?, ?, ?, ?, ?)",
+                "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 it.id.value,
                 it.name.value,
                 it.setCode.value,
                 it.images.value.joinToString { it.value },
                 it.collectionNumber.value,
                 "${it.prices.scryfall.eur}|${it.prices.scryfall.eurFoil}|${it.prices.scryfall.usd}|${it.prices.scryfall.usdFoil}",
+                it.finishes.value.joinToString { it.value },
             )
         }
     }

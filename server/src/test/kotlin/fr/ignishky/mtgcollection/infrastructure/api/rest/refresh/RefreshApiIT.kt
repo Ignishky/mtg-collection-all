@@ -170,14 +170,15 @@ class RefreshApiIT(
         assertThat(jdbc.getCards()).containsOnly(plus2mace, arboreaPegasus, valor)
     }
 
-    fun toSetCreated(set: Set) = SetCreated(correlationId, set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
+    private fun toSetCreated(set: Set) = SetCreated(correlationId, set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
 
-    fun toSetUpdated(set: Set) = SetUpdated(correlationId, set.id, set.name, set.icon)
+    private fun toSetUpdated(set: Set) = SetUpdated(correlationId, set.id, set.name, set.icon)
 
-    fun toCardCreated(card: Card) = CardCreated(correlationId, card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber)
+    private fun toCardCreated(card: Card) =
+        CardCreated(correlationId, card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes)
 
-    fun toCardUpdated(card: Card) = CardUpdated(correlationId, card.id, card.collectionNumber, card.images)
+    private fun toCardUpdated(card: Card) = CardUpdated(correlationId, card.id, card.collectionNumber, card.images)
 
-    fun toCardPricesUpdated(card: Card) = CardPricesUpdated(correlationId, card.id, card.prices)
+    private fun toCardPricesUpdated(card: Card) = CardPricesUpdated(correlationId, card.id, card.prices)
 
 }

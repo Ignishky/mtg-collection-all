@@ -10,6 +10,7 @@ data class Card(
     val images: CardImages,
     val collectionNumber: CardNumber,
     val prices: CardPrices,
+    val finishes: CardFinishes,
 ) : Aggregate<CardId> {
 
     constructor() : this(
@@ -19,6 +20,7 @@ data class Card(
         CardImages(emptyList()),
         CardNumber(""),
         CardPrices(Price(0, 0, 0, 0)),
+        CardFinishes(listOf(CardFinish(""))),
     )
 
     override fun id() = id

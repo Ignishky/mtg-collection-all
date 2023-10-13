@@ -65,7 +65,8 @@ class EventRowMapper(
             CardSetCode(payload.setCode),
             CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
             CardImages(payload.images.map { CardImage(it) }),
-            CardNumber(payload.collectionNumber)
+            CardNumber(payload.collectionNumber),
+            CardFinishes(payload.finishes.map { CardFinish(it) }),
         )
     }
 

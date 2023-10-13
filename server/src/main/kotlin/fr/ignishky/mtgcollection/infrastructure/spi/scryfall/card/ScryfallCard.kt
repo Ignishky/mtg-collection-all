@@ -22,6 +22,7 @@ data class ScryfallCard(
         val imageUris: ImageUris?,
         @JsonProperty("card_faces")
         val cardFaces: List<CardFaces>?,
+        val finishes: List<String>,
         @JsonProperty("collector_number")
         val collectionNumber: String,
     ) {
@@ -33,6 +34,7 @@ data class ScryfallCard(
             "",
             ScryfallPrices("0", "0", "0", "0"),
             ImageUris(""),
+            emptyList(),
             emptyList(),
             "",
         )

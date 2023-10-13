@@ -37,7 +37,7 @@ class RefreshCard : Command {
             return cardReferer.getCards(set.code)
                 .flatMap {
                     if (!knownCardsById.contains(it.id)) {
-                        listOf(CardCreated(correlationId, it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber))
+                        listOf(CardCreated(correlationId, it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber, it.finishes))
                     } else {
                         cardUpdated(knownCardsById[it.id]!!, it, correlationId)
                     }
