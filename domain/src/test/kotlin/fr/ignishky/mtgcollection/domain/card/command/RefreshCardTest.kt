@@ -3,7 +3,6 @@ package fr.ignishky.mtgcollection.domain.card.command
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
-import fr.ignishky.mtgcollection.domain.card.command.RefreshCard.RefreshCardHandler
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated

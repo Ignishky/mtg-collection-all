@@ -20,7 +20,7 @@ class ScryfallCardReferer(
     private val logger = logger {}
 
     override fun getCards(code: SetCode): List<Card> {
-        var scryfallCards = emptyList<ScryfallCard.ScryfallCardData>()
+        var scryfallCards = emptyList<ScryfallCardData>()
 
         try {
             var response = restTemplate.getForObject<ScryfallCard>("${properties.baseUrl}/cards/search?order=set&q=e:${code.value}&unique=prints")
@@ -54,7 +54,7 @@ class ScryfallCardReferer(
                         parseLong(it.prices.usdFoil?.replace(".", "") ?: "0"),
                     ),
                 ),
-                CardFinishes(it.finishes.map { CardFinish(it) }),
+                CardFinishes(it.finishes.map(::CardFinish)),
             )
         }
     }

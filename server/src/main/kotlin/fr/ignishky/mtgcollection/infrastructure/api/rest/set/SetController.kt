@@ -4,8 +4,6 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.port.CardApiPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort
-import fr.ignishky.mtgcollection.infrastructure.api.rest.set.CardsResponse.CardResponse
-import fr.ignishky.mtgcollection.infrastructure.api.rest.set.SetsResponse.SetResponse
 import mu.KotlinLogging
 import org.springframework.web.bind.annotation.RestController
 
@@ -36,7 +34,7 @@ class SetController(
                     it.id.value,
                     it.name.value,
                     it.images.value[0].value,
-                    CardsResponse.PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil)
+                    PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil)
                 )
             }
 

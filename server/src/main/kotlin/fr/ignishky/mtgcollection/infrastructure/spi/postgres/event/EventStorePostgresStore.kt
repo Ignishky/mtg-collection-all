@@ -22,7 +22,7 @@ class EventStorePostgresStore(
         )
     }
 
-    class EventBatchPreparedStatementSetter(
+    private class EventBatchPreparedStatementSetter(
         private val events: List<Event<*, *, *>>,
         private val objectMapper: ObjectMapper,
     ) : BatchPreparedStatementSetter {
