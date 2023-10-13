@@ -11,7 +11,7 @@ object CardFixtures {
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg"))),
         CardNumber("1"),
         CardPrices(Price(2, 7, 2, 3)),
-        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
+        CardFinishes(listOf(CardFinish("nonfoil"))),
     )
 
     fun arboreaPegasus() = Card(
@@ -21,7 +21,7 @@ object CardFixtures {
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg"))),
         CardNumber("2"),
         CardPrices(Price(4, 8, 1, 6)),
-        CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
+        CardFinishes(listOf(CardFinish("foil"))),
     )
 
     fun valorSinger() = Card(

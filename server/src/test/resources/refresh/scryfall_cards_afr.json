@@ -72,7 +72,6 @@
       "foil": true,
       "nonfoil": true,
       "finishes": [
-        "foil",
         "nonfoil"
       ],
       "oversized": false,
@@ -201,8 +200,7 @@
       "foil": true,
       "nonfoil": true,
       "finishes": [
-        "foil",
-        "nonfoil"
+        "foil"
       ],
       "oversized": false,
       "promo": false,

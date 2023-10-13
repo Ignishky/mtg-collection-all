@@ -8,6 +8,8 @@ data class CardResponse(
     val id: String,
     val name: String,
     val image: String,
+    val isFoil: Boolean,
+    val isNonFoil: Boolean,
     val prices: PricesResponse,
 )
 

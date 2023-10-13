@@ -9,6 +9,10 @@ data class CardFinishes(
     override fun propertyName(): CardProperty.PropertyName = FINISHES
 
     override fun propertyValue(): String = value.map { it.value }.joinToString { it }
+
+    fun isFoil(): Boolean = value.contains(CardFinish("foil"))
+
+    fun isNonFoil(): Boolean = value.contains(CardFinish("nonfoil"))
 }
 
 data class CardFinish(

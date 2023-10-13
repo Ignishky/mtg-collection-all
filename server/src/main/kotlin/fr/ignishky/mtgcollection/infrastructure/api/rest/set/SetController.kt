@@ -34,6 +34,8 @@ class SetController(
                     it.id.value,
                     it.name.value,
                     it.images.value[0].value,
+                    it.finishes.isFoil(),
+                    it.finishes.isNonFoil(),
                     PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil)
                 )
             }
