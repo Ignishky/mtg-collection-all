@@ -10,6 +10,8 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.time.LocalDate.parse
 
 class SetUpdatedTest {
@@ -71,49 +73,27 @@ class SetUpdatedTest {
         }
     }
 
-    @Test
-    fun `Should handle only code updated set event`() {
-        justRun { setProjectionPort.update(existingSet.id, listOf(SetCode("updatedCode"))) }
-
-        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetCode("updatedCode")))
-
-        verify { setProjectionPort.update(existingSet.id, listOf(SetCode("updatedCode"))) }
+    companion object {
+        @JvmStatic
+        fun setPropertyProvider(): List<SetProperty> {
+            return listOf(
+                SetCode("updatedCode"),
+                SetName("updatedName"),
+                SetType("updatedType"),
+                SetIcon("updatedIcon"),
+                SetReleasedAt(parse("2023-06-12")),
+            )
+        }
     }
 
-    @Test
-    fun `Should handle only name updated set event`() {
-        justRun { setProjectionPort.update(existingSet.id, listOf(SetName("updatedName"))) }
+    @ParameterizedTest
+    @MethodSource("setPropertyProvider")
+    fun `Should handle updated set event`(property: SetProperty) {
+        justRun { setProjectionPort.update(existingSet.id, listOf(property)) }
 
-        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetName("updatedName")))
+        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, property))
 
-        verify { setProjectionPort.update(existingSet.id, listOf(SetName("updatedName"))) }
-    }
-
-    @Test
-    fun `Should handle only type updated set event`() {
-        justRun { setProjectionPort.update(existingSet.id, listOf(SetType("updatedType"))) }
-
-        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetType("updatedType")))
-
-        verify { setProjectionPort.update(existingSet.id, listOf(SetType("updatedType"))) }
-    }
-
-    @Test
-    fun `Should handle only icon updated set event`() {
-        justRun { setProjectionPort.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
-
-        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetIcon("updatedIcon")))
-
-        verify { setProjectionPort.update(existingSet.id, listOf(SetIcon("updatedIcon"))) }
-    }
-
-    @Test
-    fun `Should handle only releasedAt updated set event`() {
-        justRun { setProjectionPort.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
-
-        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, SetReleasedAt(parse("2023-06-12"))))
-
-        verify { setProjectionPort.update(existingSet.id, listOf(SetReleasedAt(parse("2023-06-12")))) }
+        verify { setProjectionPort.update(existingSet.id, listOf(property)) }
     }
 
     @Test
@@ -122,4 +102,5 @@ class SetUpdatedTest {
 
         assertThat(listenTo).isEqualTo(SetUpdated::class)
     }
+
 }

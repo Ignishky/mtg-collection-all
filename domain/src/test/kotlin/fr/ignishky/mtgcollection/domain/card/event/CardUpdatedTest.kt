@@ -10,6 +10,8 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class CardUpdatedTest {
 
@@ -71,49 +73,27 @@ class CardUpdatedTest {
         }
     }
 
-    @Test
-    fun `Should handle only name updated card event`() {
-        justRun { cardProjectionPort.update(existingCard.id, listOf(CardName("updatedName"))) }
-
-        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardName("updatedName")))
-
-        verify { cardProjectionPort.update(existingCard.id, listOf(CardName("updatedName"))) }
+    companion object {
+        @JvmStatic
+        fun cardPropertyProvider(): List<CardProperty> {
+            return listOf(
+                CardName("updatedName"),
+                CardImages(listOf(CardImage("image1"))),
+                CardSetCode("updatedSetCode"),
+                CardNumber("updatedNumber"),
+                CardFinishes(listOf(CardFinish("foil"))),
+            )
+        }
     }
 
-    @Test
-    fun `Should handle only images updated card event`() {
-        justRun { cardProjectionPort.update(existingCard.id, listOf(CardImages(listOf(CardImage("image1"))))) }
+    @ParameterizedTest
+    @MethodSource("cardPropertyProvider")
+    fun `Should handle updated card event`(property: CardProperty) {
+        justRun { cardProjectionPort.update(existingCard.id, listOf(property)) }
 
-        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardImages(listOf(CardImage("image1")))))
+        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, property))
 
-        verify { cardProjectionPort.update(existingCard.id, listOf(CardImages(listOf(CardImage("image1"))))) }
-    }
-
-    @Test
-    fun `Should handle only set code updated card event`() {
-        justRun { cardProjectionPort.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
-
-        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardSetCode("updatedSetCode")))
-
-        verify { cardProjectionPort.update(existingCard.id, listOf(CardSetCode("updatedSetCode"))) }
-    }
-
-    @Test
-    fun `Should handle only collection number updated card event`() {
-        justRun { cardProjectionPort.update(existingCard.id, listOf(CardNumber("updatedNumber"))) }
-
-        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardNumber("updatedNumber")))
-
-        verify { cardProjectionPort.update(existingCard.id, listOf(CardNumber("updatedNumber"))) }
-    }
-
-    @Test
-    fun `Should handle only finishes updated card event`() {
-        justRun { cardProjectionPort.update(existingCard.id, listOf(CardFinishes(listOf(CardFinish("foil"))))) }
-
-        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, CardFinishes(listOf(CardFinish("foil")))))
-
-        verify { cardProjectionPort.update(existingCard.id, listOf(CardFinishes(listOf(CardFinish("foil"))))) }
+        verify { cardProjectionPort.update(existingCard.id, listOf(property)) }
     }
 
     @Test
