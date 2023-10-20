@@ -9,10 +9,8 @@ data class ScryfallCard(
     val nextPage: String?,
     val data: List<ScryfallCardData>,
 ) {
-
     @Suppress("unused")
     constructor() : this(false, "", emptyList())
-
 }
 
 data class ScryfallCardData(
@@ -28,7 +26,6 @@ data class ScryfallCardData(
     @JsonProperty("collector_number")
     val collectionNumber: String,
 ) {
-
     @Suppress("unused")
     constructor() : this(
         "",
@@ -40,7 +37,6 @@ data class ScryfallCardData(
         emptyList(),
         "",
     )
-
 }
 
 data class ScryfallPrices(
@@ -51,28 +47,22 @@ data class ScryfallPrices(
     @JsonProperty("usd_foil")
     val usdFoil: String?,
 ) {
-
     @Suppress("unused")
     constructor() : this("", "", "", "")
-
 }
 
 data class ImageUris(
     @JsonProperty("border_crop")
     val borderCrop: String,
 ) {
-
     @Suppress("unused")
     constructor() : this("")
-
 }
 
 data class CardFaces(
     @JsonProperty("image_uris")
     val imageUris: ImageUris?,
 ) {
-
     @Suppress("unused")
     constructor() : this(ImageUris(""))
-
 }

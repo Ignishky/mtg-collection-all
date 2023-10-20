@@ -8,6 +8,7 @@ import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.domain.set.model.SetType
 import fr.ignishky.mtgcollection.domain.set.port.SetEventStorePort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
+import fr.ignishky.mtgcollection.domain.set.usecase.RefreshSet
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat

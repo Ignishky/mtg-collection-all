@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.domain.card.query
+package fr.ignishky.mtgcollection.domain.card.usecase
 
 import fr.ignishky.mtgcollection.domain.card.exception.NoCardFoundException
 import fr.ignishky.mtgcollection.domain.card.model.Card

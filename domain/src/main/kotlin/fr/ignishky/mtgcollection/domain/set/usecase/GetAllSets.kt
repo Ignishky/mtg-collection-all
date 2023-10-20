@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.domain.set.query
+package fr.ignishky.mtgcollection.domain.set.usecase
 
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort

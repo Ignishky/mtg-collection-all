@@ -9,6 +9,8 @@ import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardEventStorePort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
+import fr.ignishky.mtgcollection.domain.card.usecase.RefreshCard
+import fr.ignishky.mtgcollection.domain.card.usecase.RefreshCardHandler
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import io.mockk.every
 import io.mockk.mockk

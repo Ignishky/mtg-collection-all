@@ -5,6 +5,6 @@ import fr.ignishky.mtgcollection.domain.set.model.SetCode
 
 interface CardRefererPort {
 
-    fun getCards(code: SetCode): List<Card>
+    fun getCards(setCode: SetCode): List<Card>
 
 }

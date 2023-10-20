@@ -19,11 +19,16 @@ class ScryfallCardReferer(
 
     private val logger = logger {}
 
-    override fun getCards(code: SetCode): List<Card> {
+    override fun getCards(setCode: SetCode): List<Card> {
+        return retrieveCards(setCode)
+            .map(::toCard)
+    }
+
+    private fun retrieveCards(setCode: SetCode): List<ScryfallCardData> {
         var scryfallCards = emptyList<ScryfallCardData>()
 
         try {
-            var response = restTemplate.getForObject<ScryfallCard>("${properties.baseUrl}/cards/search?order=set&q=e:${code.value}&unique=prints")
+            var response = restTemplate.getForObject<ScryfallCard>("${properties.baseUrl}/cards/search?order=set&q=e:${setCode.value}&unique=prints")
             scryfallCards = scryfallCards.plus(response.data)
 
             while (response.hasMore) {
@@ -31,32 +36,35 @@ class ScryfallCardReferer(
                 scryfallCards = scryfallCards.plus(response.data)
             }
         } catch (e: NotFound) {
-            logger.warn("Unable to get cards for ${code.value}", e)
+            logger.warn("Unable to get cards for ${setCode.value}", e)
         }
+        return scryfallCards
+    }
 
-        return scryfallCards.map {
-            val images = if (it.imageUris != null) listOf(CardImage(it.imageUris.borderCrop.split("?")[0]))
-            else it.cardFaces
+    private fun toCard(cardData: ScryfallCardData): Card {
+        val images = if (cardData.imageUris != null)
+            listOf(CardImage(cardData.imageUris.borderCrop.split("?")[0]))
+        else
+            cardData.cardFaces
                 ?.map { (imageUris) -> (if (imageUris?.borderCrop != null) imageUris.borderCrop.split("?")[0] else "") }
                 ?.map { crop -> CardImage(crop) }
                 ?: emptyList()
-            Card(
-                CardId(it.id),
-                CardName(it.name),
-                CardSetCode(it.set),
-                CardImages(images),
-                CardNumber(it.collectionNumber),
-                CardPrices(
-                    Price(
-                        parseLong(it.prices.eur?.replace(".", "") ?: "0"),
-                        parseLong(it.prices.eurFoil?.replace(".", "") ?: "0"),
-                        parseLong(it.prices.usd?.replace(".", "") ?: "0"),
-                        parseLong(it.prices.usdFoil?.replace(".", "") ?: "0"),
-                    ),
+        return Card(
+            CardId(cardData.id),
+            CardName(cardData.name),
+            CardSetCode(cardData.set),
+            CardImages(images),
+            CardNumber(cardData.collectionNumber),
+            CardPrices(
+                Price(
+                    parseLong(cardData.prices.eur?.replace(".", "") ?: "0"),
+                    parseLong(cardData.prices.eurFoil?.replace(".", "") ?: "0"),
+                    parseLong(cardData.prices.usd?.replace(".", "") ?: "0"),
+                    parseLong(cardData.prices.usdFoil?.replace(".", "") ?: "0"),
                 ),
-                CardFinishes(it.finishes.map(::CardFinish)),
-            )
-        }
+            ),
+            CardFinishes(cardData.finishes.map(::CardFinish)),
+        )
     }
 
 }
