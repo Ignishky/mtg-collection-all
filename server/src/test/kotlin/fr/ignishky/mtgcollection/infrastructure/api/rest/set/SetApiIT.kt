@@ -31,10 +31,6 @@ internal class SetApiIT(
 ) {
 
     private val afr = afr()
-    private val aafr = aafr()
-    private val pafr = pafr()
-    private val khm = khm()
-    private val tkhm = tkhm()
     private val plus2Mace = plus2Mace()
     private val arboreaPegasus = arboreaPegasus()
     private val axgardBraggart = axgardBraggart()
@@ -47,7 +43,7 @@ internal class SetApiIT(
     @Test
     fun `Should return sets`() {
         // GIVEN
-        jdbc.save(listOf(khm, tkhm, afr, aafr, pafr), emptyList())
+        jdbc.save(listOf(khm(), tkhm(), afr, aafr(), pafr()), emptyList())
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets"))
@@ -72,7 +68,7 @@ internal class SetApiIT(
         resultActions.andExpectAll(
             status().isOk,
             content().contentType(APPLICATION_JSON),
-            content().json(readFile("refresh/cardsResponse.json"), true)
+            content().json(readFile("sets/cardsResponse.json"), true)
         )
     }
 

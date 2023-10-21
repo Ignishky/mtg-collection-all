@@ -38,9 +38,12 @@ class SetController(
                     PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil)
                 )
             }
+        val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur, eurFoil), card ->
+            PricesResponse(eur + card.prices.eur, eurFoil + card.prices.eurFoil)
+        }
 
         logger.info { "Returning ${cards.size} cards." }
-        return CardsResponse(cards)
+        return CardsResponse(cards, pricesResponse)
     }
 
 }

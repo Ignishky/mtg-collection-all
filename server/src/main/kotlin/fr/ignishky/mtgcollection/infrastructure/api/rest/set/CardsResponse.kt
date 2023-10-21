@@ -2,6 +2,7 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
 data class CardsResponse(
     val cards: List<CardResponse>,
+    val prices: PricesResponse,
 )
 
 data class CardResponse(

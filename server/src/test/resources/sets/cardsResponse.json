@@ -22,5 +22,9 @@
         "eurFoil": 8
       }
     }
-  ]
+  ],
+  "prices": {
+    "eur": 6,
+    "eurFoil": 15
+  }
 }
