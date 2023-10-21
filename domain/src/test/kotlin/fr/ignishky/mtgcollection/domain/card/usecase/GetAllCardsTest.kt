@@ -1,11 +1,10 @@
-package fr.ignishky.mtgcollection.domain.card.query
+package fr.ignishky.mtgcollection.domain.card.usecase
 
 import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.card.exception.NoCardFoundException
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
-import fr.ignishky.mtgcollection.domain.card.usecase.GetAllCards
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import io.mockk.every
 import io.mockk.mockk

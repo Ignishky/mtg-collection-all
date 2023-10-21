@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.domain.set.command
+package fr.ignishky.mtgcollection.domain.set.usecase
 
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
@@ -8,7 +8,6 @@ import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.domain.set.model.SetType
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
-import fr.ignishky.mtgcollection.domain.set.usecase.RefreshSet
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat

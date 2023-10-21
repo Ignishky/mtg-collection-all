@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.domain.card.command
+package fr.ignishky.mtgcollection.domain.card.usecase
 
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
