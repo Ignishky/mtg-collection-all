@@ -7,7 +7,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.port.SetEventStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
@@ -17,14 +17,14 @@ class RefreshSet : Command {
     @Named
     class RefreshSetHandler(
         private val setReferer: SetRefererPort,
-        private val setEventStorePort: SetEventStorePort,
+        private val setProjectionPort: SetProjectionPort,
     ) : CommandHandler<RefreshSet> {
 
         private val logger = logger {}
 
         override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
 
-            val knownSetsById = setEventStorePort.getAll().associateBy { it.id }
+            val knownSetsById = setProjectionPort.getAll().associateBy { it.id }
             logger.info { "Refreshing ${knownSetsById.size} sets..." }
 
             return setReferer.getAllSets()

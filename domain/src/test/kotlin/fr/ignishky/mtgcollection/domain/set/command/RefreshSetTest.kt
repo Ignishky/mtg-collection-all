@@ -6,7 +6,7 @@ import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.domain.set.model.SetType
-import fr.ignishky.mtgcollection.domain.set.port.SetEventStorePort
+import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import fr.ignishky.mtgcollection.domain.set.usecase.RefreshSet
 import io.mockk.every
@@ -19,12 +19,12 @@ class RefreshSetTest {
     private val correlationId = CorrelationId("test-correlation-id")
 
     private val setReferer = mockk<SetRefererPort>()
-    private val setEventStorePort = mockk<SetEventStorePort>()
-    private val handler = RefreshSet.RefreshSetHandler(setReferer, setEventStorePort)
+    private val setProjectionPort = mockk<SetProjectionPort>()
+    private val handler = RefreshSet.RefreshSetHandler(setReferer, setProjectionPort)
 
     @Test
     fun `Should return no event when set is unmodified`() {
-        every { setEventStorePort.getAll() } returns listOf(afr())
+        every { setProjectionPort.getAll() } returns listOf(afr())
         every { setReferer.getAllSets() } returns listOf(afr())
 
         val events = handler.handle(RefreshSet(), correlationId)
@@ -34,7 +34,7 @@ class RefreshSetTest {
 
     @Test
     fun `Should return SetCreated event when a referer set is not stored`() {
-        every { setEventStorePort.getAll() } returns emptyList()
+        every { setProjectionPort.getAll() } returns emptyList()
         every { setReferer.getAllSets() } returns listOf(afr())
 
         val events = handler.handle(RefreshSet(), correlationId)
@@ -46,7 +46,7 @@ class RefreshSetTest {
 
     @Test
     fun `Should return SetUpdated event when a referer set is stored differently`() {
-        every { setEventStorePort.getAll() } returns listOf(afr().copy(name = SetName("Old name"), type = SetType("Old type")))
+        every { setProjectionPort.getAll() } returns listOf(afr().copy(name = SetName("Old name"), type = SetType("Old type")))
         every { setReferer.getAllSets() } returns listOf(afr())
 
         val events = handler.handle(RefreshSet(), correlationId)
