@@ -3,7 +3,6 @@ package fr.ignishky.framework.cqrs.command.middleware
 import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventRepository
-import fr.ignishky.framework.domain.CorrelationId
 import mu.KotlinLogging.logger
 
 class EventPersistenceMiddleware(
@@ -13,8 +12,8 @@ class EventPersistenceMiddleware(
 
     private val logger = logger {}
 
-    override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
-        val events = next(command, correlationId)
+    override fun handle(command: Command): List<Event<*, *, *>> {
+        val events = next(command)
 
         logger.info { "Saving ${events.size} events" }
 

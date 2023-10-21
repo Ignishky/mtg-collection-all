@@ -4,7 +4,6 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedPayload
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
@@ -15,7 +14,6 @@ import java.time.Instant.now
 import java.time.LocalDate
 
 class SetCreated(
-    correlationId: CorrelationId,
     aggregateId: SetId,
     code: SetCode,
     name: SetName,
@@ -35,7 +33,6 @@ class SetCreated(
             releasedAt.value.toString(),
         ),
         now(),
-        correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>) = Set(
@@ -54,6 +51,7 @@ class SetCreated(
         val icon: String,
         val releasedAt: String,
     ) : Payload {
+        @Suppress("unused")
         constructor() : this("", "", "", "", "")
     }
 

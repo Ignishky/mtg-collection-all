@@ -2,7 +2,6 @@ package fr.ignishky.framework.cqrs.command.middleware
 
 import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.command.CommandHandler
-import fr.ignishky.framework.domain.CorrelationId
 
 class CommandDispatcherMiddleware(
     next: CommandMiddleware,
@@ -11,7 +10,7 @@ class CommandDispatcherMiddleware(
 
     private val handlersByCommand = handlers.associateBy { it.listenTo() }
 
-    override fun handle(command: Command, correlationId: CorrelationId) = handlersByCommand.getValue(command::class).handle(command, correlationId)
+    override fun handle(command: Command) = handlersByCommand.getValue(command::class).handle(command)
 
     class Builder(
         private val handlers: List<CommandHandler<*>>,

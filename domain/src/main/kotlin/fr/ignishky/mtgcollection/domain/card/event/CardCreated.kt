@@ -4,7 +4,6 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
@@ -13,7 +12,6 @@ import mu.KotlinLogging
 import java.time.Instant.now
 
 class CardCreated(
-    correlationId: CorrelationId,
     aggregateId: CardId,
     name: CardName,
     setCode: CardSetCode,
@@ -38,7 +36,6 @@ class CardCreated(
             finishes.value.map { it.value }
         ),
         now(),
-        correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>) = Card(
@@ -62,6 +59,7 @@ class CardCreated(
         val collectionNumber: String,
         val finishes: List<String>,
     ) : Payload {
+        @Suppress("unused")
         constructor() : this("", "", 0, 0, 0, 0, emptyList(), "", emptyList())
     }
 

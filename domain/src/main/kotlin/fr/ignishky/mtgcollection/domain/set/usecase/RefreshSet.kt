@@ -3,7 +3,6 @@ package fr.ignishky.mtgcollection.domain.set.usecase
 import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.command.CommandHandler
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.Set
@@ -22,7 +21,7 @@ class RefreshSetHandler(
 
     private val logger = KotlinLogging.logger {}
 
-    override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
+    override fun handle(command: Command): List<Event<*, *, *>> {
 
         val knownSetsById = setProjectionPort.getAll().associateBy { it.id }
         logger.info { "Refreshing ${knownSetsById.size} sets..." }
@@ -30,26 +29,23 @@ class RefreshSetHandler(
         return setReferer.getAllSets()
             .mapNotNull {
                 if (knownSetsById[it.id] == null) {
-                    setCreated(it, correlationId)
+                    setCreated(it)
                 } else {
-                    setUpdated(knownSetsById[it.id]!!, it, correlationId)
+                    setUpdated(knownSetsById[it.id]!!, it)
                 }
             }
     }
 
-    private fun setCreated(
-        it: Set,
-        correlationId: CorrelationId,
-    ): SetCreated {
-        val event = SetCreated(correlationId, it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
+    private fun setCreated(it: Set): SetCreated {
+        val event = SetCreated(it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
         setProjectionPort.add(event.apply(Set()))
         return event
     }
 
-    private fun setUpdated(knownSet: Set, newSet: Set, correlationId: CorrelationId): SetUpdated? {
+    private fun setUpdated(knownSet: Set, newSet: Set): SetUpdated? {
         val delta = knownSet.updatedFields(newSet)
         return if (delta.isNotEmpty()) {
-            val event = SetUpdated(correlationId, newSet.id, *delta.toTypedArray())
+            val event = SetUpdated(newSet.id, *delta.toTypedArray())
             setProjectionPort.update(knownSet.id, delta)
             event
         } else {

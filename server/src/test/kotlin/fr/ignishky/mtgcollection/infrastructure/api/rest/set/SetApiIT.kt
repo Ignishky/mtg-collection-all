@@ -1,7 +1,5 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
-import fr.ignishky.framework.domain.CorrelationId
-import fr.ignishky.framework.domain.CorrelationIdGenerator
 import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
 import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
@@ -14,12 +12,10 @@ import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockserver.springtest.MockServerTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -34,10 +30,6 @@ internal class SetApiIT(
     @Autowired private val jdbc: JdbcUtils,
 ) {
 
-    @MockBean
-    private lateinit var correlationIdGenerator: CorrelationIdGenerator
-
-    private val correlationId = CorrelationId("test-correlation-id")
     private val afr = afr()
     private val aafr = aafr()
     private val pafr = pafr()
@@ -50,7 +42,6 @@ internal class SetApiIT(
     @BeforeEach
     fun setUp() {
         jdbc.dropAll()
-        `when`(correlationIdGenerator.generate()).thenReturn(correlationId)
     }
 
     @Test

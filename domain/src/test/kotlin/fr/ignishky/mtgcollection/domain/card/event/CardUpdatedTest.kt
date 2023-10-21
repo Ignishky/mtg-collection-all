@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.*
@@ -25,7 +24,6 @@ class CardUpdatedTest {
     )
 
     private val event = CardUpdated(
-        CorrelationId("CardUpdated_CorrelationId"),
         existingCard.id,
         CardName("cardName"),
         CardSetCode("cardSetCode"),
@@ -91,7 +89,7 @@ class CardUpdatedTest {
     fun `Should handle updated card event`(property: CardProperty) {
         justRun { cardProjectionPort.update(existingCard.id, listOf(property)) }
 
-        handler.handle(CardUpdated(CorrelationId("CardUpdated_CorrelationId"), existingCard.id, property))
+        handler.handle(CardUpdated(existingCard.id, property))
 
         verify { cardProjectionPort.update(existingCard.id, listOf(property)) }
     }

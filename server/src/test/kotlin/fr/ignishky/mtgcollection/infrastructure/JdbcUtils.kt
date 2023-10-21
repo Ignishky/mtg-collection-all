@@ -26,13 +26,12 @@ class JdbcUtils(
     fun save(events: List<Event<*, *, *>>, sets: List<Set>, cards: List<Card>) {
         events.forEach {
             template.update(
-                "INSERT INTO events (aggregate_id, aggregate_name, label, instant, payload, correlation_id) VALUES (?, ?, ?, ?, ?::jsonb, ?)",
+                "INSERT INTO events (aggregate_id, aggregate_name, label, instant, payload) VALUES (?, ?, ?, ?, ?::jsonb)",
                 it.aggregateId.value(),
                 it.aggregateClass.simpleName,
                 it::class.simpleName,
                 Date(it.instant.toEpochMilli()),
                 objectMapper.writeValueAsString(it.payload),
-                it.correlationId.value,
             )
         }
         save(sets, cards)

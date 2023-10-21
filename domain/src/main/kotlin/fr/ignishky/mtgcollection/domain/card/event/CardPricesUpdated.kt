@@ -4,7 +4,6 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
@@ -15,7 +14,6 @@ import mu.KotlinLogging
 import java.time.Instant.now
 
 class CardPricesUpdated(
-    correlationId: CorrelationId,
     aggregateId: CardId,
     prices: CardPrices,
 ) :
@@ -25,7 +23,6 @@ class CardPricesUpdated(
         Card::class,
         CardPricesUpdatedPayload(prices.scryfall.eur, prices.scryfall.eurFoil, prices.scryfall.usd, prices.scryfall.usdFoil),
         now(),
-        correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>) = (aggregate as Card).copy(
@@ -38,6 +35,7 @@ class CardPricesUpdated(
         val scryfallUsd: Long,
         val scryfallUsdFoil: Long,
     ) : Payload {
+        @Suppress("unused")
         constructor() : this(0, 0, 0, 0)
     }
 

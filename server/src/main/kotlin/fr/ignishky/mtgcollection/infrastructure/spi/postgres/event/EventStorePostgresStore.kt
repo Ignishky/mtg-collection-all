@@ -17,7 +17,7 @@ class EventStorePostgresStore(
 
     override fun saveAll(events: List<Event<*, *, *>>) {
         jdbcTemplate.batchUpdate(
-            "INSERT INTO events (aggregate_id, aggregate_name, label, instant, payload, correlation_id) VALUES (?, ?, ?, ?, ?::jsonb, ?)",
+            "INSERT INTO events (aggregate_id, aggregate_name, label, instant, payload) VALUES (?, ?, ?, ?, ?::jsonb)",
             EventBatchPreparedStatementSetter(events, objectMapper)
         )
     }
@@ -34,7 +34,6 @@ class EventStorePostgresStore(
             ps.setString(3, event::class.simpleName)
             ps.setDate(4, Date(event.instant.toEpochMilli()))
             ps.setString(5, objectMapper.writeValueAsString(event.payload))
-            ps.setString(6, event.correlationId.value)
         }
 
         override fun getBatchSize() = events.size

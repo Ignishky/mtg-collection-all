@@ -4,7 +4,6 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.*
@@ -14,7 +13,6 @@ import mu.KotlinLogging
 import java.time.Instant.now
 
 class CardUpdated(
-    correlationId: CorrelationId,
     aggregateId: CardId,
     vararg properties: CardProperty,
 ) :
@@ -24,7 +22,6 @@ class CardUpdated(
         Card::class,
         CardUpdatedPayload.from(*properties),
         now(),
-        correlationId,
     ) {
 
     override fun apply(aggregate: Aggregate<*>): Card {
@@ -55,8 +52,8 @@ class CardUpdated(
     data class CardUpdatedPayload(
         val properties: Map<String, String>,
     ) : Payload {
-
-        constructor() : this(HashMap())
+        @Suppress("unused")
+        constructor() : this(mapOf())
 
         companion object {
             fun from(vararg properties: CardProperty) = CardUpdatedPayload(

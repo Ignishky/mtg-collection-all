@@ -1,7 +1,5 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.refresh
 
-import fr.ignishky.framework.domain.CorrelationId
-import fr.ignishky.framework.domain.CorrelationIdGenerator
 import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
 import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.domain.CardFixtures.halvar
@@ -23,13 +21,11 @@ import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockserver.client.MockServerClient
 import org.mockserver.springtest.MockServerTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -42,11 +38,8 @@ class RefreshApiIT(
     @Autowired private val jdbc: JdbcUtils,
 ) {
 
-    @MockBean
-    private lateinit var correlationIdGenerator: CorrelationIdGenerator
     private lateinit var mockServer: MockServerClient
 
-    private val correlationId = CorrelationId("test-correlation-id")
     private val khm = khm()
     private val axgardBraggart = axgardBraggart()
     private val halvar = halvar()
@@ -58,7 +51,6 @@ class RefreshApiIT(
     @BeforeEach
     fun setUp() {
         jdbc.dropAll()
-        `when`(correlationIdGenerator.generate()).thenReturn(correlationId)
     }
 
     @Test
@@ -170,15 +162,15 @@ class RefreshApiIT(
         assertThat(jdbc.getCards()).containsOnly(plus2mace, arboreaPegasus, valor)
     }
 
-    private fun toSetCreated(set: Set) = SetCreated(correlationId, set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
+    private fun toSetCreated(set: Set) = SetCreated(set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
 
-    private fun toSetUpdated(set: Set) = SetUpdated(correlationId, set.id, set.name, set.icon)
+    private fun toSetUpdated(set: Set) = SetUpdated(set.id, set.name, set.icon)
 
     private fun toCardCreated(card: Card) =
-        CardCreated(correlationId, card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes)
+        CardCreated(card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes)
 
-    private fun toCardUpdated(card: Card) = CardUpdated(correlationId, card.id, card.collectionNumber, card.images)
+    private fun toCardUpdated(card: Card) = CardUpdated(card.id, card.collectionNumber, card.images)
 
-    private fun toCardPricesUpdated(card: Card) = CardPricesUpdated(correlationId, card.id, card.prices)
+    private fun toCardPricesUpdated(card: Card) = CardPricesUpdated(card.id, card.prices)
 
 }

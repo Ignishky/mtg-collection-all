@@ -1,7 +1,6 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.refresh
 
 import fr.ignishky.framework.cqrs.command.CommandBus
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.usecase.RefreshCard
 import fr.ignishky.mtgcollection.domain.set.usecase.RefreshSet
 import org.springframework.http.HttpStatus.NO_CONTENT
@@ -13,9 +12,9 @@ internal class RefreshController(
     private val commandBus: CommandBus,
 ) : RefreshApi {
 
-    override fun loadAll(correlationId: CorrelationId): ResponseEntity<Void> {
-        commandBus.dispatch(RefreshSet(), correlationId)
-        commandBus.dispatch(RefreshCard(), correlationId)
+    override fun loadAll(): ResponseEntity<Void> {
+        commandBus.dispatch(RefreshSet())
+        commandBus.dispatch(RefreshCard())
         return ResponseEntity(NO_CONTENT)
     }
 

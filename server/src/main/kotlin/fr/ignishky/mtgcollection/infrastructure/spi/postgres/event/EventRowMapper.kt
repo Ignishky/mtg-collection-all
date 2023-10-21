@@ -2,7 +2,6 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedPayload
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
@@ -37,7 +36,6 @@ class EventRowMapper(
     private fun toSetCreated(rs: ResultSet): SetCreated {
         val payload = objectMapper.readValue(rs.getString("payload"), SetCreatedPayload::class.java)
         return SetCreated(
-            CorrelationId(rs.getString("correlation_id")),
             SetId(rs.getString("aggregate_id")),
             SetCode(payload.code),
             SetName(payload.name),
@@ -50,7 +48,6 @@ class EventRowMapper(
     private fun toSetUpdated(rs: ResultSet): SetUpdated {
         val payload = objectMapper.readValue(rs.getString("payload"), SetUpdatedPayload::class.java)
         return SetUpdated(
-            CorrelationId(rs.getString("correlation_id")),
             SetId(rs.getString("aggregate_id")),
             *payload.toProperties().toTypedArray<SetProperty>(),
         )
@@ -59,7 +56,6 @@ class EventRowMapper(
     private fun toCardCreated(rs: ResultSet): CardCreated {
         val payload = objectMapper.readValue(rs.getString("payload"), CardCreatedPayload::class.java)
         return CardCreated(
-            CorrelationId(rs.getString("correlation_id")),
             CardId(rs.getString("aggregate_id")),
             CardName(payload.name),
             CardSetCode(payload.setCode),
@@ -74,7 +70,6 @@ class EventRowMapper(
         val payload = objectMapper.readValue(rs.getString("payload"), CardUpdatedPayload::class.java)
         val properties = payload.properties.map { CardProperty.PropertyName.valueOf(it.key).withValue(it.value) }.toTypedArray()
         return CardUpdated(
-            CorrelationId(rs.getString("correlation_id")),
             CardId(rs.getString("aggregate_id")),
             *properties,
         )
@@ -83,7 +78,6 @@ class EventRowMapper(
     private fun toCardPricesUpdated(rs: ResultSet): CardPricesUpdated {
         val payload = objectMapper.readValue(rs.getString("payload"), CardPricesUpdatedPayload::class.java)
         return CardPricesUpdated(
-            CorrelationId(rs.getString("correlation_id")),
             CardId(rs.getString("aggregate_id")),
             CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil))
         )

@@ -1,13 +1,11 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.refresh
 
-import fr.ignishky.framework.domain.CorrelationId
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/refresh-all")
@@ -21,6 +19,6 @@ interface RefreshApi {
             ApiResponse(responseCode = "200", description = "OK - Everything is up to date")
         ],
     )
-    fun loadAll(@RequestAttribute correlationId: CorrelationId): ResponseEntity<Void>
+    fun loadAll(): ResponseEntity<Void>
 
 }

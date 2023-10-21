@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.domain.set.event
 
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedHandler
 import fr.ignishky.mtgcollection.domain.set.model.*
@@ -25,7 +24,6 @@ class SetUpdatedTest {
         releasedAt = SetReleasedAt(parse("2023-06-12")),
     )
     private val event = SetUpdated(
-        CorrelationId("SetUpdated_CorrelationId"),
         existingSet.id,
         SetCode("updatedCode"),
         SetName("updatedName"),
@@ -91,7 +89,7 @@ class SetUpdatedTest {
     fun `Should handle updated set event`(property: SetProperty) {
         justRun { setProjectionPort.update(existingSet.id, listOf(property)) }
 
-        handler.handle(SetUpdated(CorrelationId("SetUpdated_CorrelationId"), existingSet.id, property))
+        handler.handle(SetUpdated(existingSet.id, property))
 
         verify { setProjectionPort.update(existingSet.id, listOf(property)) }
     }

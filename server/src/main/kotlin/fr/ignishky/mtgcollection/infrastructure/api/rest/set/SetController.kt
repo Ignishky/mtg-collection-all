@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.port.CardApiPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort
@@ -15,7 +14,7 @@ class SetController(
 
     private val logger = KotlinLogging.logger {}
 
-    override fun getAll(correlationId: CorrelationId): SetsResponse {
+    override fun getAll(): SetsResponse {
         logger.info { "Requesting all sets ..." }
 
         val sets = setApiPort.getAll()
@@ -25,7 +24,7 @@ class SetController(
         return SetsResponse(sets)
     }
 
-    override fun getCards(correlationId: CorrelationId, setCode: String): CardsResponse {
+    override fun getCards(setCode: String): CardsResponse {
         logger.info { "Requesting all cards from '${setCode}'" }
 
         val cards = cardApiPort.getAll(SetCode(setCode))

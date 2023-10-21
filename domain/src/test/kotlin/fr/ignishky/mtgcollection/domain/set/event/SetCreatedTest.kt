@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.domain.set.event
 
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedHandler
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
@@ -15,7 +14,6 @@ class SetCreatedTest {
 
     private val emptySet = Set()
     private val event = SetCreated(
-        CorrelationId("SetCreated_CorrelationId"),
         SetId("createdId"),
         SetCode("createdCode"),
         SetName("createdName"),

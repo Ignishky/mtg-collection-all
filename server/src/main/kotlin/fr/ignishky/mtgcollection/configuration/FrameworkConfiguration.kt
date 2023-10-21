@@ -6,15 +6,11 @@ import fr.ignishky.framework.cqrs.command.middleware.CommandDispatcherMiddleware
 import fr.ignishky.framework.cqrs.command.middleware.EventPersistenceMiddleware
 import fr.ignishky.framework.cqrs.command.middleware.LoggingCommandBusMiddleware
 import fr.ignishky.framework.cqrs.event.EventRepository
-import fr.ignishky.framework.domain.CorrelationIdGenerator
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class FrameworkConfiguration {
-
-    @Bean
-    fun correlationIdGenerator() = CorrelationIdGenerator()
 
     @Bean
     fun commandBus(

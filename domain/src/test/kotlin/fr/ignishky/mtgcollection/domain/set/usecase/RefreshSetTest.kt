@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.domain.set.usecase
 
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
@@ -16,8 +15,6 @@ import org.junit.jupiter.api.Test
 
 class RefreshSetTest {
 
-    private val correlationId = CorrelationId("test-correlation-id")
-
     private val setReferer = mockk<SetRefererPort>()
     private val setProjectionPort = mockk<SetProjectionPort>()
     private val handler = RefreshSetHandler(setReferer, setProjectionPort)
@@ -27,7 +24,7 @@ class RefreshSetTest {
         every { setProjectionPort.getAll() } returns listOf(afr())
         every { setReferer.getAllSets() } returns listOf(afr())
 
-        val events = handler.handle(RefreshSet(), correlationId)
+        val events = handler.handle(RefreshSet())
 
         assertThat(events).isEmpty()
     }
@@ -38,11 +35,11 @@ class RefreshSetTest {
         every { setReferer.getAllSets() } returns listOf(afr())
         justRun { setProjectionPort.add(afr()) }
 
-        val events = handler.handle(RefreshSet(), correlationId)
+        val events = handler.handle(RefreshSet())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(SetCreated(correlationId, afr().id, afr().code, afr().name, afr().type, afr().icon, afr().releasedAt))
+            .containsOnly(SetCreated(afr().id, afr().code, afr().name, afr().type, afr().icon, afr().releasedAt))
     }
 
     @Test
@@ -51,11 +48,11 @@ class RefreshSetTest {
         every { setReferer.getAllSets() } returns listOf(afr())
         justRun { setProjectionPort.update(afr().id, listOf(afr().name, afr().type)) }
 
-        val events = handler.handle(RefreshSet(), correlationId)
+        val events = handler.handle(RefreshSet())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(SetUpdated(correlationId, afr().id, afr().name, afr().type))
+            .containsOnly(SetUpdated(afr().id, afr().name, afr().type))
     }
 
     @Test

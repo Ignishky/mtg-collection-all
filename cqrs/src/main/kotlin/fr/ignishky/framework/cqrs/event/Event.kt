@@ -2,7 +2,6 @@ package fr.ignishky.framework.cqrs.event
 
 import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.framework.domain.AggregateId
-import fr.ignishky.framework.domain.CorrelationId
 import java.time.Instant
 import kotlin.reflect.KClass
 
@@ -13,11 +12,10 @@ protected constructor(
     val aggregateClass: KClass<A>,
     val payload: P,
     val instant: Instant,
-    val correlationId: CorrelationId,
 ) {
 
     abstract fun apply(aggregate: Aggregate<*>): A
 
-    override fun toString() = "Event($id, $aggregateId, $aggregateClass, $payload, $instant, $correlationId)"
+    override fun toString() = "Event($id, $aggregateId, $aggregateClass, $payload, $instant)"
 
 }

@@ -1,6 +1,5 @@
 package fr.ignishky.mtgcollection.domain.card.usecase
 
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test
 
 class RefreshCardTest {
 
-    private val correlationId = CorrelationId("a-correlation-id")
     private val afr = afr()
     private val plus2Mace = plus2Mace()
 
@@ -33,7 +31,7 @@ class RefreshCardTest {
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace)
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events).isEmpty()
     }
@@ -45,13 +43,12 @@ class RefreshCardTest {
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
         justRun { cardProjectionPort.add(plus2Mace) }
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
                 CardCreated(
-                    correlationId,
                     plus2Mace.id,
                     plus2Mace.name,
                     plus2Mace.setCode,
@@ -70,11 +67,11 @@ class RefreshCardTest {
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
         justRun { cardProjectionPort.update(plus2Mace.id, listOf(plus2Mace.name)) }
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.name))
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.name))
     }
 
     @Test
@@ -84,11 +81,11 @@ class RefreshCardTest {
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
         justRun { cardProjectionPort.update(plus2Mace.id, listOf(plus2Mace.setCode)) }
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.setCode))
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.setCode))
     }
 
     @Test
@@ -98,11 +95,11 @@ class RefreshCardTest {
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
         justRun { cardProjectionPort.update(plus2Mace.id, listOf(plus2Mace.images)) }
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.images))
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.images))
     }
 
     @Test
@@ -112,11 +109,11 @@ class RefreshCardTest {
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
         justRun { cardProjectionPort.update(plus2Mace.id, listOf(plus2Mace.collectionNumber)) }
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardUpdated(correlationId, plus2Mace.id, plus2Mace.collectionNumber))
+            .containsOnly(CardUpdated(plus2Mace.id, plus2Mace.collectionNumber))
     }
 
     @Test
@@ -126,11 +123,11 @@ class RefreshCardTest {
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
         justRun { cardProjectionPort.update(plus2Mace.id, plus2Mace.prices) }
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardPricesUpdated(correlationId, plus2Mace.id, plus2Mace.prices))
+            .containsOnly(CardPricesUpdated(plus2Mace.id, plus2Mace.prices))
     }
 
     @Test
@@ -149,13 +146,12 @@ class RefreshCardTest {
         justRun { cardProjectionPort.update(plus2Mace.id, listOf(plus2Mace.collectionNumber, plus2Mace.images, plus2Mace.name, plus2Mace.setCode)) }
         justRun { cardProjectionPort.update(plus2Mace.id, plus2Mace.prices) }
 
-        val events = handler.handle(RefreshCard(), correlationId)
+        val events = handler.handle(RefreshCard())
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
                 CardUpdated(
-                    correlationId,
                     plus2Mace.id,
                     plus2Mace.name,
                     plus2Mace.setCode,
@@ -163,7 +159,6 @@ class RefreshCardTest {
                     plus2Mace.collectionNumber,
                 ),
                 CardPricesUpdated(
-                    correlationId,
                     plus2Mace.id,
                     plus2Mace.prices,
                 )
