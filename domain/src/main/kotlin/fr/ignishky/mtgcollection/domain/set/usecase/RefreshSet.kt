@@ -10,44 +10,42 @@ import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import jakarta.inject.Named
-import mu.KotlinLogging.logger
+import mu.KotlinLogging
 
-class RefreshSet : Command {
+class RefreshSet : Command
 
-    @Named
-    class RefreshSetHandler(
-        private val setReferer: SetRefererPort,
-        private val setProjectionPort: SetProjectionPort,
-    ) : CommandHandler<RefreshSet> {
+@Named
+class RefreshSetHandler(
+    private val setReferer: SetRefererPort,
+    private val setProjectionPort: SetProjectionPort,
+) : CommandHandler<RefreshSet> {
 
-        private val logger = logger {}
+    private val logger = KotlinLogging.logger {}
 
-        override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
+    override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
 
-            val knownSetsById = setProjectionPort.getAll().associateBy { it.id }
-            logger.info { "Refreshing ${knownSetsById.size} sets..." }
+        val knownSetsById = setProjectionPort.getAll().associateBy { it.id }
+        logger.info { "Refreshing ${knownSetsById.size} sets..." }
 
-            return setReferer.getAllSets()
-                .mapNotNull {
-                    if (knownSetsById[it.id] == null) {
-                        SetCreated(correlationId, it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
-                    } else {
-                        setUpdated(knownSetsById[it.id]!!, it, correlationId)
-                    }
+        return setReferer.getAllSets()
+            .mapNotNull {
+                if (knownSetsById[it.id] == null) {
+                    SetCreated(correlationId, it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
+                } else {
+                    setUpdated(knownSetsById[it.id]!!, it, correlationId)
                 }
-        }
-
-        private fun setUpdated(knownSet: Set, newSet: Set, correlationId: CorrelationId): SetUpdated? {
-            val delta = knownSet.updatedFields(newSet)
-            return if (delta.isNotEmpty()) {
-                SetUpdated(correlationId, newSet.id, *delta.toTypedArray())
-            } else {
-                null
             }
-        }
-
-        override fun listenTo() = RefreshSet::class
-
     }
+
+    private fun setUpdated(knownSet: Set, newSet: Set, correlationId: CorrelationId): SetUpdated? {
+        val delta = knownSet.updatedFields(newSet)
+        return if (delta.isNotEmpty()) {
+            SetUpdated(correlationId, newSet.id, *delta.toTypedArray())
+        } else {
+            null
+        }
+    }
+
+    override fun listenTo() = RefreshSet::class
 
 }

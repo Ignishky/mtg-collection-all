@@ -19,7 +19,7 @@ class RefreshSetTest {
 
     private val setReferer = mockk<SetRefererPort>()
     private val setProjectionPort = mockk<SetProjectionPort>()
-    private val handler = RefreshSet.RefreshSetHandler(setReferer, setProjectionPort)
+    private val handler = RefreshSetHandler(setReferer, setProjectionPort)
 
     @Test
     fun `Should return no event when set is unmodified`() {
