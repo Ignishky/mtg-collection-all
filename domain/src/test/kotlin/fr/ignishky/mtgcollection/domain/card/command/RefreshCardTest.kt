@@ -7,7 +7,7 @@ import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
-import fr.ignishky.mtgcollection.domain.card.port.CardEventStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.card.usecase.RefreshCard
 import fr.ignishky.mtgcollection.domain.card.usecase.RefreshCardHandler
@@ -25,13 +25,13 @@ class RefreshCardTest {
 
     private val setProjectionPort = mockk<SetProjectionPort>()
     private val cardReferer = mockk<CardRefererPort>()
-    private val cardEventStorePort = mockk<CardEventStorePort>()
-    private val handler = RefreshCardHandler(setProjectionPort, cardReferer, cardEventStorePort)
+    private val cardProjectionPort = mockk<CardProjectionPort>()
+    private val handler = RefreshCardHandler(setProjectionPort, cardReferer, cardProjectionPort)
 
     @Test
     fun `Should return no events when cards are up to date`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace)
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace)
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -42,7 +42,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardCreated event for new card`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns emptyList()
+        every { cardProjectionPort.getAll(afr.code) } returns emptyList()
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -66,7 +66,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new name`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -79,7 +79,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new setCode`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -92,7 +92,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new images`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("new image")))))
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("new image")))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -105,7 +105,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardUpdated event for card with new collection number`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("new collection number")))
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("new collection number")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -118,7 +118,7 @@ class RefreshCardTest {
     @Test
     fun `Should return CardPricesUpdated event for card with only new prices`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard(), correlationId)
@@ -131,7 +131,7 @@ class RefreshCardTest {
     @Test
     fun `Should return events for card with all new field values`() {
         every { setProjectionPort.getAll() } returns listOf(afr)
-        every { cardEventStorePort.getAll(afr.code) } returns listOf(
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(
             plus2Mace.copy(
                 name = CardName("old name"),
                 setCode = CardSetCode("old set code"),

@@ -10,7 +10,7 @@ import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
-import fr.ignishky.mtgcollection.domain.card.port.CardEventStorePort
+import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
@@ -23,7 +23,7 @@ class RefreshCard : Command
 class RefreshCardHandler(
     private val setProjectionPort: SetProjectionPort,
     private val cardReferer: CardRefererPort,
-    private val cardEventStorePort: CardEventStorePort,
+    private val cardProjectionPort: CardProjectionPort,
 ) : CommandHandler<RefreshCard> {
 
     private val logger = logger {}
@@ -33,7 +33,7 @@ class RefreshCardHandler(
 
     private fun processSet(set: Set, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {
         logger.info { "Refreshing cards from ${set.code.value} ..." }
-        val knownCardsById = cardEventStorePort.getAll(set.code).associateBy { it.id }
+        val knownCardsById = cardProjectionPort.getAll(set.code).associateBy { it.id }
         return cardReferer.getCards(set.code)
             .flatMap {
                 if (!knownCardsById.contains(it.id)) {
