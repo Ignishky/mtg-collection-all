@@ -32,7 +32,7 @@ class PostgresSetProjection(
         )
     }
 
-    override fun getAll() = jdbcTemplate.query("SELECT * FROM sets", SetRowMapper())
+    override fun getAll() = jdbcTemplate.query("SELECT * FROM sets ORDER BY released_at DESC", SetRowMapper())
 
     override fun get(id: SetId) = jdbcTemplate.queryForObject("SELECT * FROM sets WHERE id=?", SetRowMapper(), id.value)!!
 
