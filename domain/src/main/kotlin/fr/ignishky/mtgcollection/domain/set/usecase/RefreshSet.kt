@@ -30,17 +30,28 @@ class RefreshSetHandler(
         return setReferer.getAllSets()
             .mapNotNull {
                 if (knownSetsById[it.id] == null) {
-                    SetCreated(correlationId, it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
+                    setCreated(it, correlationId)
                 } else {
                     setUpdated(knownSetsById[it.id]!!, it, correlationId)
                 }
             }
     }
 
+    private fun setCreated(
+        it: Set,
+        correlationId: CorrelationId,
+    ): SetCreated {
+        val event = SetCreated(correlationId, it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
+        setProjectionPort.add(event.apply(Set()))
+        return event
+    }
+
     private fun setUpdated(knownSet: Set, newSet: Set, correlationId: CorrelationId): SetUpdated? {
         val delta = knownSet.updatedFields(newSet)
         return if (delta.isNotEmpty()) {
-            SetUpdated(correlationId, newSet.id, *delta.toTypedArray())
+            val event = SetUpdated(correlationId, newSet.id, *delta.toTypedArray())
+            setProjectionPort.update(knownSet.id, delta)
+            event
         } else {
             null
         }

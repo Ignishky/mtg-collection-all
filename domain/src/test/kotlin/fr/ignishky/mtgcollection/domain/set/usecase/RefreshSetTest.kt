@@ -9,6 +9,7 @@ import fr.ignishky.mtgcollection.domain.set.model.SetType
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -35,6 +36,7 @@ class RefreshSetTest {
     fun `Should return SetCreated event when a referer set is not stored`() {
         every { setProjectionPort.getAll() } returns emptyList()
         every { setReferer.getAllSets() } returns listOf(afr())
+        justRun { setProjectionPort.add(afr()) }
 
         val events = handler.handle(RefreshSet(), correlationId)
 
@@ -47,6 +49,7 @@ class RefreshSetTest {
     fun `Should return SetUpdated event when a referer set is stored differently`() {
         every { setProjectionPort.getAll() } returns listOf(afr().copy(name = SetName("Old name"), type = SetType("Old type")))
         every { setReferer.getAllSets() } returns listOf(afr())
+        justRun { setProjectionPort.update(afr().id, listOf(afr().name, afr().type)) }
 
         val events = handler.handle(RefreshSet(), correlationId)
 

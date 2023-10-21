@@ -37,23 +37,34 @@ class RefreshCardHandler(
         return cardReferer.getCards(set.code)
             .flatMap {
                 if (!knownCardsById.contains(it.id)) {
-                    listOf(CardCreated(correlationId, it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber, it.finishes))
+                    cardCreated(it, correlationId)
                 } else {
                     cardUpdated(knownCardsById[it.id]!!, it, correlationId)
                 }
             }
     }
 
+    private fun cardCreated(
+        it: Card,
+        correlationId: CorrelationId,
+    ): List<CardCreated> {
+        val event = CardCreated(correlationId, it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber, it.finishes)
+        cardProjectionPort.add(event.apply(Card()))
+        return listOf(event)
+    }
+
     private fun cardUpdated(knownCard: Card, newCard: Card, correlationId: CorrelationId): List<Event<CardId, Card, out Payload>> {
-        var result = emptyList<Event<CardId, Card, out Payload>>()
+        var events = emptyList<Event<CardId, Card, out Payload>>()
         val delta = knownCard.updatedFields(newCard)
         if (delta.isNotEmpty()) {
-            result = result.plus(CardUpdated(correlationId, newCard.id, *delta.toTypedArray()))
+            events = events.plus(CardUpdated(correlationId, newCard.id, *delta.toTypedArray()))
+            cardProjectionPort.update(knownCard.id, delta)
         }
         if (knownCard.prices != newCard.prices) {
-            result = result.plus(CardPricesUpdated(correlationId, newCard.id, newCard.prices))
+            events = events.plus(CardPricesUpdated(correlationId, newCard.id, newCard.prices))
+            cardProjectionPort.update(knownCard.id, newCard.prices)
         }
-        return result
+        return events
     }
 
     override fun listenTo() = RefreshCard::class
