@@ -2,6 +2,7 @@ package fr.ignishky.mtgcollection.domain.set.usecase
 
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
+import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import io.mockk.every
@@ -41,6 +42,15 @@ class GetAllSetsTest {
         val result = GetAllSets(setProjectionPort).getAll()
 
         assertThat(result).containsExactly(afr(), khm())
+    }
+
+    @Test
+    fun `Should return the set corresponding to the code`() {
+        every { setProjectionPort.get(any<SetCode>()) } returns afr()
+
+        val result = GetAllSets(setProjectionPort).get(afr().code)
+
+        assertThat(result).isEqualTo(afr())
     }
 
 }

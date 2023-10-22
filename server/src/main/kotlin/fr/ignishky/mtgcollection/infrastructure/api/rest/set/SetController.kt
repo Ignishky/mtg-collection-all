@@ -4,6 +4,9 @@ import fr.ignishky.mtgcollection.domain.card.port.CardApiPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort
 import mu.KotlinLogging
+import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.OK
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -24,8 +27,11 @@ class SetController(
         return SetsResponse(sets)
     }
 
-    override fun getCards(setCode: String): CardsResponse {
+    override fun getCards(setCode: String): ResponseEntity<CardsResponse> {
         logger.info { "Requesting all cards from '${setCode}'" }
+
+        val set = setApiPort.get(SetCode(setCode))
+            ?: return ResponseEntity(NOT_FOUND)
 
         val cards = cardApiPort.getAll(SetCode(setCode))
             .map {
@@ -43,7 +49,7 @@ class SetController(
         }
 
         logger.info { "Returning ${cards.size} cards." }
-        return CardsResponse(cards, pricesResponse)
+        return ResponseEntity(CardsResponse(set.name.value, cards, pricesResponse), OK)
     }
 
 }
