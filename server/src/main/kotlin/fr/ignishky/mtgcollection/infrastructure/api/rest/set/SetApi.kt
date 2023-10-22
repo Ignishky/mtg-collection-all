@@ -25,7 +25,7 @@ interface SetApi {
             ApiResponse(responseCode = "200", description = "OK - The sets list")
         ],
     )
-    fun getAll(): SetsResponse
+    fun getAll(): ResponseEntity<SetsResponse>
 
     @GetMapping("/{setCode}/cards", produces = [APPLICATION_JSON_VALUE])
     @Operation(

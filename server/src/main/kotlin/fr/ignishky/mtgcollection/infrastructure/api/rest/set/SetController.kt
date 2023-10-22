@@ -17,14 +17,14 @@ class SetController(
 
     private val logger = KotlinLogging.logger {}
 
-    override fun getAll(): SetsResponse {
+    override fun getAll(): ResponseEntity<SetsResponse> {
         logger.info { "Requesting all sets ..." }
 
         val sets = setApiPort.getAll()
             .map { SetResponse(it.code.value, it.name.value, it.type.value, it.icon.value) }
 
         logger.info { "Returning ${sets.size} sets." }
-        return SetsResponse(sets)
+        return ResponseEntity(SetsResponse(sets), OK)
     }
 
     override fun getCards(setCode: String): ResponseEntity<CardsResponse> {
