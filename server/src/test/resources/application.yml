@@ -1,3 +1,6 @@
+scryfall:
+  base-url: "https://fake.url.test"
+
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver

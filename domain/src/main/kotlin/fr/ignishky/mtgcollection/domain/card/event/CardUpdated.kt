@@ -34,6 +34,8 @@ class CardUpdated(
             CardNumber(payload.properties.getOrElse(COLLECTION_NUMBER.name) { aggregate.collectionNumber.value }),
             aggregate.prices,
             getCardFinishes(aggregate),
+            aggregate.isOwned,
+            aggregate.isOwnedFoil,
         )
     }
 

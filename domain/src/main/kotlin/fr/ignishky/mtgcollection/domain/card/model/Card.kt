@@ -11,6 +11,8 @@ data class Card(
     val collectionNumber: CardNumber,
     val prices: CardPrices,
     val finishes: CardFinishes,
+    val isOwned: CardIsOwned = CardIsOwned(false),
+    val isOwnedFoil: CardIsOwnedFoil = CardIsOwnedFoil(false),
 ) : Aggregate<CardId> {
 
     constructor() : this(
