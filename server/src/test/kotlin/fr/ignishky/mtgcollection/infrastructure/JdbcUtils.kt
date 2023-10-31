@@ -51,7 +51,7 @@ class JdbcUtils(
         }
         cards.forEach {
             template.update(
-                "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, isowned, isownedfoil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 it.id.value,
                 it.name.value,
                 it.setCode.value,
@@ -59,6 +59,8 @@ class JdbcUtils(
                 it.collectionNumber.value,
                 "${it.prices.scryfall.eur}|${it.prices.scryfall.eurFoil}|${it.prices.scryfall.usd}|${it.prices.scryfall.usdFoil}",
                 it.finishes.value.joinToString { it.value },
+                it.isOwned.value,
+                it.isOwnedFoil.value,
             )
         }
     }

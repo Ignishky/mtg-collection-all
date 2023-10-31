@@ -54,4 +54,5 @@ class PostgresCardProjection(
 
     override fun getAll(code: SetCode) = jdbcTemplate.query("SELECT * FROM cards WHERE set_code=?", CardRowMapper(), code.value)
 
+    override fun getCollection() = jdbcTemplate.query("SELECT * FROM cards WHERE isowned=true", CardRowMapper())
 }

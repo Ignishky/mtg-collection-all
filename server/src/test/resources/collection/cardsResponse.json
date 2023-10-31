@@ -1,0 +1,26 @@
+{
+  "cards": [
+    {
+      "id": "fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97",
+      "name": "Arborea Pegasus",
+      "image": "https://scryfall.mtgc.test/cards/arboreaPegasus.svg",
+      "foil": true,
+      "nonFoil": false,
+      "prices": {
+        "eur": 4,
+        "eurFoil": 8
+      }
+    },
+    {
+      "id": "e882c9f9-bf30-46b6-bedc-379d2c80e5cb",
+      "name": "+2 Mace",
+      "image": "https://scryfall.mtgc.test/cards/plus2mace.svg",
+      "foil": false,
+      "nonFoil": true,
+      "prices": {
+        "eur": 2,
+        "eurFoil": 7
+      }
+    }
+  ]
+}
