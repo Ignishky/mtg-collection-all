@@ -16,6 +16,7 @@ class CollectionController(
     val commandBus: CommandBus,
     val collectionApiPort: CollectionApiPort,
 ) : CollectionApi {
+
     override fun addCard(cardId: String, ownedBody: OwnedBody) {
         commandBus.dispatch(AddCardToCollection(CardId(cardId), CardIsOwnedFoil(ownedBody.ownedFoil)))
     }

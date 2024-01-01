@@ -54,7 +54,7 @@ class CollectionApiIT(
                 )
         )
 
-        results.andExpect(status().isOk)
+        results.andExpect(status().isNoContent)
         assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true)))
     }
 
@@ -72,7 +72,7 @@ class CollectionApiIT(
                 )
         )
 
-        results.andExpect(status().isOk)
+        results.andExpect(status().isNoContent)
         assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)))
     }
 
