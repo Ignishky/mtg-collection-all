@@ -6,7 +6,7 @@ GET http://localhost:8585/sets
 
 >>! {{$historyFolder}}/sets.json
 
-### GET given set
-GET http://localhost:8585/sets/mom
+### GET given set's cards
+GET http://localhost:8585/sets/who/cards
 
 >>! {{$historyFolder}}/set.json
