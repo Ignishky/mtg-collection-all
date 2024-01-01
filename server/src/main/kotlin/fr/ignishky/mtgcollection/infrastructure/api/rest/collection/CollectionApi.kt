@@ -39,9 +39,3 @@ interface CollectionApi {
     fun getCollection(): ResponseEntity<CollectionResponse>
 }
 
-data class OwnedBody(
-    val ownedFoil: Boolean,
-) {
-    @Suppress("unused")
-    constructor() : this(false)
-}

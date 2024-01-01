@@ -1,12 +1,25 @@
 ### Refresh-all
 PUT http://localhost:8585/refresh-all
 
-### GET all sets
+### Get all sets
 GET http://localhost:8585/sets
 
 >>! {{$historyFolder}}/sets.json
 
-### GET given set's cards
+### Get given set's cards
 GET http://localhost:8585/sets/{{set_code}}/cards
 
 >>! {{$historyFolder}}/set.json
+
+### Get all collected cards
+GET http://localhost:8585/collection
+
+>>! {{$historyFolder}}/collection.json
+
+### Add card to collection
+PUT http://localhost:8585/collection/{{card_id}}
+Content-Type: application/json
+
+{
+  "ownedFoil": true
+}
