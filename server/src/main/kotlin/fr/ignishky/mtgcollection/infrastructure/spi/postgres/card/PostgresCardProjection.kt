@@ -43,7 +43,7 @@ class PostgresCardProjection(
 
     override fun update(cardId: CardId, isOwned: CardIsOwned, isOwnedFoil: CardIsOwnedFoil) {
         jdbcTemplate.update(
-            "UPDATE cards SET isOwned=?, isOwnedFoil=? WHERE id=?",
+            "UPDATE cards SET is_owned=?, is_owned_foil=? WHERE id=?",
             isOwned.value,
             isOwnedFoil.value,
             cardId.value,
@@ -54,5 +54,5 @@ class PostgresCardProjection(
 
     override fun getAll(code: SetCode) = jdbcTemplate.query("SELECT * FROM cards WHERE set_code=?", CardRowMapper(), code.value)
 
-    override fun getCollection() = jdbcTemplate.query("SELECT * FROM cards WHERE isowned=true", CardRowMapper())
+    override fun getCollection() = jdbcTemplate.query("SELECT * FROM cards WHERE is_owned=true", CardRowMapper())
 }

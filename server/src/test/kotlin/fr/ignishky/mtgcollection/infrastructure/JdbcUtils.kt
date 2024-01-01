@@ -51,7 +51,7 @@ class JdbcUtils(
         }
         cards.forEach {
             template.update(
-                "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, isowned, isownedfoil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, is_owned, is_owned_foil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 it.id.value,
                 it.name.value,
                 it.setCode.value,

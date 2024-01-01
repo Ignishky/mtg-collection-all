@@ -5,8 +5,7 @@ CREATE TABLE events
     aggregate_name VARCHAR     NOT NULL,
     label          VARCHAR     NOT NULL,
     instant        TIMESTAMP WITH TIME ZONE,
-    payload        JSONB       NOT NULL,
-    correlation_id VARCHAR(36) NOT NULL
+    payload        JSONB       NOT NULL
 );
 
 CREATE TABLE sets
@@ -26,5 +25,8 @@ CREATE TABLE cards
     set_code          VARCHAR(6) NOT NULL,
     images            VARCHAR    NOT NULL,
     collection_number VARCHAR    NOT NULL,
-    scryfall_prices   VARCHAR    NOT NULL DEFAULT '0|0|0|0'
+    finishes          VARCHAR    NOT NULL,
+    scryfall_prices   VARCHAR    NOT NULL DEFAULT '0|0|0|0',
+    is_owned          boolean    NOT NULL DEFAULT false,
+    is_owned_foil     boolean    NOT NULL DEFAULT false
 );

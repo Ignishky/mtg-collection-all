@@ -1,11 +1,11 @@
 flyway:
-  url: jdbc:postgresql://localhost:5432/mtg-collection
+  url: jdbc:postgresql://localhost:5432/mtg_collection
   user: "postgres"
   password: "root"
 
 spring:
   datasource:
-    url: jdbc:postgresql://[::1]:5432/mtg-collection
+    url: jdbc:postgresql://[::1]:5432/mtg_collection
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: root
