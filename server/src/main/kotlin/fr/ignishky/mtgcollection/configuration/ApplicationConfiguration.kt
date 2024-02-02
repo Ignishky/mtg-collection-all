@@ -13,7 +13,14 @@ class ApplicationConfiguration {
     @Bean
     fun corsConfigurer() = object : WebMvcConfigurer {
         override fun addCorsMappings(registry: CorsRegistry) {
-            registry.addMapping("/sets/**").allowedMethods("GET")
+            registry.addMapping("/sets/**")
+                .allowedMethods("GET")
+                .allowedOrigins(
+                    "http://localhost:3000", // dev mode
+                    "http://localhost:5000", // build mode
+                )
+            registry.addMapping("/collection/**")
+                .allowedMethods("GET", "PUT", "DELETE")
                 .allowedOrigins(
                     "http://localhost:3000", // dev mode
                     "http://localhost:5000", // build mode
