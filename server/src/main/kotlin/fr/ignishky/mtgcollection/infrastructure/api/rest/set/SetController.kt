@@ -41,7 +41,9 @@ class SetController(
                     it.images.value[0].value,
                     it.finishes.isFoil(),
                     it.finishes.isNonFoil(),
-                    PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil)
+                    PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil),
+                    it.isOwned.value,
+                    it.isOwnedFoil.value,
                 )
             }
         val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur, eurFoil), card ->

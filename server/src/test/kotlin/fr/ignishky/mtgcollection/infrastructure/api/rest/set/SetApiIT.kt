@@ -8,6 +8,8 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
 import fr.ignishky.mtgcollection.domain.SetFixtures.pafr
 import fr.ignishky.mtgcollection.domain.SetFixtures.tkhm
+import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
+import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import org.junit.jupiter.api.BeforeEach
@@ -31,9 +33,9 @@ internal class SetApiIT(
 ) {
 
     private val afr = afr()
-    private val plus2Mace = plus2Mace()
-    private val arboreaPegasus = arboreaPegasus()
-    private val axgardBraggart = axgardBraggart()
+    private val plus2Mace = plus2Mace().copy(isOwned = CardIsOwned(true))
+    private val arboreaPegasus = arboreaPegasus().copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
+    private val axgardBraggart = axgardBraggart().copy(isOwned = CardIsOwned(false))
 
     @BeforeEach
     fun setUp() {

@@ -31,6 +31,8 @@ class CollectionController(
                     it.finishes.isFoil(),
                     it.finishes.isNonFoil(),
                     PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil),
+                    it.isOwned.value,
+                    it.isOwnedFoil.value,
                 )
             }
         return ok(CollectionResponse(cards))

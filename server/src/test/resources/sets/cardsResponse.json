@@ -10,7 +10,9 @@
       "prices": {
         "eur": 2,
         "eurFoil": 7
-      }
+      },
+      "owned": true,
+      "ownedFoil": false
     },
     {
       "id": "fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97",
@@ -21,7 +23,9 @@
       "prices": {
         "eur": 4,
         "eurFoil": 8
-      }
+      },
+      "owned": true,
+      "ownedFoil": true
     }
   ],
   "prices": {

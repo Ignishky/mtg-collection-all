@@ -32,8 +32,8 @@ class CollectionApiIT(
     private val afr = afr()
     private val khm = khm()
     private val plus2Mace = plus2Mace().copy(isOwned = CardIsOwned(true))
-    private val arboreaPegasus = arboreaPegasus().copy(isOwned = CardIsOwned(true))
-    private val axgardBraggart = axgardBraggart()
+    private val arboreaPegasus = arboreaPegasus().copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
+    private val axgardBraggart = axgardBraggart().copy(isOwned = CardIsOwned(false))
 
     @BeforeEach
     fun setUp() {
