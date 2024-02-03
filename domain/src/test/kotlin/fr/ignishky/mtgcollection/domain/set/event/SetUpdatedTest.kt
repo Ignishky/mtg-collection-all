@@ -15,8 +15,7 @@ import java.time.LocalDate.parse
 
 class SetUpdatedTest {
 
-    private val existingSet = afr()
-    private val updatedSet = existingSet.copy(
+    private val updatedSet = afr.copy(
         code = SetCode("updatedCode"),
         name = SetName("updatedName"),
         type = SetType("updatedType"),
@@ -24,7 +23,7 @@ class SetUpdatedTest {
         releasedAt = SetReleasedAt(parse("2023-06-12")),
     )
     private val event = SetUpdated(
-        existingSet.id,
+        afr.id,
         SetCode("updatedCode"),
         SetName("updatedName"),
         SetType("updatedType"),
@@ -34,7 +33,7 @@ class SetUpdatedTest {
 
     @Test
     fun `Should apply event to set`() {
-        val result = event.apply(existingSet)
+        val result = event.apply(afr)
 
         assertThat(result).isEqualTo(updatedSet)
     }
@@ -87,11 +86,11 @@ class SetUpdatedTest {
     @ParameterizedTest
     @MethodSource("setPropertyProvider")
     fun `Should handle updated set event`(property: SetProperty) {
-        justRun { setProjectionPort.update(existingSet.id, listOf(property)) }
+        justRun { setProjectionPort.update(afr.id, listOf(property)) }
 
-        handler.handle(SetUpdated(existingSet.id, property))
+        handler.handle(SetUpdated(afr.id, property))
 
-        verify { setProjectionPort.update(existingSet.id, listOf(property)) }
+        verify { setProjectionPort.update(afr.id, listOf(property)) }
     }
 
     @Test

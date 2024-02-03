@@ -1,6 +1,6 @@
 package fr.ignishky.mtgcollection.domain.card.usecase
 
-import fr.ignishky.mtgcollection.domain.CardFixtures
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
@@ -13,8 +13,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class AddCardToCollectionHandlerTest {
-
-    private val plus2Mace = CardFixtures.plus2Mace()
 
     private val cardProjectionPort = mockk<CardProjectionPort>()
     private val handler = AddCardToCollectionHandler(cardProjectionPort)

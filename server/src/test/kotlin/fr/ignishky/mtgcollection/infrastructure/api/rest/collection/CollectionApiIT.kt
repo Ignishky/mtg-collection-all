@@ -29,12 +29,6 @@ class CollectionApiIT(
     @Autowired private val jdbc: JdbcUtils,
 ) {
 
-    private val afr = afr()
-    private val khm = khm()
-    private val plus2Mace = plus2Mace().copy(isOwned = CardIsOwned(true))
-    private val arboreaPegasus = arboreaPegasus().copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
-    private val axgardBraggart = axgardBraggart().copy(isOwned = CardIsOwned(false))
-
     @BeforeEach
     fun setUp() {
         jdbc.dropAll()
@@ -42,10 +36,10 @@ class CollectionApiIT(
 
     @Test
     fun `Should add card to the collection`() {
-        jdbc.save(listOf(afr()), listOf(plus2Mace))
+        jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true))))
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.id.value}")
+            put("/collection/${plus2Mace.copy(isOwned = CardIsOwned(true)).id.value}")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -55,15 +49,15 @@ class CollectionApiIT(
         )
 
         results.andExpect(status().isNoContent)
-        assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true)))
+        assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true)).copy(isOwned = CardIsOwned(true)))
     }
 
     @Test
     fun `Should add foil card to the collection`() {
-        jdbc.save(listOf(afr()), listOf(plus2Mace))
+        jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true))))
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.id.value}")
+            put("/collection/${plus2Mace.copy(isOwned = CardIsOwned(true)).id.value}")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -73,12 +67,19 @@ class CollectionApiIT(
         )
 
         results.andExpect(status().isNoContent)
-        assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)))
+        assertThat(jdbc.getCards()).containsOnly(
+            plus2Mace.copy(isOwned = CardIsOwned(true)).copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
+        )
     }
 
     @Test
     fun `Should retrieve owned cards`() {
-        jdbc.save(listOf(afr, khm), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
+        jdbc.save(listOf(afr, khm),
+            listOf(
+                arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
+                plus2Mace.copy(isOwned = CardIsOwned(true)),
+                axgardBraggart.copy(isOwned = CardIsOwned(false))
+            ))
 
         val results = mockMvc.perform(get("/collection"))
 

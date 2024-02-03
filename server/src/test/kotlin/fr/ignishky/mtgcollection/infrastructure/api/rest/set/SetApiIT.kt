@@ -32,11 +32,6 @@ internal class SetApiIT(
     @Autowired private val jdbc: JdbcUtils,
 ) {
 
-    private val afr = afr()
-    private val plus2Mace = plus2Mace().copy(isOwned = CardIsOwned(true))
-    private val arboreaPegasus = arboreaPegasus().copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
-    private val axgardBraggart = axgardBraggart().copy(isOwned = CardIsOwned(false))
-
     @BeforeEach
     fun setUp() {
         jdbc.dropAll()
@@ -45,7 +40,7 @@ internal class SetApiIT(
     @Test
     fun `Should return sets`() {
         // GIVEN
-        jdbc.save(listOf(khm(), tkhm(), afr, aafr(), pafr()), emptyList())
+        jdbc.save(listOf(khm, tkhm, afr, aafr, pafr), emptyList())
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets"))
@@ -61,7 +56,12 @@ internal class SetApiIT(
     @Test
     fun `Should return cards from given set`() {
         // GIVEN
-        jdbc.save(listOf(afr), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
+        jdbc.save(listOf(afr),
+            listOf(
+                arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
+                plus2Mace.copy(isOwned = CardIsOwned(true)),
+                axgardBraggart.copy(isOwned = CardIsOwned(false))
+            ))
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/afr/cards"))
@@ -77,7 +77,12 @@ internal class SetApiIT(
     @Test
     fun `Should return 404 from unknown set`() {
         // GIVEN
-        jdbc.save(listOf(afr), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
+        jdbc.save(listOf(afr),
+            listOf(
+                arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
+                plus2Mace.copy(isOwned = CardIsOwned(true)),
+                axgardBraggart.copy(isOwned = CardIsOwned(false))
+            ))
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/fake/cards"))

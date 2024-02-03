@@ -14,8 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource
 
 class CardUpdatedTest {
 
-    private val existingCard = plus2Mace()
-    private val updatedCard = existingCard.copy(
+    private val updatedCard = plus2Mace.copy(
         name = CardName("cardName"),
         setCode = CardSetCode("cardSetCode"),
         images = CardImages(listOf(CardImage("cardImage"))),
@@ -24,7 +23,7 @@ class CardUpdatedTest {
     )
 
     private val event = CardUpdated(
-        existingCard.id,
+        plus2Mace.id,
         CardName("cardName"),
         CardSetCode("cardSetCode"),
         CardImages(listOf(CardImage("cardImage"))),
@@ -34,7 +33,7 @@ class CardUpdatedTest {
 
     @Test
     fun `Should apply event to card`() {
-        val result = event.apply(existingCard)
+        val result = event.apply(plus2Mace)
 
         assertThat(result).isEqualTo(updatedCard)
     }
@@ -87,11 +86,11 @@ class CardUpdatedTest {
     @ParameterizedTest
     @MethodSource("cardPropertyProvider")
     fun `Should handle updated card event`(property: CardProperty) {
-        justRun { cardProjectionPort.update(existingCard.id, listOf(property)) }
+        justRun { cardProjectionPort.update(plus2Mace.id, listOf(property)) }
 
-        handler.handle(CardUpdated(existingCard.id, property))
+        handler.handle(CardUpdated(plus2Mace.id, property))
 
-        verify { cardProjectionPort.update(existingCard.id, listOf(property)) }
+        verify { cardProjectionPort.update(plus2Mace.id, listOf(property)) }
     }
 
     @Test

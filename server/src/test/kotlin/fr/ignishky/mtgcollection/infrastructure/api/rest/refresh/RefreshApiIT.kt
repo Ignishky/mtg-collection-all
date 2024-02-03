@@ -40,14 +40,6 @@ class RefreshApiIT(
 
     private lateinit var mockServer: MockServerClient
 
-    private val khm = khm()
-    private val axgardBraggart = axgardBraggart()
-    private val halvar = halvar()
-    private val afr = afr()
-    private val plus2mace = plus2Mace()
-    private val arboreaPegasus = arboreaPegasus()
-    private val valor = valorSinger()
-
     @BeforeEach
     fun setUp() {
         jdbc.dropAll()
@@ -154,12 +146,12 @@ class RefreshApiIT(
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
                 toSetCreated(afr),
-                toCardCreated(plus2mace),
+                toCardCreated(plus2Mace),
                 toCardCreated(arboreaPegasus),
-                toCardCreated(valor),
+                toCardCreated(valorSinger),
             )
         assertThat(jdbc.getSets()).containsOnly(afr)
-        assertThat(jdbc.getCards()).containsOnly(plus2mace, arboreaPegasus, valor)
+        assertThat(jdbc.getCards()).containsOnly(plus2Mace, arboreaPegasus, valorSinger)
     }
 
     private fun toSetCreated(set: Set) = SetCreated(set.id, set.code, set.name, set.type, set.icon, set.releasedAt)

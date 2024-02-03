@@ -1,6 +1,6 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
-import fr.ignishky.mtgcollection.domain.CardFixtures
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated.CardPricesUpdatedHandler
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.Price
@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Test
 
 class CardPricesUpdatedTest {
 
-    private val existingCard = CardFixtures.plus2Mace()
     private val event = CardPricesUpdated(
-        existingCard.id,
+        plus2Mace.id,
         CardPrices(Price(550, 660, 770, 880)),
     )
-    private val updatedCard = existingCard.copy(
+    private val updatedCard = plus2Mace.copy(
         prices = CardPrices(Price(550, 660, 770, 880)),
     )
 
     @Test
     fun `Should apply event to card`() {
-        val result = event.apply(existingCard)
+        val result = event.apply(plus2Mace)
 
         assertThat(result).isEqualTo(updatedCard)
     }

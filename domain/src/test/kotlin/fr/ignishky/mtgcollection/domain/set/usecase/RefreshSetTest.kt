@@ -19,7 +19,6 @@ import kotlin.test.Test
 
 class RefreshSetTest {
 
-    private val afr = afr()
     private val setReferer = mockk<SetRefererPort>()
     private val setProjectionPort = mockk<SetProjectionPort>()
     private val handler = RefreshSetHandler(setReferer, setProjectionPort)

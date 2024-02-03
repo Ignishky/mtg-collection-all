@@ -4,7 +4,7 @@ import fr.ignishky.mtgcollection.domain.card.model.*
 
 object CardFixtures {
 
-    fun plus2Mace() = Card(
+    val plus2Mace = Card(
         CardId("e882c9f9-bf30-46b6-bedc-379d2c80e5cb"),
         CardName("+2 Mace"),
         CardSetCode("afr"),
@@ -14,7 +14,7 @@ object CardFixtures {
         CardFinishes(listOf(CardFinish("nonfoil"))),
     )
 
-    fun arboreaPegasus() = Card(
+    val arboreaPegasus = Card(
         CardId("fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97"),
         CardName("Arborea Pegasus"),
         CardSetCode("afr"),
@@ -24,7 +24,7 @@ object CardFixtures {
         CardFinishes(listOf(CardFinish("foil"))),
     )
 
-    fun valorSinger() = Card(
+    val valorSinger = Card(
         CardId("89bc162c-bdf1-43f7-882f-d8cee4f3f415"),
         CardName("Valor Singer"),
         CardSetCode("afr"),
@@ -34,7 +34,7 @@ object CardFixtures {
         CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
-    fun axgardBraggart() = Card(
+    val axgardBraggart = Card(
         CardId("4de5ff64-6fe7-4fc5-be27-cdbaa14545ab"),
         CardName("Axgard Braggart"),
         CardSetCode("khm"),
@@ -44,7 +44,7 @@ object CardFixtures {
         CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
     )
 
-    fun halvar() = Card(
+    val halvar = Card(
         CardId("97502411-5c93-434c-b77b-ceb2c32feae7"),
         CardName("Halvar, God of Battle // Sword of the Realms"),
         CardSetCode("khm"),

@@ -17,9 +17,6 @@ import org.junit.jupiter.api.Test
 
 class RefreshCardTest {
 
-    private val afr = afr()
-    private val plus2Mace = plus2Mace()
-
     private val setProjectionPort = mockk<SetProjectionPort>()
     private val cardReferer = mockk<CardRefererPort>()
     private val cardProjectionPort = mockk<CardProjectionPort>()
@@ -143,7 +140,13 @@ class RefreshCardTest {
             )
         )
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
-        justRun { cardProjectionPort.update(plus2Mace.id, listOf(plus2Mace.collectionNumber, plus2Mace.images, plus2Mace.name, plus2Mace.setCode)) }
+        justRun { cardProjectionPort.update(
+            plus2Mace.id, listOf(
+                plus2Mace.collectionNumber,
+            plus2Mace.images,
+            plus2Mace.name,
+            plus2Mace.setCode
+        )) }
         justRun { cardProjectionPort.update(plus2Mace.id, plus2Mace.prices) }
 
         val events = handler.handle(RefreshCard())

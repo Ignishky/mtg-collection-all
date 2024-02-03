@@ -11,10 +11,6 @@ import org.junit.jupiter.api.Test
 
 class GetAllCardsTest {
 
-    private val afr = afr()
-    private val plus2Mace = plus2Mace()
-    private val arboreaPegasus = arboreaPegasus()
-
     private val cardProjectionPort = mockk<CardProjectionPort>()
     private val query = GetAllCards(cardProjectionPort)
 
