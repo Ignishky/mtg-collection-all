@@ -4,55 +4,178 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.SetName
+import fr.ignishky.mtgcollection.domain.set.model.SetReleasedAt
 import fr.ignishky.mtgcollection.domain.set.model.SetType
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Nested
+import java.time.LocalDate.now
+import kotlin.test.Test
 
 class RefreshSetTest {
 
+    private val afr = afr()
     private val setReferer = mockk<SetRefererPort>()
     private val setProjectionPort = mockk<SetProjectionPort>()
     private val handler = RefreshSetHandler(setReferer, setProjectionPort)
 
-    @Test
-    fun `Should return no event when set is unmodified`() {
-        every { setProjectionPort.getAll() } returns listOf(afr())
-        every { setReferer.getAllSets() } returns listOf(afr())
+    @Nested
+    inner class SetFuture {
 
-        val events = handler.handle(RefreshSet())
+        @Test
+        fun `No events are generated when set is in the future`() {
+            projectionReturnEmptyAndRefererReturnSetInTheFuture()
 
-        assertThat(events).isEmpty()
+            val events = handler.handle(RefreshSet())
+
+            assertThat(events).isEmpty()
+        }
+
+        @Test
+        fun `No sets are created when set is in the future`() {
+            projectionReturnEmptyAndRefererReturnSetInTheFuture()
+
+            handler.handle(RefreshSet())
+
+            verify(exactly = 0) { setProjectionPort.add(any()) }
+        }
+
+        @Test
+        fun `No sets are updated when set is in the future`() {
+            projectionReturnEmptyAndRefererReturnSetInTheFuture()
+
+            handler.handle(RefreshSet())
+
+            verify(exactly = 0) { setProjectionPort.update(any(), any()) }
+        }
+
+        private fun projectionReturnEmptyAndRefererReturnSetInTheFuture() {
+            every { setProjectionPort.getAll() } returns emptyList()
+            every { setReferer.getAllSets() } returns listOf(afr.copy(releasedAt = SetReleasedAt(now().plusDays(1))))
+        }
+
     }
 
-    @Test
-    fun `Should return SetCreated event when a referer set is not stored`() {
-        every { setProjectionPort.getAll() } returns emptyList()
-        every { setReferer.getAllSets() } returns listOf(afr())
-        justRun { setProjectionPort.add(afr()) }
+    @Nested
+    inner class SetCreation {
 
-        val events = handler.handle(RefreshSet())
+        @Test
+        fun `SetCreated is generated when a referer set is not stored`() {
+            projectionReturnEmptyAndRefererReturnNewSet()
 
-        assertThat(events)
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(SetCreated(afr().id, afr().code, afr().name, afr().type, afr().icon, afr().releasedAt))
+            val events = handler.handle(RefreshSet())
+
+            assertThat(events)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
+                .containsOnly(SetCreated(afr.id, afr.code, afr.name, afr.type, afr.icon, afr.releasedAt))
+        }
+
+        @Test
+        fun `Set is created when a referer set is not stored`() {
+            projectionReturnEmptyAndRefererReturnNewSet()
+
+            handler.handle(RefreshSet())
+
+            verify { setProjectionPort.add(afr) }
+        }
+
+        @Test
+        fun `No sets are updated when a referer set is not stored`() {
+            projectionReturnEmptyAndRefererReturnNewSet()
+
+            handler.handle(RefreshSet())
+
+            verify(exactly = 0) { setProjectionPort.update(any(), any()) }
+        }
+
+        private fun projectionReturnEmptyAndRefererReturnNewSet() {
+            every { setProjectionPort.getAll() } returns emptyList()
+            every { setReferer.getAllSets() } returns listOf(afr)
+            justRun { setProjectionPort.add(afr) }
+        }
+
     }
 
-    @Test
-    fun `Should return SetUpdated event when a referer set is stored differently`() {
-        every { setProjectionPort.getAll() } returns listOf(afr().copy(name = SetName("Old name"), type = SetType("Old type")))
-        every { setReferer.getAllSets() } returns listOf(afr())
-        justRun { setProjectionPort.update(afr().id, listOf(afr().name, afr().type)) }
+    @Nested
+    inner class SetNotModify {
 
-        val events = handler.handle(RefreshSet())
+        @Test
+        fun `No events are generated when set is unmodified`() {
+            projectionAndRefererReturnSameList()
 
-        assertThat(events)
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-            .containsOnly(SetUpdated(afr().id, afr().name, afr().type))
+            val events = handler.handle(RefreshSet())
+
+            assertThat(events).isEmpty()
+        }
+
+        @Test
+        fun `No sets are created when set is unmodified`() {
+            projectionAndRefererReturnSameList()
+
+            handler.handle(RefreshSet())
+
+            verify(exactly = 0) { setProjectionPort.add(any()) }
+        }
+
+        @Test
+        fun `No sets are updated when set is unmodified`() {
+            projectionAndRefererReturnSameList()
+
+            handler.handle(RefreshSet())
+
+            verify(exactly = 0) { setProjectionPort.update(any(), any()) }
+        }
+
+        private fun projectionAndRefererReturnSameList() {
+            every { setProjectionPort.getAll() } returns listOf(afr)
+            every { setReferer.getAllSets() } returns listOf(afr)
+        }
+
+    }
+
+    @Nested
+    inner class SetUpdate {
+
+        @Test
+        fun `SetUpdated is generated when set is stored differently`() {
+            projectionReturnOldSetAndRefererReturnNewSet()
+
+            val events = handler.handle(RefreshSet())
+
+            assertThat(events)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
+                .containsOnly(SetUpdated(afr.id, afr.name, afr.type))
+        }
+
+        @Test
+        fun `Set is updated when set is stored differently`() {
+            projectionReturnOldSetAndRefererReturnNewSet()
+
+            handler.handle(RefreshSet())
+
+            verify { setProjectionPort.update(afr.id, listOf(afr.name, afr.type)) }
+        }
+
+        @Test
+        fun `No sets are created when set is stored differently`() {
+            projectionReturnOldSetAndRefererReturnNewSet()
+
+            handler.handle(RefreshSet())
+
+            verify(exactly = 0) { setProjectionPort.add(any()) }
+        }
+
+        private fun projectionReturnOldSetAndRefererReturnNewSet() {
+            every { setProjectionPort.getAll() } returns listOf(afr.copy(name = SetName("Old name"), type = SetType("Old type")))
+            every { setReferer.getAllSets() } returns listOf(afr)
+            justRun { setProjectionPort.update(afr.id, listOf(afr.name, afr.type)) }
+        }
+
     }
 
     @Test

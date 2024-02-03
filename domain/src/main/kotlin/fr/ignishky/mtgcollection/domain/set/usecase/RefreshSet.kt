@@ -10,6 +10,7 @@ import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import jakarta.inject.Named
 import mu.KotlinLogging
+import java.time.LocalDate.now
 
 class RefreshSet : Command
 
@@ -27,6 +28,7 @@ class RefreshSetHandler(
         logger.info { "Refreshing ${knownSetsById.size} sets..." }
 
         return setReferer.getAllSets()
+            .filter { it.releasedAt.value.isBefore(now().plusDays(1)) }
             .mapNotNull {
                 if (knownSetsById[it.id] == null) {
                     setCreated(it)
