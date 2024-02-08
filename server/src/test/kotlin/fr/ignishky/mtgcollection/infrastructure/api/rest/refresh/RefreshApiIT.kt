@@ -38,6 +38,8 @@ class RefreshApiIT(
     @Autowired private val jdbc: JdbcUtils,
 ) {
 
+    private val previousKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))
+
     private lateinit var mockServer: MockServerClient
 
     @BeforeEach
@@ -47,11 +49,9 @@ class RefreshApiIT(
 
     @Test
     fun `Should create new set and cards`() {
-        val mockServerBuilder = MockServerBuilder(mockServer)
-        mockServerBuilder.prepareSets("scryfall_set_khm.json")
-        mockServerBuilder.prepareCards("khm")
+        prepareMockServer()
 
-        val resultActions = mockMvc.perform(put("/refresh-all"))
+        val resultActions = performCall()
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
@@ -67,12 +67,10 @@ class RefreshApiIT(
 
     @Test
     fun `Should skip update of unmodified set and cards`() {
-        val mockServerBuilder = MockServerBuilder(mockServer)
-        mockServerBuilder.prepareSets("scryfall_set_khm.json")
-        mockServerBuilder.prepareCards("khm")
+        prepareMockServer()
         jdbc.save(
             listOf(
-                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toSetCreated(previousKhm),
                 toSetUpdated(khm),
                 toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toCardUpdated(axgardBraggart),
@@ -82,13 +80,13 @@ class RefreshApiIT(
             listOf(axgardBraggart, halvar),
         )
 
-        val resultActions = mockMvc.perform(put("/refresh-all"))
+        val resultActions = performCall()
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toSetCreated(previousKhm),
                 toSetUpdated(khm),
                 toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toCardUpdated(axgardBraggart),
@@ -100,29 +98,27 @@ class RefreshApiIT(
 
     @Test
     fun `Should update modified set and cards`() {
-        val mockServerBuilder = MockServerBuilder(mockServer)
-        mockServerBuilder.prepareSets("scryfall_set_khm.json")
-        mockServerBuilder.prepareCards("khm")
+        prepareMockServer()
         jdbc.save(
             listOf(
-                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toSetCreated(previousKhm),
                 toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
                 toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
             ),
-            listOf(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+            listOf(previousKhm),
             listOf(
                 axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
                 halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber("")),
             )
         )
 
-        val resultActions = mockMvc.perform(put("/refresh-all"))
+        val resultActions = performCall()
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toSetCreated(previousKhm),
                 toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
                 toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toSetUpdated(khm),
@@ -133,13 +129,19 @@ class RefreshApiIT(
         assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
     }
 
+    private fun prepareMockServer() {
+        val mockServerBuilder = MockServerBuilder(mockServer)
+        mockServerBuilder.prepareSets("scryfall_set_khm.json")
+        mockServerBuilder.prepareCards("khm")
+    }
+
     @Test
     fun `Should handle multiple pages of cards`() {
         val mockServerBuilder = MockServerBuilder(mockServer)
         mockServerBuilder.prepareSets("scryfall_set_afr.json")
         mockServerBuilder.prepareCards("afr", "afr_page2")
 
-        val resultActions = mockMvc.perform(put("/refresh-all"))
+        val resultActions = performCall()
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
@@ -153,6 +155,8 @@ class RefreshApiIT(
         assertThat(jdbc.getSets()).containsOnly(afr)
         assertThat(jdbc.getCards()).containsOnly(plus2Mace, arboreaPegasus, valorSinger)
     }
+
+    private fun performCall() = mockMvc.perform(put("/refresh-all"))
 
     private fun toSetCreated(set: Set) = SetCreated(set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
 

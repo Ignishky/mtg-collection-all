@@ -8,9 +8,8 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 import java.time.LocalDate.parse
 
 class SetUpdatedTest {
@@ -24,11 +23,11 @@ class SetUpdatedTest {
     )
     private val event = SetUpdated(
         afr.id,
-        SetCode("updatedCode"),
-        SetName("updatedName"),
-        SetType("updatedType"),
-        SetIcon("updatedIcon"),
-        SetReleasedAt(parse("2023-06-12")),
+        updatedSet.code,
+        updatedSet.name,
+        updatedSet.type,
+        updatedSet.icon,
+        updatedSet.releasedAt,
     )
 
     @Test
@@ -38,66 +37,26 @@ class SetUpdatedTest {
         assertThat(result).isEqualTo(updatedSet)
     }
 
-    private val setProjectionPort = mockk<SetProjectionPort>()
-    private val handler = SetUpdatedHandler(setProjectionPort)
+    @Nested
+    inner class HandlerTest {
 
-    @Test
-    fun `Should handle full updated set event`() {
-        justRun {
-            setProjectionPort.update(
-                updatedSet.id, listOf(
-                    SetCode("updatedCode"),
-                    SetName("updatedName"),
-                    SetType("updatedType"),
-                    SetIcon("updatedIcon"),
-                    SetReleasedAt(parse("2023-06-12"))
-                )
-            )
+        private val setProjectionPort = mockk<SetProjectionPort>()
+        private val handler = SetUpdatedHandler(setProjectionPort)
+
+        @Test
+        fun `Should handle full updated set event`() {
+            justRun { setProjectionPort.update(updatedSet.id, event.payload.toProperties()) }
+
+            handler.handle(event)
+
+            verify { setProjectionPort.update(updatedSet.id, event.payload.toProperties()) }
         }
 
-        handler.handle(event)
+        @Test
+        fun `Handler should listen to SetUpdated`() {
+            val listenTo = handler.listenTo()
 
-        verify {
-            setProjectionPort.update(
-                updatedSet.id, listOf(
-                    SetCode("updatedCode"),
-                    SetName("updatedName"),
-                    SetType("updatedType"),
-                    SetIcon("updatedIcon"),
-                    SetReleasedAt(parse("2023-06-12"))
-                )
-            )
+            assertThat(listenTo).isEqualTo(SetUpdated::class)
         }
     }
-
-    companion object {
-        @JvmStatic
-        fun setPropertyProvider(): List<SetProperty> {
-            return listOf(
-                SetCode("updatedCode"),
-                SetName("updatedName"),
-                SetType("updatedType"),
-                SetIcon("updatedIcon"),
-                SetReleasedAt(parse("2023-06-12")),
-            )
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("setPropertyProvider")
-    fun `Should handle updated set event`(property: SetProperty) {
-        justRun { setProjectionPort.update(afr.id, listOf(property)) }
-
-        handler.handle(SetUpdated(afr.id, property))
-
-        verify { setProjectionPort.update(afr.id, listOf(property)) }
-    }
-
-    @Test
-    fun `Handler should listen to SetUpdated`() {
-        val listenTo = handler.listenTo()
-
-        assertThat(listenTo).isEqualTo(SetUpdated::class)
-    }
-
 }

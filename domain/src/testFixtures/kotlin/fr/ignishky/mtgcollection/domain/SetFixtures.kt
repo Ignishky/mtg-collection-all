@@ -6,13 +6,16 @@ import java.time.LocalDate.parse
 
 object SetFixtures {
 
+    private val afrIcon = SetIcon("https://scryfall.mtgc.test/sets/afr.svg")
+    private val afrReleasedAt = SetReleasedAt(parse("2021-07-23"))
+
     val afr = Set(
         SetId("e1ef87ba-ba92-4573-817f-543b996d2851"),
         SetCode("afr"),
         SetName("Adventures in the Forgotten Realms"),
         SetType("expansion"),
-        SetIcon("https://scryfall.mtgc.test/sets/afr.svg"),
-        SetReleasedAt(parse("2021-07-23")),
+        afrIcon,
+        afrReleasedAt,
     )
 
     val pafr = Set(
@@ -20,8 +23,8 @@ object SetFixtures {
         SetCode("pafr"),
         SetName("Adventures in the Forgotten Realms Promos"),
         SetType("promo"),
-        SetIcon("https://scryfall.mtgc.test/sets/afr.svg"),
-        SetReleasedAt(parse("2021-07-23")),
+        afrIcon,
+        afrReleasedAt,
     )
 
     val aafr = Set(
@@ -29,8 +32,8 @@ object SetFixtures {
         SetCode("aafr"),
         SetName("Adventures in the Forgotten Realms Art Series"),
         SetType("memorabilia"),
-        SetIcon("https://scryfall.mtgc.test/sets/afr.svg"),
-        SetReleasedAt(parse("2021-07-23")),
+        afrIcon,
+        afrReleasedAt,
     )
 
     val khm = Set(
