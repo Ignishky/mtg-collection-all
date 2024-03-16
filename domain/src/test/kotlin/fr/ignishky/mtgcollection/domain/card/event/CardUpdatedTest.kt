@@ -32,7 +32,7 @@ class CardUpdatedTest {
     )
 
     @Test
-    fun `Should apply event to card`() {
+    fun `should apply event to card`() {
         val result = event.apply(plus2Mace)
 
         assertThat(result).isEqualTo(updatedCard)
@@ -42,7 +42,7 @@ class CardUpdatedTest {
     private val handler = CardUpdatedHandler(cardProjectionPort)
 
     @Test
-    fun `Should handle full updated card event`() {
+    fun `should handle full updated card event`() {
         justRun {
             cardProjectionPort.update(
                 updatedCard.id, listOf(
@@ -85,7 +85,7 @@ class CardUpdatedTest {
 
     @ParameterizedTest
     @MethodSource("cardPropertyProvider")
-    fun `Should handle updated card event`(property: CardProperty) {
+    fun `should handle updated card event`(property: CardProperty) {
         justRun { cardProjectionPort.update(plus2Mace.id, listOf(property)) }
 
         handler.handle(CardUpdated(plus2Mace.id, property))
@@ -94,7 +94,7 @@ class CardUpdatedTest {
     }
 
     @Test
-    fun `Handler should listen to CardCreate`() {
+    fun `handler should listen to CardCreate`() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(CardUpdated::class)

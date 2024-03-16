@@ -14,7 +14,7 @@ class GetCollectionCardsTest {
     private val query = GetCollectionCards(cardProjectionPort)
 
     @Test
-    fun `Should return collection cards`() {
+    fun `should return collection cards`() {
         every { cardProjectionPort.getCollection() } returns listOf(arboreaPegasus, plus2Mace)
 
         val cards = query.getAll()

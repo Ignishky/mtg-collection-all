@@ -31,7 +31,7 @@ class SetUpdatedTest {
     )
 
     @Test
-    fun `Should apply event to set`() {
+    fun `should apply event to set`() {
         val result = event.apply(afr)
 
         assertThat(result).isEqualTo(updatedSet)
@@ -44,7 +44,7 @@ class SetUpdatedTest {
         private val handler = SetUpdatedHandler(setProjectionPort)
 
         @Test
-        fun `Should handle full updated set event`() {
+        fun `should handle full updated set event`() {
             justRun { setProjectionPort.update(updatedSet.id, event.payload.toProperties()) }
 
             handler.handle(event)
@@ -53,7 +53,7 @@ class SetUpdatedTest {
         }
 
         @Test
-        fun `Handler should listen to SetUpdated`() {
+        fun `handler should listen to SetUpdated`() {
             val listenTo = handler.listenTo()
 
             assertThat(listenTo).isEqualTo(SetUpdated::class)

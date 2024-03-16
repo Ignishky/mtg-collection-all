@@ -35,7 +35,7 @@ class CollectionApiIT(
     }
 
     @Test
-    fun `Should add card to the collection`() {
+    fun `should add card to the collection`() {
         jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true))))
 
         val results = mockMvc.perform(
@@ -53,7 +53,7 @@ class CollectionApiIT(
     }
 
     @Test
-    fun `Should add foil card to the collection`() {
+    fun `should add foil card to the collection`() {
         jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true))))
 
         val results = mockMvc.perform(
@@ -73,7 +73,7 @@ class CollectionApiIT(
     }
 
     @Test
-    fun `Should retrieve owned cards`() {
+    fun `should retrieve owned cards`() {
         jdbc.save(listOf(afr, khm),
             listOf(
                 arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),

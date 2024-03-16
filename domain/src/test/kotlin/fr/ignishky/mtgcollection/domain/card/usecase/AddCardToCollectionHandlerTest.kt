@@ -18,7 +18,7 @@ class AddCardToCollectionHandlerTest {
     private val handler = AddCardToCollectionHandler(cardProjectionPort)
 
     @Test
-    fun `Should do nothing for non-existing card`() {
+    fun `should do nothing for non-existing card`() {
         every { cardProjectionPort.get(plus2Mace.id) } returns null
 
         val events = handler.handle(AddCardToCollection(plus2Mace.id, CardIsOwnedFoil(false)))
@@ -28,7 +28,7 @@ class AddCardToCollectionHandlerTest {
     }
 
     @Test
-    fun `Should return CardOwned event for existing card`() {
+    fun `should return CardOwned event for existing card`() {
         every { cardProjectionPort.get(plus2Mace.id) } returns plus2Mace
         justRun { cardProjectionPort.update(any(), any(), any()) }
 
@@ -41,7 +41,7 @@ class AddCardToCollectionHandlerTest {
     }
 
     @Test
-    fun `Should return CardOwned foil event for existing card`() {
+    fun `should return CardOwned foil event for existing card`() {
         every { cardProjectionPort.get(plus2Mace.id) } returns plus2Mace
         justRun { cardProjectionPort.update(any(), any(), any()) }
 
@@ -54,7 +54,7 @@ class AddCardToCollectionHandlerTest {
     }
 
     @Test
-    fun `Handler should listen to RefreshCard`() {
+    fun `handler should listen to RefreshCard`() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(AddCardToCollection::class)

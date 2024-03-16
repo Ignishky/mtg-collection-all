@@ -22,7 +22,7 @@ class CardPricesUpdatedTest {
     )
 
     @Test
-    fun `Should apply event to card`() {
+    fun `should apply event to card`() {
         val result = event.apply(plus2Mace)
 
         assertThat(result).isEqualTo(updatedCard)
@@ -32,7 +32,7 @@ class CardPricesUpdatedTest {
     private val handler = CardPricesUpdatedHandler(cardProjectionPort)
 
     @Test
-    fun `Should handle prices updated card event`() {
+    fun `should handle prices updated card event`() {
         justRun { cardProjectionPort.update(updatedCard.id, CardPrices(Price(550, 660, 770, 880))) }
 
         handler.handle(event)

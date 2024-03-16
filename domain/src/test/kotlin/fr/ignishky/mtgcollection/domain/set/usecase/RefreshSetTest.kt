@@ -178,7 +178,7 @@ class RefreshSetTest {
     }
 
     @Test
-    fun `Handler should listen to RefreshSet`() {
+    fun `handler should listen to RefreshSet`() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(RefreshSet::class)

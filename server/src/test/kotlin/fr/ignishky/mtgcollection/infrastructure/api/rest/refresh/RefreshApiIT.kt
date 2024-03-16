@@ -48,7 +48,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun `Should create new set and cards`() {
+    fun `should create new set and cards`() {
         prepareMockServer()
 
         val resultActions = performCall()
@@ -66,7 +66,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun `Should skip update of unmodified set and cards`() {
+    fun `should skip update of unmodified set and cards`() {
         prepareMockServer()
         jdbc.save(
             listOf(
@@ -97,7 +97,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun `Should update modified set and cards`() {
+    fun `should update modified set and cards`() {
         prepareMockServer()
         jdbc.save(
             listOf(
@@ -136,7 +136,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun `Should handle multiple pages of cards`() {
+    fun `should handle multiple pages of cards`() {
         val mockServerBuilder = MockServerBuilder(mockServer)
         mockServerBuilder.prepareSets("scryfall_set_afr.json")
         mockServerBuilder.prepareCards("afr", "afr_page2")

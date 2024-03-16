@@ -22,7 +22,7 @@ class CardCreatedTest {
     )
 
     @Test
-    fun `Should apply event to card`() {
+    fun `should apply event to card`() {
         val result = event.apply(emptyCard)
 
         assertThat(result).isEqualTo(
@@ -42,7 +42,7 @@ class CardCreatedTest {
     private val handler = CardCreatedHandler(cardProjectionPort)
 
     @Test
-    fun `Should handle created event`() {
+    fun `should handle created event`() {
         justRun {
             cardProjectionPort.add(
                 emptyCard.copy(
@@ -61,7 +61,7 @@ class CardCreatedTest {
     }
 
     @Test
-    fun `Handler should listen to CardCreate`() {
+    fun `handler should listen to CardCreate`() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(CardCreated::class)

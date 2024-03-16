@@ -26,7 +26,7 @@ class SetCreatedTest {
     private val event = SetCreated(newSet.id, newSet.code, newSet.name, newSet.type, newSet.icon, newSet.releasedAt)
 
     @Test
-    fun `Should apply event to set`() {
+    fun `should apply event to set`() {
         val result = event.apply(emptySet)
 
         assertThat(result).isEqualTo(newSet)
@@ -39,7 +39,7 @@ class SetCreatedTest {
         private val handler = SetCreatedHandler(setProjectionPort)
 
         @Test
-        fun `Should handle created event`() {
+        fun `should handle created event`() {
             justRun { setProjectionPort.add(newSet) }
 
             handler.handle(event)
@@ -48,7 +48,7 @@ class SetCreatedTest {
         }
 
         @Test
-        fun `Handler should listen to SetCreated`() {
+        fun `handler should listen to SetCreated`() {
             val listenTo = handler.listenTo()
 
             assertThat(listenTo).isEqualTo(SetCreated::class)
