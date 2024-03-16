@@ -3,6 +3,7 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres.event
 import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventRepository
+import fr.ignishky.framework.domain.AggregateId
 import jakarta.inject.Named
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.JdbcTemplate
@@ -20,6 +21,10 @@ class EventStorePostgresStore(
             "INSERT INTO events (aggregate_id, aggregate_name, label, instant, payload) VALUES (?, ?, ?, ?, ?::jsonb)",
             EventBatchPreparedStatementSetter(events, objectMapper)
         )
+    }
+
+    override fun getAll(id: AggregateId):List<Event<*, *, *>> {
+        return emptyList()
     }
 
     private class EventBatchPreparedStatementSetter(

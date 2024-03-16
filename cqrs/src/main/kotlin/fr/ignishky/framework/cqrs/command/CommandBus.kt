@@ -1,6 +1,6 @@
 package fr.ignishky.framework.cqrs.command
 
-interface CommandBus {
+fun interface CommandBus {
 
     fun dispatch(message: Command)
 

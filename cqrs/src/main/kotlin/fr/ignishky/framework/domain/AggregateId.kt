@@ -1,6 +1,6 @@
 package fr.ignishky.framework.domain
 
-interface AggregateId {
+fun interface AggregateId {
 
     fun value(): String
 

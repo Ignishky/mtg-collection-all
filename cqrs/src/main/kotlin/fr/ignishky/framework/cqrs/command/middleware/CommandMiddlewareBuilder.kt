@@ -1,6 +1,6 @@
 package fr.ignishky.framework.cqrs.command.middleware
 
-interface CommandMiddlewareBuilder {
+fun interface CommandMiddlewareBuilder {
 
     fun chain(next: CommandMiddleware): CommandMiddleware
 
