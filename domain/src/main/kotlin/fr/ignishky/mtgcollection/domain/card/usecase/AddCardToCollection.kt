@@ -12,16 +12,19 @@ import jakarta.inject.Named
 
 data class AddCardToCollection(
     val cardId: CardId,
-    val ownedFoil: CardIsOwnedFoil,
+    val isOwnedFoil: CardIsOwnedFoil,
 ) : Command
 
 @Named
-class AddCardToCollectionHandler(val cardProjectionPort: CardProjectionPort) : CommandHandler<AddCardToCollection> {
+class AddCardToCollectionHandler(
+    private val cardProjectionPort: CardProjectionPort,
+) : CommandHandler<AddCardToCollection> {
+
     override fun handle(command: Command): List<Event<*, *, *>> {
         command as AddCardToCollection
         return cardProjectionPort.get(command.cardId)
-            ?.run { cardProjectionPort.update(command.cardId, CardIsOwned(true), command.ownedFoil) }
-            ?.let { listOf(CardOwned(command.cardId, command.ownedFoil)) }
+            ?.run { cardProjectionPort.update(command.cardId, CardIsOwned(true), command.isOwnedFoil) }
+            ?.let { listOf(CardOwned(command.cardId, command.isOwnedFoil)) }
             ?: emptyList()
     }
 

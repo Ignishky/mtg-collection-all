@@ -5,6 +5,7 @@ import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
+import fr.ignishky.mtgcollection.domain.card.event.CardOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
@@ -35,11 +36,11 @@ class CollectionApiIT(
     }
 
     @Test
-    fun `should add card to the collection`() {
-        jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true))))
+    fun `should add non foil card to the collection`() {
+        jdbc.save(listOf(afr), listOf(plus2Mace))
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.copy(isOwned = CardIsOwned(true)).id.value}")
+            put("/collection/${plus2Mace.id.value}")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -49,15 +50,18 @@ class CollectionApiIT(
         )
 
         results.andExpect(status().isNoContent)
-        assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true)).copy(isOwned = CardIsOwned(true)))
+        assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(false)))
+        assertThat(jdbc.getEvents())
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
+            .containsOnly(CardOwned(plus2Mace.id, CardIsOwnedFoil(false)))
     }
 
     @Test
     fun `should add foil card to the collection`() {
-        jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true))))
+        jdbc.save(listOf(afr), listOf(plus2Mace))
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.copy(isOwned = CardIsOwned(true)).id.value}")
+            put("/collection/${plus2Mace.id.value}")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -67,19 +71,22 @@ class CollectionApiIT(
         )
 
         results.andExpect(status().isNoContent)
-        assertThat(jdbc.getCards()).containsOnly(
-            plus2Mace.copy(isOwned = CardIsOwned(true)).copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
-        )
+        assertThat(jdbc.getCards()).containsOnly(plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)))
+        assertThat(jdbc.getEvents())
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
+            .containsOnly(CardOwned(plus2Mace.id, CardIsOwnedFoil(true)))
     }
 
     @Test
     fun `should retrieve owned cards`() {
-        jdbc.save(listOf(afr, khm),
+        jdbc.save(
+            listOf(afr, khm),
             listOf(
                 arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
                 plus2Mace.copy(isOwned = CardIsOwned(true)),
                 axgardBraggart.copy(isOwned = CardIsOwned(false))
-            ))
+            )
+        )
 
         val results = mockMvc.perform(get("/collection"))
 

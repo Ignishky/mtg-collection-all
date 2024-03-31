@@ -2,11 +2,9 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.mtgcollection.domain.card.event.CardCreated
+import fr.ignishky.mtgcollection.domain.card.event.*
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedPayload
-import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated.CardPricesUpdatedPayload
-import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
@@ -28,6 +26,7 @@ class EventRowMapper(
         "CardCreated" -> toCardCreated(rs)
         "CardUpdated" -> toCardUpdated(rs)
         "CardPricesUpdated" -> toCardPricesUpdated(rs)
+        "CardOwned" -> toCardOwned(rs)
         else -> {
             throw IllegalArgumentException("unexpected event type $label")
         }
@@ -80,6 +79,14 @@ class EventRowMapper(
         return CardPricesUpdated(
             CardId(rs.getString("aggregate_id")),
             CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil))
+        )
+    }
+
+    private fun toCardOwned(rs: ResultSet): CardOwned {
+        val payload = objectMapper.readValue(rs.getString("payload"), CardOwnedPayload::class.java)
+        return CardOwned(
+            CardId(rs.getString("aggregate_id")),
+            CardIsOwnedFoil(payload.ownedFoil)
         )
     }
 

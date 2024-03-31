@@ -25,11 +25,14 @@ class CardOwned(
         aggregate as Card
         return aggregate.copy(
             isOwned = CardIsOwned(true),
-            isOwnedFoil = CardIsOwnedFoil(payload.isOwnedFoil)
+            isOwnedFoil = CardIsOwnedFoil(payload.ownedFoil)
         )
     }
 }
 
 data class CardOwnedPayload(
-    val isOwnedFoil: Boolean,
-) : Payload
+    val ownedFoil: Boolean,
+) : Payload {
+    @Suppress("unused")
+    constructor() : this(false)
+}
