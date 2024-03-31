@@ -54,7 +54,7 @@ class AddCardToCollectionHandlerTest {
     }
 
     @Test
-    fun `handler should listen to RefreshCard`() {
+    fun `handler should listen to AddCardToCollection`() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(AddCardToCollection::class)

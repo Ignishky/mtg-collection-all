@@ -29,6 +29,21 @@ interface CollectionApi {
         @RequestBody ownedBody: OwnedBody,
     )
 
+    @DeleteMapping("/{cardId}")
+    @Operation(
+        summary = "Remove the card with the given id from the collection",
+        description = "The card finish will be also reset.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "OK - The card has been removed from the collection"),
+        ],
+    )
+    @ResponseStatus(NO_CONTENT)
+    fun removeCard(
+        @PathVariable cardId: String,
+    )
+
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
     @Operation(
         summary = "Get the full list of cards in the collections",

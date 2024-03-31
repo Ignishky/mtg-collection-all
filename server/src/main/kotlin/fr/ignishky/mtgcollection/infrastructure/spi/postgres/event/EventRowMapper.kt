@@ -24,6 +24,7 @@ class EventRowMapper(
         "CardUpdated" -> toCardUpdated(rs)
         "CardPricesUpdated" -> toCardPricesUpdated(rs)
         "CardOwned" -> toCardOwned(rs)
+        "CardDisowned" -> toCardDisowned(rs)
         else -> {
             throw IllegalArgumentException("unexpected event type $label")
         }
@@ -84,6 +85,12 @@ class EventRowMapper(
         return CardOwned(
             CardId(rs.getString("aggregate_id")),
             CardIsOwnedFoil(payload.ownedFoil)
+        )
+    }
+
+    private fun toCardDisowned(rs: ResultSet): CardDisowned {
+        return CardDisowned(
+            CardId(rs.getString("aggregate_id"))
         )
     }
 

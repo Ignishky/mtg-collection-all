@@ -5,6 +5,7 @@ import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.port.CollectionApiPort
 import fr.ignishky.mtgcollection.domain.card.usecase.AddCardToCollection
+import fr.ignishky.mtgcollection.domain.card.usecase.RemoveCardFromCollection
 import fr.ignishky.mtgcollection.infrastructure.api.rest.set.CardResponse
 import fr.ignishky.mtgcollection.infrastructure.api.rest.set.PricesResponse
 import org.springframework.http.ResponseEntity
@@ -19,6 +20,10 @@ class CollectionController(
 
     override fun addCard(cardId: String, ownedBody: OwnedBody) {
         commandBus.dispatch(AddCardToCollection(CardId(cardId), CardIsOwnedFoil(ownedBody.ownedFoil)))
+    }
+
+    override fun removeCard(cardId: String) {
+        commandBus.dispatch(RemoveCardFromCollection(CardId(cardId)))
     }
 
     override fun getCollection(): ResponseEntity<CollectionResponse> {
