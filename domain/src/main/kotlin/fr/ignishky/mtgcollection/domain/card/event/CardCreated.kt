@@ -1,14 +1,10 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
-import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
-import jakarta.inject.Named
-import mu.KotlinLogging
 import java.time.Instant.now
 
 class CardCreated(
@@ -61,23 +57,6 @@ class CardCreated(
     ) : Payload {
         @Suppress("unused")
         constructor() : this("", "", 0, 0, 0, 0, emptyList(), "", emptyList())
-    }
-
-    @Named
-    class CardCreatedHandler(
-        private val cardProjectionPort: CardProjectionPort,
-    ) : EventHandler<CardCreated> {
-
-        private val logger = KotlinLogging.logger {}
-
-        override fun handle(event: Event<*, *, *>) {
-            val cardCreated = event as CardCreated
-            logger.info { "Creating card '${cardCreated.payload.name}'..." }
-            cardProjectionPort.add(cardCreated.apply(Card()))
-        }
-
-        override fun listenTo() = CardCreated::class
-
     }
 
 }

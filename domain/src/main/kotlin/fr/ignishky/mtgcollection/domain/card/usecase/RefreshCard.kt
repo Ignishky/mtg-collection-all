@@ -34,22 +34,21 @@ class RefreshCardHandler(
         logger.info { "Refreshing cards from ${set.code.value} ..." }
         val knownCardsById = cardProjectionPort.getAll(set.code).associateBy { it.id }
         return cardReferer.getCards(set.code)
-            .flatMap {
-                if (!knownCardsById.contains(it.id)) {
-                    cardCreated(it)
+            .flatMap { card ->
+                if (!knownCardsById.contains(card.id)) {
+                    createCard(card)
                 } else {
-                    cardUpdated(knownCardsById[it.id]!!, it)
+                    updateCard(knownCardsById[card.id]!!, card)
                 }
             }
     }
 
-    private fun cardCreated(it: Card): List<CardCreated> {
-        val event = CardCreated(it.id, it.name, it.setCode, it.prices, it.images, it.collectionNumber, it.finishes)
-        cardProjectionPort.add(event.apply(Card()))
-        return listOf(event)
+    private fun createCard(card: Card): List<CardCreated> {
+        cardProjectionPort.add(Card(card.id, card.name, card.setCode, card.images, card.collectionNumber,card.prices,  card.finishes))
+        return listOf(CardCreated(card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes))
     }
 
-    private fun cardUpdated(knownCard: Card, newCard: Card): List<Event<CardId, Card, out Payload>> {
+    private fun updateCard(knownCard: Card, newCard: Card): List<Event<CardId, Card, out Payload>> {
         var events = emptyList<Event<CardId, Card, out Payload>>()
         val delta = knownCard.updatedFields(newCard)
         if (delta.isNotEmpty()) {

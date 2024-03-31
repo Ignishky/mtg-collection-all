@@ -1,16 +1,12 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.Price
-import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
-import jakarta.inject.Named
-import mu.KotlinLogging
 import java.time.Instant.now
 
 class CardPricesUpdated(
@@ -37,33 +33,6 @@ class CardPricesUpdated(
     ) : Payload {
         @Suppress("unused")
         constructor() : this(0, 0, 0, 0)
-    }
-
-    @Named
-    class CardPricesUpdatedHandler(
-        private val cardProjectionPort: CardProjectionPort,
-    ) : EventHandler<CardPricesUpdated> {
-
-        private val logger = KotlinLogging.logger {}
-
-        override fun handle(event: Event<*, *, *>) {
-            val cardPricesUpdated = event as CardPricesUpdated
-            logger.info { "Updating card prices '${cardPricesUpdated.aggregateId.value}'..." }
-            cardProjectionPort.update(
-                cardPricesUpdated.aggregateId,
-                CardPrices(
-                    Price(
-                        cardPricesUpdated.payload.scryfallEur,
-                        cardPricesUpdated.payload.scryfallEurFoil,
-                        cardPricesUpdated.payload.scryfallUsd,
-                        cardPricesUpdated.payload.scryfallUsdFoil
-                    )
-                )
-            )
-        }
-
-        override fun listenTo() = CardPricesUpdated::class
-
     }
 
 }

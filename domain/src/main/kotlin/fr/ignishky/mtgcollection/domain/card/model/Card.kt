@@ -15,16 +15,6 @@ data class Card(
     val isOwnedFoil: CardIsOwnedFoil = CardIsOwnedFoil(false),
 ) : Aggregate<CardId> {
 
-    constructor() : this(
-        CardId(""),
-        CardName(""),
-        CardSetCode(""),
-        CardImages(emptyList()),
-        CardNumber(""),
-        CardPrices(Price(0, 0, 0, 0)),
-        CardFinishes(listOf(CardFinish(""))),
-    )
-
     override fun id() = id
 
     fun updatedFields(newCard: Card): List<CardProperty> {

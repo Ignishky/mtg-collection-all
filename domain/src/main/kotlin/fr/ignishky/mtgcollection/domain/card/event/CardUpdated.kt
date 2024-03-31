@@ -1,15 +1,11 @@
 package fr.ignishky.mtgcollection.domain.card.event
 
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.*
-import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
-import jakarta.inject.Named
-import mu.KotlinLogging
 import java.time.Instant.now
 
 class CardUpdated(
@@ -62,25 +58,6 @@ class CardUpdated(
                 properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
             )
         }
-
-        fun toProperties() = properties.map { CardProperty.PropertyName.valueOf(it.key).withValue(it.value) }
-
-    }
-
-    @Named
-    class CardUpdatedHandler(
-        private val cardProjectionPort: CardProjectionPort,
-    ) : EventHandler<CardUpdated> {
-
-        private val logger = KotlinLogging.logger {}
-
-        override fun handle(event: Event<*, *, *>) {
-            val cardUpdated = event as CardUpdated
-            logger.info { "Updating card '${cardUpdated.aggregateId.value}'..." }
-            cardProjectionPort.update(cardUpdated.aggregateId, cardUpdated.payload.toProperties())
-        }
-
-        override fun listenTo() = CardUpdated::class
 
     }
 
