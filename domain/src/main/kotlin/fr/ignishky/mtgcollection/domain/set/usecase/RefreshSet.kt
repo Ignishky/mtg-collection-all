@@ -41,9 +41,9 @@ class RefreshSetHandler(
 
     private fun onlyReleasedSet(it: Set) = it.releasedAt.value.isBefore(now().plusDays(1))
 
-    private fun createSet(it: Set): SetCreated {
-        setProjectionPort.add(Set(it.id, it.code, it.name, it.type, it.icon, it.releasedAt))
-        return SetCreated(it.id, it.code, it.name, it.type, it.icon, it.releasedAt)
+    private fun createSet(set: Set): SetCreated {
+        setProjectionPort.add(set)
+        return SetCreated(set)
     }
 
     private fun updateSet(knownSet: Set, newSet: Set): SetUpdated? {

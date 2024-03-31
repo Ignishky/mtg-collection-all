@@ -44,8 +44,8 @@ class RefreshCardHandler(
     }
 
     private fun createCard(card: Card): List<CardCreated> {
-        cardProjectionPort.add(Card(card.id, card.name, card.setCode, card.images, card.collectionNumber,card.prices,  card.finishes))
-        return listOf(CardCreated(card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes))
+        cardProjectionPort.add(card)
+        return listOf(CardCreated(card))
     }
 
     private fun updateCard(knownCard: Card, newCard: Card): List<Event<CardId, Card, out Payload>> {

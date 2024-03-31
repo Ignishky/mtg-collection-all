@@ -31,6 +31,8 @@ class SetCreated(
         now(),
     ) {
 
+    constructor(set: Set) : this(set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
+
     override fun apply(aggregate: Aggregate<*>) = Set(
         aggregateId,
         SetCode(payload.code),

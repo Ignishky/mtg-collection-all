@@ -34,6 +34,8 @@ class CardCreated(
         now(),
     ) {
 
+    constructor(card: Card) : this(card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes)
+
     override fun apply(aggregate: Aggregate<*>) = Card(
         aggregateId,
         CardName(payload.name),
