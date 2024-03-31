@@ -1,7 +1,6 @@
 package fr.ignishky.mtgcollection.domain.set.model
 
 import fr.ignishky.framework.domain.Aggregate
-import java.time.LocalDate.EPOCH
 import kotlin.reflect.full.memberProperties
 
 data class Set(
@@ -12,8 +11,6 @@ data class Set(
     val icon: SetIcon,
     val releasedAt: SetReleasedAt,
 ) : Aggregate<SetId> {
-
-    constructor() : this(SetId(""), SetCode(""), SetName(""), SetType(""), SetIcon(""), SetReleasedAt(EPOCH))
 
     override fun id() = id
 

@@ -1,15 +1,11 @@
 package fr.ignishky.mtgcollection.domain.set.event
 
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedPayload
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
-import jakarta.inject.Named
-import mu.KotlinLogging.logger
 import java.time.Instant.now
 import java.time.LocalDate
 
@@ -53,23 +49,6 @@ class SetCreated(
     ) : Payload {
         @Suppress("unused")
         constructor() : this("", "", "", "", "")
-    }
-
-    @Named
-    class SetCreatedHandler(
-        private val setProjectionPort: SetProjectionPort,
-    ) : EventHandler<SetCreated> {
-
-        private val logger = logger {}
-
-        override fun handle(event: Event<*, *, *>) {
-            val setCreated = event as SetCreated
-            logger.info { "Creating set '${setCreated.payload.name}'..." }
-            setProjectionPort.add(setCreated.apply(Set()))
-        }
-
-        override fun listenTo() = SetCreated::class
-
     }
 
 }

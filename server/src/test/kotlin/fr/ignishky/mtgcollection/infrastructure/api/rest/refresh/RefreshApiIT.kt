@@ -129,12 +129,6 @@ class RefreshApiIT(
         assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
     }
 
-    private fun prepareMockServer() {
-        val mockServerBuilder = MockServerBuilder(mockServer)
-        mockServerBuilder.prepareSets("scryfall_set_khm.json")
-        mockServerBuilder.prepareCards("khm")
-    }
-
     @Test
     fun `should handle multiple pages of cards`() {
         val mockServerBuilder = MockServerBuilder(mockServer)
@@ -154,6 +148,12 @@ class RefreshApiIT(
             )
         assertThat(jdbc.getSets()).containsOnly(afr)
         assertThat(jdbc.getCards()).containsOnly(plus2Mace, arboreaPegasus, valorSinger)
+    }
+
+    private fun prepareMockServer() {
+        val mockServerBuilder = MockServerBuilder(mockServer)
+        mockServerBuilder.prepareSets("scryfall_set_khm.json")
+        mockServerBuilder.prepareCards("khm")
     }
 
     private fun performCall() = mockMvc.perform(put("/refresh-all"))
