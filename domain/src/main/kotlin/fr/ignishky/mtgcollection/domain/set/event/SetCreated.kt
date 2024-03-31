@@ -3,7 +3,6 @@ package fr.ignishky.mtgcollection.domain.set.event
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
-import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedPayload
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import java.time.Instant.now
@@ -42,15 +41,15 @@ class SetCreated(
         SetReleasedAt(LocalDate.parse(payload.releasedAt)),
     )
 
-    data class SetCreatedPayload(
-        val code: String,
-        val name: String,
-        val type: String,
-        val icon: String,
-        val releasedAt: String,
-    ) : Payload {
-        @Suppress("unused")
-        constructor() : this("", "", "", "", "")
-    }
+}
 
+data class SetCreatedPayload(
+    val code: String,
+    val name: String,
+    val type: String,
+    val icon: String,
+    val releasedAt: String,
+) : Payload {
+    @Suppress("unused")
+    constructor() : this("", "", "", "", "")
 }

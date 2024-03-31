@@ -3,7 +3,6 @@ package fr.ignishky.mtgcollection.domain.card.event
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
-import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardProperty.PropertyName.*
 import java.time.Instant.now
@@ -47,18 +46,18 @@ class CardUpdated(
         aggregate.finishes
     }
 
-    data class CardUpdatedPayload(
-        val properties: Map<String, String>,
-    ) : Payload {
-        @Suppress("unused")
-        constructor() : this(mapOf())
+}
 
-        companion object {
-            fun from(vararg properties: CardProperty) = CardUpdatedPayload(
-                properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
-            )
-        }
+data class CardUpdatedPayload(
+    val properties: Map<String, String>,
+) : Payload {
+    @Suppress("unused")
+    constructor() : this(mapOf())
 
+    companion object {
+        fun from(vararg properties: CardProperty) = CardUpdatedPayload(
+            properties.associateBy({ property -> property.propertyName().name }) { property -> property.propertyValue() }
+        )
     }
 
 }

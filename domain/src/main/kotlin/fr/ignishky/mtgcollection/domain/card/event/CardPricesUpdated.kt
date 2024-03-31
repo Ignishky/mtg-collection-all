@@ -13,7 +13,7 @@ class CardPricesUpdated(
     aggregateId: CardId,
     prices: CardPrices,
 ) :
-    Event<CardId, Card, CardPricesUpdated.CardPricesUpdatedPayload>(
+    Event<CardId, Card, CardPricesUpdatedPayload>(
         0,
         aggregateId,
         Card::class,
@@ -25,14 +25,14 @@ class CardPricesUpdated(
         prices = CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil))
     )
 
-    data class CardPricesUpdatedPayload(
-        val scryfallEur: Long,
-        val scryfallEurFoil: Long,
-        val scryfallUsd: Long,
-        val scryfallUsdFoil: Long,
-    ) : Payload {
-        @Suppress("unused")
-        constructor() : this(0, 0, 0, 0)
-    }
+}
 
+data class CardPricesUpdatedPayload(
+    val scryfallEur: Long,
+    val scryfallEurFoil: Long,
+    val scryfallUsd: Long,
+    val scryfallUsdFoil: Long,
+) : Payload {
+    @Suppress("unused")
+    constructor() : this(0, 0, 0, 0)
 }

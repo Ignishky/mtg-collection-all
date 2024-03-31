@@ -3,7 +3,6 @@ package fr.ignishky.mtgcollection.domain.card.event
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.Aggregate
-import fr.ignishky.mtgcollection.domain.card.event.CardCreated.CardCreatedPayload
 import fr.ignishky.mtgcollection.domain.card.model.*
 import java.time.Instant.now
 
@@ -46,19 +45,19 @@ class CardCreated(
         CardFinishes(payload.finishes.map { CardFinish(it) }),
     )
 
-    data class CardCreatedPayload(
-        val name: String,
-        val setCode: String,
-        val scryfallEur: Long,
-        val scryfallEurFoil: Long,
-        val scryfallUsd: Long,
-        val scryfallUsdFoil: Long,
-        val images: List<String>,
-        val collectionNumber: String,
-        val finishes: List<String>,
-    ) : Payload {
-        @Suppress("unused")
-        constructor() : this("", "", 0, 0, 0, 0, emptyList(), "", emptyList())
-    }
+}
 
+data class CardCreatedPayload(
+    val name: String,
+    val setCode: String,
+    val scryfallEur: Long,
+    val scryfallEurFoil: Long,
+    val scryfallUsd: Long,
+    val scryfallUsdFoil: Long,
+    val images: List<String>,
+    val collectionNumber: String,
+    val finishes: List<String>,
+) : Payload {
+    @Suppress("unused")
+    constructor() : this("", "", 0, 0, 0, 0, emptyList(), "", emptyList())
 }
