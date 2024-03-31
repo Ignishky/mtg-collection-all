@@ -38,7 +38,7 @@ internal class SetApiIT(
     }
 
     @Test
-    fun `should return sets`() {
+    fun shouldReturnSets() {
         // GIVEN
         jdbc.save(listOf(khm, tkhm, afr, aafr, pafr), emptyList())
 
@@ -54,7 +54,7 @@ internal class SetApiIT(
     }
 
     @Test
-    fun `should return cards from given set`() {
+    fun shouldReturnCardsFromGivenSet() {
         // GIVEN
         jdbc.save(listOf(afr),
             listOf(
@@ -75,7 +75,7 @@ internal class SetApiIT(
     }
 
     @Test
-    fun `should return 404 from unknown set`() {
+    fun shouldReturn404FromUnknownSet() {
         // GIVEN
         jdbc.save(listOf(afr),
             listOf(

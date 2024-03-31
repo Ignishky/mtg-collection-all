@@ -27,7 +27,7 @@ class RefreshSetTest {
     inner class SetFuture {
 
         @Test
-        fun `No events are generated when set is in the future`() {
+        fun noEventsAreGeneratedWhenSetIsInFuture() {
             projectionReturnEmptyAndRefererReturnSetInTheFuture()
 
             val events = handler.handle(RefreshSet())
@@ -36,7 +36,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `No sets are created when set is in the future`() {
+        fun noSetsAreCreatedWhenSetIsInFuture() {
             projectionReturnEmptyAndRefererReturnSetInTheFuture()
 
             handler.handle(RefreshSet())
@@ -45,7 +45,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `No sets are updated when set is in the future`() {
+        fun noSetsAreUpdatedWhenSetIsInFuture() {
             projectionReturnEmptyAndRefererReturnSetInTheFuture()
 
             handler.handle(RefreshSet())
@@ -64,7 +64,7 @@ class RefreshSetTest {
     inner class SetCreation {
 
         @Test
-        fun `SetCreated is generated when a referer set is not stored`() {
+        fun setCreatedIsGeneratedWhenRefererSetIsNotStored() {
             projectionReturnEmptyAndRefererReturnNewSet()
 
             val events = handler.handle(RefreshSet())
@@ -75,7 +75,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `Set is created when a referer set is not stored`() {
+        fun setIsCreatedWhenRefererSetIsNotStored() {
             projectionReturnEmptyAndRefererReturnNewSet()
 
             handler.handle(RefreshSet())
@@ -84,7 +84,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `No sets are updated when a referer set is not stored`() {
+        fun noSetsAreUpdatedWhenARefererSetIsNotStored() {
             projectionReturnEmptyAndRefererReturnNewSet()
 
             handler.handle(RefreshSet())
@@ -104,7 +104,7 @@ class RefreshSetTest {
     inner class SetNotModify {
 
         @Test
-        fun `No events are generated when set is unmodified`() {
+        fun noEventsAreGeneratedWhenSetIsUnmodified() {
             projectionAndRefererReturnSameList()
 
             val events = handler.handle(RefreshSet())
@@ -113,7 +113,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `No sets are created when set is unmodified`() {
+        fun noSetsAreCreatedWhenSetIsUnmodified() {
             projectionAndRefererReturnSameList()
 
             handler.handle(RefreshSet())
@@ -122,7 +122,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `No sets are updated when set is unmodified`() {
+        fun noSetsAreUpdatedWhenSetIsUnmodified() {
             projectionAndRefererReturnSameList()
 
             handler.handle(RefreshSet())
@@ -141,7 +141,7 @@ class RefreshSetTest {
     inner class SetUpdate {
 
         @Test
-        fun `SetUpdated is generated when set is stored differently`() {
+        fun setUpdatedIsGeneratedWhenSetIsStoredDifferently() {
             projectionReturnOldSetAndRefererReturnNewSet()
 
             val events = handler.handle(RefreshSet())
@@ -152,7 +152,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `Set is updated when set is stored differently`() {
+        fun setIsUpdatedWhenSetIsStoredDifferently() {
             projectionReturnOldSetAndRefererReturnNewSet()
 
             handler.handle(RefreshSet())
@@ -161,7 +161,7 @@ class RefreshSetTest {
         }
 
         @Test
-        fun `No sets are created when set is stored differently`() {
+        fun noSetsAreCreatedWhenSetIsStoredDifferently() {
             projectionReturnOldSetAndRefererReturnNewSet()
 
             handler.handle(RefreshSet())
@@ -178,7 +178,7 @@ class RefreshSetTest {
     }
 
     @Test
-    fun `handler should listen to RefreshSet`() {
+    fun shouldListenToRefreshSet() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(RefreshSet::class)

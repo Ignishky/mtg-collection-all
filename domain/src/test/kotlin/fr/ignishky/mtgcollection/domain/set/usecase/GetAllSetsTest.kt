@@ -15,7 +15,7 @@ class GetAllSetsTest {
     private val setProjectionPort = mockk<SetProjectionPort>()
 
     @Test
-    fun `should return empty list when no sets are stored`() {
+    fun shouldReturnEmptyListWhenNoSetsAreStored() {
         every { setProjectionPort.getAll() } returns emptyList()
 
         val result = GetAllSets(setProjectionPort).getAll()
@@ -24,7 +24,7 @@ class GetAllSetsTest {
     }
 
     @Test
-    fun `should return sets which has its own icon`() {
+    fun shouldReturnSetsWhichHasItsOwnIcon() {
         every { setProjectionPort.getAll() } returns listOf(
             afr,
             khm.copy(icon = SetIcon("https://scryfall.mtgc.test/sets/fake.svg"))
@@ -36,7 +36,7 @@ class GetAllSetsTest {
     }
 
     @Test
-    fun `should return sets order by release date`() {
+    fun shouldReturnSetsOrderByReleaseDate() {
         every { setProjectionPort.getAll() } returns listOf(khm, afr)
 
         val result = GetAllSets(setProjectionPort).getAll()
@@ -45,7 +45,7 @@ class GetAllSetsTest {
     }
 
     @Test
-    fun `should return the set corresponding to the code`() {
+    fun shouldReturnTheSetCorrespondingToTheCode() {
         every { setProjectionPort.get(any<SetCode>()) } returns afr
 
         val result = GetAllSets(setProjectionPort).get(afr.code)

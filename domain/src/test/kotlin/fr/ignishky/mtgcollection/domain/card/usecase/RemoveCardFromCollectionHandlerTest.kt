@@ -18,7 +18,7 @@ class RemoveCardFromCollectionHandlerTest {
     private val handler = RemoveCardFromCollectionHandler(cardProjectionPort)
 
     @Test
-    fun `should do nothing for non-existing card`() {
+    fun shouldDoNothingForNonExistingCard() {
         every { cardProjectionPort.get(plus2Mace.id) } returns null
 
         val events = handler.handle(RemoveCardFromCollection(plus2Mace.id))
@@ -28,7 +28,7 @@ class RemoveCardFromCollectionHandlerTest {
     }
 
     @Test
-    fun `should reset owned state to false`() {
+    fun shouldResetOwnedStateToFalse() {
         every { cardProjectionPort.get(plus2Mace.id) } returns plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
         justRun { cardProjectionPort.update(any(), any(), any()) }
 
@@ -41,7 +41,7 @@ class RemoveCardFromCollectionHandlerTest {
     }
 
     @Test
-    fun `handler should listen to RemoveCardFromCollection`() {
+    fun shouldListenToRemoveCardFromCollection() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(RemoveCardFromCollection::class)

@@ -23,7 +23,7 @@ class RefreshCardTest {
     private val handler = RefreshCardHandler(setProjectionPort, cardReferer, cardProjectionPort)
 
     @Test
-    fun `should return no events when cards are up to date`() {
+    fun shouldReturnNoEventsWhenCardsAreUptoDate() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace)
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
@@ -34,7 +34,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `should return CardCreated event for new card`() {
+    fun shouldReturnCardCreatedEventForNewCard() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns emptyList()
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
@@ -58,7 +58,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `should return CardUpdated event for card with new name`() {
+    fun shouldReturnCardUpdatedEventForCardWithNewName() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
@@ -72,7 +72,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `should return CardUpdated event for card with new setCode`() {
+    fun shouldReturnCardUpdatedEventForCardWithNewSetCode() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
@@ -86,7 +86,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `should return CardUpdated event for card with new images`() {
+    fun shouldReturnCardUpdatedEventForCardWithNewImages() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("old image")))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
@@ -100,7 +100,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `should return CardUpdated event for card with new collection number`() {
+    fun shouldReturnCardUpdatedEventForCardWithNewCollectionNumber() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("old collection number")))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
@@ -114,7 +114,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `should return CardPricesUpdated event for card with only new prices`() {
+    fun shouldReturnCardPricesUpdatedEventForCardWithOnlyNewPrices() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
@@ -128,7 +128,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `should return events for card with all new field values`() {
+    fun shouldReturnEventsForCardWithAllNewFieldValues() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(
             plus2Mace.copy(
@@ -140,13 +140,16 @@ class RefreshCardTest {
             )
         )
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
-        justRun { cardProjectionPort.update(
-            plus2Mace.id, listOf(
-                plus2Mace.collectionNumber,
-            plus2Mace.images,
-            plus2Mace.name,
-            plus2Mace.setCode
-        )) }
+        justRun {
+            cardProjectionPort.update(
+                plus2Mace.id, listOf(
+                    plus2Mace.collectionNumber,
+                    plus2Mace.images,
+                    plus2Mace.name,
+                    plus2Mace.setCode
+                )
+            )
+        }
         justRun { cardProjectionPort.update(plus2Mace.id, plus2Mace.prices) }
 
         val events = handler.handle(RefreshCard())
@@ -169,7 +172,7 @@ class RefreshCardTest {
     }
 
     @Test
-    fun `handler should listen to RefreshCard`() {
+    fun shouldListenToRefreshCard() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(RefreshCard::class)
