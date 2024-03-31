@@ -14,8 +14,6 @@ protected constructor(
     val instant: Instant,
 ) {
 
-    abstract fun apply(aggregate: Aggregate<*>): A
-
     override fun toString() = "Event($id, $aggregateId, $aggregateClass, $payload, $instant)"
 
 }
