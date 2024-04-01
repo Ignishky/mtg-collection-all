@@ -27,11 +27,13 @@ class RefreshCardHandler(
 
     private val logger = logger {}
 
-    override fun handle(command: Command) = setProjectionPort.getAll()
-        .flatMap { set -> processSet(set) }
+    override fun handle(command: Command): List<Event<CardId, Card, out Payload>> {
+        val sets = setProjectionPort.getAll()
+        return sets.flatMapIndexed { index, set -> processSet(index, set, sets.size) }
+    }
 
-    private fun processSet(set: Set): List<Event<CardId, Card, out Payload>> {
-        logger.info { "Refreshing cards from ${set.code.value} ..." }
+    private fun processSet(index: Number, set: Set, setsNumber: Number): List<Event<CardId, Card, out Payload>> {
+        logger.info { "(${index}/${setsNumber}) Refreshing cards from ${set.code.value} ..." }
         val knownCardsById = cardProjectionPort.getAll(set.code).associateBy { it.id }
         return cardReferer.getCards(set.code)
             .flatMap { card ->
