@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/refresh-all")
 @Tag(name = "Updater", description = "All the needed endpoints to update the application data")
-interface RefreshApi {
+fun interface RefreshApi {
 
     @PutMapping
     @Operation(summary = "Update all the data", description = "Retrieve sets, cards and prices from scryfall API")
