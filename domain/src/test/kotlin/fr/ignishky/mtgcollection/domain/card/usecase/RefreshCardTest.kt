@@ -114,6 +114,18 @@ class RefreshCardTest {
     }
 
     @Test
+    fun shouldIgnorePricesUpdateWhenNewCardHasNoPrice() {
+        every { setProjectionPort.getAll() } returns listOf(afr)
+        every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace)
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(0, 0, 0, 0))))
+        justRun { cardProjectionPort.update(plus2Mace.id, plus2Mace.prices) }
+
+        val events = handler.handle(RefreshCard())
+
+        assertThat(events).isEmpty()
+    }
+
+    @Test
     fun shouldReturnCardPricesUpdatedEventForCardWithOnlyNewPrices() {
         every { setProjectionPort.getAll() } returns listOf(afr)
         every { cardProjectionPort.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))

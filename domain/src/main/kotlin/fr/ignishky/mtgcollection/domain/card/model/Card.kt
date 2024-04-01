@@ -28,4 +28,8 @@ data class Card(
         return result
     }
 
+    fun hasPrices(): Boolean {
+        val scryfallPrices = prices.scryfall
+        return scryfallPrices.eur > 0 || scryfallPrices.eurFoil > 0 || scryfallPrices.usd > 0 || scryfallPrices.usdFoil > 0
+    }
 }

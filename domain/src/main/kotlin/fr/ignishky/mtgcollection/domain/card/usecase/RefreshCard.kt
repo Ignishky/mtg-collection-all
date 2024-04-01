@@ -57,7 +57,7 @@ class RefreshCardHandler(
             events = events.plus(CardUpdated(newCard.id, *delta.toTypedArray()))
             cardProjectionPort.update(knownCard.id, delta)
         }
-        if (knownCard.prices != newCard.prices) {
+        if (newCard.hasPrices() && knownCard.prices != newCard.prices) {
             events = events.plus(CardPricesUpdated(newCard.id, newCard.prices))
             cardProjectionPort.update(knownCard.id, newCard.prices)
         }
