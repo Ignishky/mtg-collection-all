@@ -3,6 +3,7 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
 import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
+import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
 import fr.ignishky.mtgcollection.domain.SetFixtures.aafr
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
@@ -60,6 +61,7 @@ internal class SetApiIT(
             listOf(
                 arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
                 plus2Mace.copy(isOwned = CardIsOwned(true)),
+                valorSinger,
                 axgardBraggart.copy(isOwned = CardIsOwned(false))
             ))
 

@@ -10,7 +10,7 @@ object CardFixtures {
         CardSetCode("afr"),
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg"))),
         CardNumber("1"),
-        CardPrices(Price(2, 7, 2, 3)),
+        CardPrices(Price(2, 0, 2, 0)),
         CardFinishes(listOf(CardFinish("nonfoil"))),
     )
 
@@ -20,7 +20,7 @@ object CardFixtures {
         CardSetCode("afr"),
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg"))),
         CardNumber("2"),
-        CardPrices(Price(4, 8, 1, 6)),
+        CardPrices(Price(0, 8, 0, 6)),
         CardFinishes(listOf(CardFinish("foil"))),
     )
 

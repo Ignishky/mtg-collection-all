@@ -9,7 +9,7 @@
       "nonFoil": true,
       "prices": {
         "eur": 2,
-        "eurFoil": 7
+        "eurFoil": 0
       },
       "owned": true,
       "ownedFoil": false
@@ -21,15 +21,28 @@
       "foil": true,
       "nonFoil": false,
       "prices": {
-        "eur": 4,
+        "eur": 0,
         "eurFoil": 8
       },
       "owned": true,
       "ownedFoil": true
+    },
+    {
+      "id": "89bc162c-bdf1-43f7-882f-d8cee4f3f415",
+      "name": "Valor Singer",
+      "image": "https://scryfall.mtgc.test/cards/valorSinger.svg",
+      "foil": true,
+      "nonFoil": true,
+      "prices": {
+        "eur": 1,
+        "eurFoil": 14
+      },
+      "owned": false,
+      "ownedFoil": false
     }
   ],
   "prices": {
-    "eur": 6,
-    "eurFoil": 15
+    "eur": 11,
+    "eurFoil": 24
   }
 }

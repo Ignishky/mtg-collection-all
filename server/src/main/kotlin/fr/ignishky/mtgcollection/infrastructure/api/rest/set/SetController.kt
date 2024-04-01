@@ -34,6 +34,7 @@ class SetController(
             ?: return ResponseEntity(NOT_FOUND)
 
         val cards = cardApiPort.getAll(SetCode(setCode))
+        val cardResponses = cards
             .map {
                 CardResponse(
                     it.id.value,
@@ -47,11 +48,11 @@ class SetController(
                 )
             }
         val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur, eurFoil), card ->
-            PricesResponse(eur + card.prices.eur, eurFoil + card.prices.eurFoil)
+            PricesResponse(eur + card.minEurPrice(), eurFoil + card.maxEurPrice())
         }
 
-        logger.info { "Returning ${cards.size} cards." }
-        return ResponseEntity(CardsResponse(set.name.value, cards, pricesResponse), OK)
+        logger.info { "Returning ${cardResponses.size} cards." }
+        return ResponseEntity(CardsResponse(set.name.value, cardResponses, pricesResponse), OK)
     }
 
 }

@@ -7,7 +7,7 @@
       "foil": true,
       "nonFoil": false,
       "prices": {
-        "eur": 4,
+        "eur": 0,
         "eurFoil": 8
       },
       "owned": true,
@@ -21,7 +21,7 @@
       "nonFoil": true,
       "prices": {
         "eur": 2,
-        "eurFoil": 7
+        "eurFoil": 0
       },
       "owned": true,
       "ownedFoil": false

@@ -111,10 +111,10 @@
       },
       "prices": {
         "usd": "0.02",
-        "usd_foil": "0.03",
+        "usd_foil": "0",
         "usd_etched": null,
         "eur": "0.02",
-        "eur_foil": "0.07",
+        "eur_foil": "0",
         "tix": "0.02"
       },
       "related_uris": {
@@ -238,10 +238,10 @@
         "previewed_at": "2021-07-06"
       },
       "prices": {
-        "usd": "0.01",
+        "usd": "0",
         "usd_foil": "0.06",
         "usd_etched": null,
-        "eur": "0.04",
+        "eur": "0",
         "eur_foil": "0.08",
         "tix": "0.03"
       },
