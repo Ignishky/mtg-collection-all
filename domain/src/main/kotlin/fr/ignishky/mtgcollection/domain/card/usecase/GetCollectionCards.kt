@@ -7,11 +7,12 @@ import jakarta.inject.Named
 
 @Named
 class GetCollectionCards(
-    val cardProjectionPort: CardProjectionPort,
-) : CollectionApiPort{
+    private val cardProjectionPort: CardProjectionPort,
+) : CollectionApiPort {
 
     override fun getAll(): List<Card> {
-        return cardProjectionPort.getCollection()
+        val ownedPriceComparator = compareByDescending<Card> { if (it.isOwnedFoil.value) it.prices.scryfall.eurFoil else it.prices.scryfall.eur }
+        return cardProjectionPort.getCollection().sortedWith(ownedPriceComparator)
     }
 
 }
