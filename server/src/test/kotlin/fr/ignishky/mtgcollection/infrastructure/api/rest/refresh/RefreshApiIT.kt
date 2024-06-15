@@ -48,7 +48,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun shouldCreateNewSetAndCards() {
+    fun should_create_new_set_and_cards() {
         prepareMockServer()
 
         val resultActions = performCall()
@@ -66,7 +66,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun shouldSkipUpdateOfUnmodifiedSetAndCards() {
+    fun should_skip_update_on_unmodified_set_and_cards() {
         prepareMockServer()
         jdbc.save(
             listOf(
@@ -97,7 +97,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun shouldUpdateModifiedSetAndCards() {
+    fun should_update_modified_set_and_cards() {
         prepareMockServer()
         jdbc.save(
             listOf(
@@ -130,7 +130,7 @@ class RefreshApiIT(
     }
 
     @Test
-    fun shouldHandleMultiplePagesOfCards() {
+    fun should_handle_multiple_pages_of_cards() {
         val mockServerBuilder = MockServerBuilder(mockServer)
         mockServerBuilder.prepareSets("scryfall_set_afr.json")
         mockServerBuilder.prepareCards("afr", "afr_page2")

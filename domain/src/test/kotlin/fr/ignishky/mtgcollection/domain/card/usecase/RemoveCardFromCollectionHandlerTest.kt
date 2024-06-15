@@ -6,7 +6,6 @@ import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
@@ -18,7 +17,7 @@ class RemoveCardFromCollectionHandlerTest {
     private val handler = RemoveCardFromCollectionHandler(cardProjectionPort)
 
     @Test
-    fun shouldDoNothingForNonExistingCard() {
+    fun should_do_nothing_for_non_existing_card() {
         every { cardProjectionPort.get(plus2Mace.id) } returns null
 
         val events = handler.handle(RemoveCardFromCollection(plus2Mace.id))
@@ -28,9 +27,8 @@ class RemoveCardFromCollectionHandlerTest {
     }
 
     @Test
-    fun shouldResetOwnedStateToFalse() {
+    fun should_reset_owned_state_to_false() {
         every { cardProjectionPort.get(plus2Mace.id) } returns plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
-        justRun { cardProjectionPort.update(any(), any(), any()) }
 
         val events = handler.handle(RemoveCardFromCollection(plus2Mace.id))
 
@@ -41,7 +39,7 @@ class RemoveCardFromCollectionHandlerTest {
     }
 
     @Test
-    fun shouldListenToRemoveCardFromCollection() {
+    fun should_listen_to_RemoveCardFromCollection_command() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(RemoveCardFromCollection::class)

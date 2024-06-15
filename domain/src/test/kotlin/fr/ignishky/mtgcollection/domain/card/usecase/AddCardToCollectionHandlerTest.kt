@@ -6,7 +6,6 @@ import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
@@ -18,7 +17,7 @@ class AddCardToCollectionHandlerTest {
     private val handler = AddCardToCollectionHandler(cardProjectionPort)
 
     @Test
-    fun shouldDoNothingForNonExistingCard() {
+    fun should_do_nothing_for_non_existing_card() {
         every { cardProjectionPort.get(plus2Mace.id) } returns null
 
         val events = handler.handle(AddCardToCollection(plus2Mace.id, CardIsOwnedFoil(false)))
@@ -28,9 +27,8 @@ class AddCardToCollectionHandlerTest {
     }
 
     @Test
-    fun shouldReturnCardOwnedEventForExistingCard() {
+    fun should_return_CardOwned_event_for_existing_card() {
         every { cardProjectionPort.get(plus2Mace.id) } returns plus2Mace
-        justRun { cardProjectionPort.update(any(), any(), any()) }
 
         val events = handler.handle(AddCardToCollection(plus2Mace.id, CardIsOwnedFoil(false)))
 
@@ -41,9 +39,8 @@ class AddCardToCollectionHandlerTest {
     }
 
     @Test
-    fun shouldReturnCardOwnedFoilEventForExistingCard() {
+    fun should_return_CardOwned_foil_event_for_existing_card() {
         every { cardProjectionPort.get(plus2Mace.id) } returns plus2Mace
-        justRun { cardProjectionPort.update(any(), any(), any()) }
 
         val events = handler.handle(AddCardToCollection(plus2Mace.id, CardIsOwnedFoil(true)))
 
@@ -54,7 +51,7 @@ class AddCardToCollectionHandlerTest {
     }
 
     @Test
-    fun shouldListenToAddCardToCollection() {
+    fun should_listen_to_AddCardToCollection_command() {
         val listenTo = handler.listenTo()
 
         assertThat(listenTo).isEqualTo(AddCardToCollection::class)

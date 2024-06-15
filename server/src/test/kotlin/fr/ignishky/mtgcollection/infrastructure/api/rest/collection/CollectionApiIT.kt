@@ -36,7 +36,7 @@ class CollectionApiIT(
     }
 
     @Test
-    fun shouldAddNonFoilCardToTheCollection() {
+    fun should_add_non_foil_card_to_the_collection() {
         jdbc.save(listOf(afr), listOf(plus2Mace))
 
         val results = mockMvc.perform(
@@ -57,7 +57,7 @@ class CollectionApiIT(
     }
 
     @Test
-    fun shouldAddFoilCardToTheCollection() {
+    fun should_add_foil_card_to_the_collection() {
         jdbc.save(listOf(afr), listOf(plus2Mace))
 
         val results = mockMvc.perform(
@@ -78,7 +78,7 @@ class CollectionApiIT(
     }
 
     @Test
-    fun shouldRemoveCardFromTheCollection() {
+    fun should_remove_card_from_the_collection() {
         jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))))
 
         val results = mockMvc.perform(
@@ -93,7 +93,7 @@ class CollectionApiIT(
     }
 
     @Test
-    fun shouldRetrieveOwnedCards() {
+    fun should_retrieve_owned_cards() {
         jdbc.save(
             listOf(afr, khm),
             listOf(
