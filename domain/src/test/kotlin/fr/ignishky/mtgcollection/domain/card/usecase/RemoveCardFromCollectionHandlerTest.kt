@@ -13,29 +13,29 @@ import org.junit.jupiter.api.Test
 
 class RemoveCardFromCollectionHandlerTest {
 
-    private val cardProjectionPort = mockk<CardProjectionPort>()
-    private val handler = RemoveCardFromCollectionHandler(cardProjectionPort)
+    private val cardProjection = mockk<CardProjectionPort>()
+    private val handler = RemoveCardFromCollectionHandler(cardProjection)
 
     @Test
     fun should_do_nothing_for_non_existing_card() {
-        every { cardProjectionPort.get(plus2Mace.id) } returns null
+        every { cardProjection.get(plus2Mace.id) } returns null
 
         val events = handler.handle(RemoveCardFromCollection(plus2Mace.id))
 
         assertThat(events).isEmpty()
-        verify(exactly = 0) { cardProjectionPort.update(any(), any(), any()) }
+        verify(exactly = 0) { cardProjection.update(any(), any(), any()) }
     }
 
     @Test
     fun should_reset_owned_state_to_false() {
-        every { cardProjectionPort.get(plus2Mace.id) } returns plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
+        every { cardProjection.get(plus2Mace.id) } returns plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
 
         val events = handler.handle(RemoveCardFromCollection(plus2Mace.id))
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(CardDisowned(plus2Mace.id))
-        verify { cardProjectionPort.update(plus2Mace.id, CardIsOwned(false), CardIsOwnedFoil(false)) }
+        verify { cardProjection.update(plus2Mace.id, CardIsOwned(false), CardIsOwnedFoil(false)) }
     }
 
     @Test

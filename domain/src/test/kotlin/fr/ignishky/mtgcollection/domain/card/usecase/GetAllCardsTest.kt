@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Test
 
 class GetAllCardsTest {
 
-    private val cardProjectionPort = mockk<CardProjectionPort>()
-    private val query = GetAllCards(cardProjectionPort)
+    private val cardProjection = mockk<CardProjectionPort>()
+    private val query = GetAllCards(cardProjection)
 
     @Test
     fun should_return_sorted_cards() {
-        every { cardProjectionPort.getAll(afr.code) } returns listOf(arboreaPegasus, plus2Mace)
+        every { cardProjection.getAll(afr.code) } returns listOf(arboreaPegasus, plus2Mace)
 
         val cards = query.getAll(afr.code)
 

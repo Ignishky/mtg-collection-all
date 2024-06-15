@@ -19,8 +19,8 @@ import kotlin.test.Test
 class RefreshSetTest {
 
     private val setReferer = mockk<SetRefererPort>()
-    private val setProjectionPort = mockk<SetProjectionPort>()
-    private val handler = RefreshSetHandler(setReferer, setProjectionPort)
+    private val setProjection = mockk<SetProjectionPort>()
+    private val handler = RefreshSetHandler(setReferer, setProjection)
 
     @Nested
     inner class SetFuture {
@@ -40,7 +40,7 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify(exactly = 0) { setProjectionPort.add(any()) }
+            verify(exactly = 0) { setProjection.add(any()) }
         }
 
         @Test
@@ -49,11 +49,11 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify(exactly = 0) { setProjectionPort.update(any(), any()) }
+            verify(exactly = 0) { setProjection.update(any(), any()) }
         }
 
         private fun projectionReturnEmptyAndRefererReturnSetInTheFuture() {
-            every { setProjectionPort.getAll() } returns emptyList()
+            every { setProjection.getAll() } returns emptyList()
             every { setReferer.getAllSets() } returns listOf(afr.copy(releasedAt = SetReleasedAt(now().plusDays(1))))
         }
 
@@ -71,7 +71,7 @@ class RefreshSetTest {
             assertThat(events)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
                 .containsOnly(SetCreated(afr.id, afr.code, afr.name, afr.type, afr.icon, afr.releasedAt))
-            verify { setProjectionPort.add(afr) }
+            verify { setProjection.add(afr) }
         }
 
         @Test
@@ -80,8 +80,8 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify { setProjectionPort.add(afr) }
-            verify { setProjectionPort.add(afr) }
+            verify { setProjection.add(afr) }
+            verify { setProjection.add(afr) }
         }
 
         @Test
@@ -90,12 +90,12 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify(exactly = 0) { setProjectionPort.update(any(), any()) }
-            verify { setProjectionPort.add(afr) }
+            verify(exactly = 0) { setProjection.update(any(), any()) }
+            verify { setProjection.add(afr) }
         }
 
         private fun projectionReturnEmptyAndRefererReturnNewSet() {
-            every { setProjectionPort.getAll() } returns emptyList()
+            every { setProjection.getAll() } returns emptyList()
             every { setReferer.getAllSets() } returns listOf(afr)
         }
 
@@ -119,7 +119,7 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify(exactly = 0) { setProjectionPort.add(any()) }
+            verify(exactly = 0) { setProjection.add(any()) }
         }
 
         @Test
@@ -128,11 +128,11 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify(exactly = 0) { setProjectionPort.update(any(), any()) }
+            verify(exactly = 0) { setProjection.update(any(), any()) }
         }
 
         private fun projectionAndRefererReturnSameList() {
-            every { setProjectionPort.getAll() } returns listOf(afr)
+            every { setProjection.getAll() } returns listOf(afr)
             every { setReferer.getAllSets() } returns listOf(afr)
         }
 
@@ -150,7 +150,7 @@ class RefreshSetTest {
             assertThat(events)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
                 .containsOnly(SetUpdated(afr.id, afr.name, afr.type))
-            verify { setProjectionPort.update(afr.id, listOf(afr.name, afr.type)) }
+            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
         }
 
         @Test
@@ -159,8 +159,8 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify { setProjectionPort.update(afr.id, listOf(afr.name, afr.type)) }
-            verify { setProjectionPort.update(afr.id, listOf(afr.name, afr.type)) }
+            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
+            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
         }
 
         @Test
@@ -169,12 +169,12 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify(exactly = 0) { setProjectionPort.add(any()) }
-            verify { setProjectionPort.update(afr.id, listOf(afr.name, afr.type)) }
+            verify(exactly = 0) { setProjection.add(any()) }
+            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
         }
 
         private fun projectionReturnOldSetAndRefererReturnNewSet() {
-            every { setProjectionPort.getAll() } returns listOf(afr.copy(name = SetName("Old name"), type = SetType("Old type")))
+            every { setProjection.getAll() } returns listOf(afr.copy(name = SetName("Old name"), type = SetType("Old type")))
             every { setReferer.getAllSets() } returns listOf(afr)
         }
 

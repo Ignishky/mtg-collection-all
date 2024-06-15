@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test
 
 class GetCollectionCardsTest {
 
-    private val cardProjectionPort = mockk<CardProjectionPort>()
-    private val query = GetCollectionCards(cardProjectionPort)
+    private val cardProjection = mockk<CardProjectionPort>()
+    private val query = GetCollectionCards(cardProjection)
 
     @Test
     fun should_return_collection_cards() {
-        every { cardProjectionPort.getCollection() } returns listOf(arboreaPegasus, plus2Mace)
+        every { cardProjection.getCollection() } returns listOf(arboreaPegasus, plus2Mace)
 
         val cards = query.getAll()
 
