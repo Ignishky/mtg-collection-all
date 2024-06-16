@@ -8,16 +8,16 @@ import jakarta.inject.Named
 
 @Named
 class GetAllSets(
-    private val setProjectionPort: SetProjectionPort,
+    private val setProjection: SetProjectionPort,
 ) : SetApiPort {
 
-    override fun getAll() = setProjectionPort.getAll()
+    override fun getAll() = setProjection.getAll()
         .filter { hasOwnIcon(it) }
         .sortedByDescending { it.releasedAt }
 
     private fun hasOwnIcon(it: Set) = it.icon.value.contains(it.code.value)
 
     override fun get(setCode: SetCode): Set? {
-        return setProjectionPort.get(setCode)
+        return setProjection.get(setCode)
     }
 }

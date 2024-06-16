@@ -31,15 +31,15 @@ class PostgresSetProjection(
         jdbcTemplate.update("UPDATE sets SET $arguments WHERE id=?", setId.value)
     }
 
-    override fun getAll() = jdbcTemplate.query("SELECT * FROM sets ORDER BY released_at DESC", SetRowMapper())
+    override fun getAll(): List<Set> = jdbcTemplate.query("SELECT * FROM sets ORDER BY released_at DESC", SetRowMapper())
 
     override fun get(id: SetId) = jdbcTemplate.queryForObject("SELECT * FROM sets WHERE id=?", SetRowMapper(), id.value)!!
 
     override fun get(setCode: SetCode): Set? {
-        try {
-            return jdbcTemplate.queryForObject("SELECT * FROM sets WHERE code=?", SetRowMapper(), setCode.value)!!
+        return try {
+            jdbcTemplate.queryForObject("SELECT * FROM sets WHERE code=?", SetRowMapper(), setCode.value) ?: return null
         } catch (e: EmptyResultDataAccessException) {
-            return null
+            null
         }
     }
 }

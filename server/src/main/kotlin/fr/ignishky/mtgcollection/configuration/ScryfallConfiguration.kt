@@ -7,16 +7,17 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.client.RestTemplate
 
 @Configuration
 @EnableConfigurationProperties(ScryfallProperties::class)
 class ScryfallConfiguration {
 
     @Bean
-    fun restTemplate(builder: RestTemplateBuilder) = builder.build()
+    fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder.build()
 
     @Bean
-    fun objectMapper() = ObjectMapper()
+    fun objectMapper(): ObjectMapper = ObjectMapper()
         .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
         .setSerializationInclusion(NON_EMPTY)
 

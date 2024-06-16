@@ -57,13 +57,15 @@ internal class SetApiIT(
     @Test
     fun should_return_cards_from_given_set() {
         // GIVEN
-        jdbc.save(listOf(afr),
+        jdbc.save(
+            listOf(afr),
             listOf(
                 arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
                 plus2Mace.copy(isOwned = CardIsOwned(true)),
                 valorSinger,
                 axgardBraggart.copy(isOwned = CardIsOwned(false))
-            ))
+            )
+        )
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/afr/cards"))
@@ -79,12 +81,14 @@ internal class SetApiIT(
     @Test
     fun should_return_404_from_unknown_set() {
         // GIVEN
-        jdbc.save(listOf(afr),
+        jdbc.save(
+            listOf(afr),
             listOf(
                 arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
                 plus2Mace.copy(isOwned = CardIsOwned(true)),
                 axgardBraggart.copy(isOwned = CardIsOwned(false))
-            ))
+            )
+        )
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/fake/cards"))

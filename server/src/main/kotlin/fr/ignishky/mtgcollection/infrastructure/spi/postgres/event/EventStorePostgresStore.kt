@@ -23,7 +23,7 @@ class EventStorePostgresStore(
         )
     }
 
-    override fun getAll(id: AggregateId):List<Event<*, *, *>> {
+    override fun getAll(id: AggregateId): List<Event<*, *, *>> {
         return emptyList()
     }
 

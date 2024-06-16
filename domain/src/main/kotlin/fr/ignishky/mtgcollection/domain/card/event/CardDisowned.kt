@@ -14,8 +14,6 @@ class CardDisowned(
     Card::class,
     CardDisownedPayload(),
     Instant.now(),
-) {
-}
+)
 
-class CardDisownedPayload : Payload {
-}
+class CardDisownedPayload : Payload

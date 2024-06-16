@@ -34,18 +34,18 @@ data class Card(
     }
 
     fun minEurPrice(): Long {
-        if (finishes.isNonFoil()) {
-            return prices.scryfall.eur
+        return if (finishes.isNonFoil()) {
+            prices.scryfall.eur
         } else {
-            return prices.scryfall.eurFoil
+            prices.scryfall.eurFoil
         }
     }
 
     fun maxEurPrice(): Long {
-        if (finishes.isFoil()) {
-            return prices.scryfall.eurFoil
+        return if (finishes.isFoil()) {
+            prices.scryfall.eurFoil
         } else {
-            return prices.scryfall.eur
+            prices.scryfall.eur
         }
     }
 

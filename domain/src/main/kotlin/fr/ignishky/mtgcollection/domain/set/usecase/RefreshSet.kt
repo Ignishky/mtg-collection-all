@@ -18,14 +18,14 @@ class RefreshSet : Command
 @Named
 class RefreshSetHandler(
     private val setReferer: SetRefererPort,
-    private val setProjectionPort: SetProjectionPort,
+    private val setProjection: SetProjectionPort,
 ) : CommandHandler<RefreshSet> {
 
     private val logger = KotlinLogging.logger {}
 
     override fun handle(command: Command): List<Event<*, *, *>> {
 
-        val knownSetsById = setProjectionPort.getAll().associateBy { it.id }
+        val knownSetsById = setProjection.getAll().associateBy { it.id }
         logger.info { "Refreshing ${knownSetsById.size} sets..." }
 
         return setReferer.getAllSets()
@@ -42,14 +42,14 @@ class RefreshSetHandler(
     private fun onlyReleasedSet(it: Set) = it.releasedAt.value.isBefore(now().plusDays(1))
 
     private fun createSet(set: Set): SetCreated {
-        setProjectionPort.add(set)
+        setProjection.add(set)
         return SetCreated(set)
     }
 
     private fun updateSet(knownSet: Set, newSet: Set): SetUpdated? {
         val delta = knownSet.updatedFields(newSet)
         return if (delta.isNotEmpty()) {
-            setProjectionPort.update(knownSet.id, delta)
+            setProjection.update(knownSet.id, delta)
             SetUpdated(newSet.id, *delta.toTypedArray<SetProperty>())
         } else {
             null

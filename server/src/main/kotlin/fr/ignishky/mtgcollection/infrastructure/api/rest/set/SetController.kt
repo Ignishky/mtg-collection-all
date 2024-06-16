@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class SetController(
-    private val setApiPort: SetApiPort,
-    private val cardApiPort: CardApiPort,
+    private val setApi: SetApiPort,
+    private val cardApi: CardApiPort,
 ) : SetApi {
 
     private val logger = KotlinLogging.logger {}
@@ -20,7 +20,7 @@ class SetController(
     override fun getAll(): ResponseEntity<SetsResponse> {
         logger.info { "Requesting all sets ..." }
 
-        val sets = setApiPort.getAll()
+        val sets = setApi.getAll()
             .map { SetResponse(it.code.value, it.name.value, it.type.value, it.icon.value) }
 
         logger.info { "Returning ${sets.size} sets." }
@@ -28,12 +28,12 @@ class SetController(
     }
 
     override fun getCards(setCode: String): ResponseEntity<CardsResponse> {
-        logger.info { "Requesting all cards from '${setCode}'" }
+        logger.info { "Requesting all cards from '$setCode'" }
 
-        val set = setApiPort.get(SetCode(setCode))
+        val set = setApi.get(SetCode(setCode))
             ?: return ResponseEntity(NOT_FOUND)
 
-        val cards = cardApiPort.getAll(SetCode(setCode))
+        val cards = cardApi.getAll(SetCode(setCode))
         val cardResponses = cards
             .map {
                 CardResponse(

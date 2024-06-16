@@ -17,13 +17,13 @@ data class AddCardToCollection(
 
 @Named
 class AddCardToCollectionHandler(
-    private val cardProjectionPort: CardProjectionPort,
+    private val cardProjection: CardProjectionPort,
 ) : CommandHandler<AddCardToCollection> {
 
     override fun handle(command: Command): List<Event<*, *, *>> {
         command as AddCardToCollection
-        return cardProjectionPort.get(command.cardId)
-            ?.run { cardProjectionPort.update(command.cardId, CardIsOwned(true), command.isOwnedFoil) }
+        return cardProjection.get(command.cardId)
+            ?.run { cardProjection.update(command.cardId, CardIsOwned(true), command.isOwnedFoil) }
             ?.let { listOf(CardOwned(command.cardId, command.isOwnedFoil)) }
             ?: emptyList()
     }

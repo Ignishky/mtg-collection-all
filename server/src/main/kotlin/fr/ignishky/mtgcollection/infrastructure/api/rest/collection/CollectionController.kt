@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CollectionController(
     val commandBus: CommandBus,
-    val collectionApiPort: CollectionApiPort,
+    val collectionApi: CollectionApiPort,
 ) : CollectionApi {
 
     override fun addCard(cardId: String, ownedBody: OwnedBody) {
@@ -27,7 +27,7 @@ class CollectionController(
     }
 
     override fun getCollection(): ResponseEntity<CollectionResponse> {
-        val cards = collectionApiPort.getAll()
+        val cards = collectionApi.getAll()
             .map {
                 CardResponse(
                     it.id.value,

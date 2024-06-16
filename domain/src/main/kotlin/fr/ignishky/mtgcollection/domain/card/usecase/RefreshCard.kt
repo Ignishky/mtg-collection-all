@@ -20,21 +20,21 @@ class RefreshCard : Command
 
 @Named
 class RefreshCardHandler(
-    private val setProjectionPort: SetProjectionPort,
+    private val setProjection: SetProjectionPort,
     private val cardReferer: CardRefererPort,
-    private val cardProjectionPort: CardProjectionPort,
+    private val cardProjection: CardProjectionPort,
 ) : CommandHandler<RefreshCard> {
 
     private val logger = logger {}
 
     override fun handle(command: Command): List<Event<CardId, Card, out Payload>> {
-        val sets = setProjectionPort.getAll()
+        val sets = setProjection.getAll()
         return sets.flatMapIndexed { index, set -> processSet(index, set, sets.size) }
     }
 
     private fun processSet(index: Number, set: Set, setsNumber: Number): List<Event<CardId, Card, out Payload>> {
-        logger.info { "(${index}/${setsNumber}) Refreshing cards from ${set.code.value} ..." }
-        val knownCardsById = cardProjectionPort.getAll(set.code).associateBy { it.id }
+        logger.info { "($index/$setsNumber) Refreshing cards from ${set.code.value} ..." }
+        val knownCardsById = cardProjection.getAll(set.code).associateBy { it.id }
         return cardReferer.getCards(set.code)
             .flatMap { card ->
                 if (!knownCardsById.contains(card.id)) {
@@ -46,7 +46,7 @@ class RefreshCardHandler(
     }
 
     private fun createCard(card: Card): List<CardCreated> {
-        cardProjectionPort.add(card)
+        cardProjection.add(card)
         return listOf(CardCreated(card))
     }
 
@@ -55,11 +55,11 @@ class RefreshCardHandler(
         val delta = knownCard.updatedFields(newCard)
         if (delta.isNotEmpty()) {
             events = events.plus(CardUpdated(newCard.id, *delta.toTypedArray()))
-            cardProjectionPort.update(knownCard.id, delta)
+            cardProjection.update(knownCard.id, delta)
         }
         if (newCard.hasPrices() && knownCard.prices != newCard.prices) {
             events = events.plus(CardPricesUpdated(newCard.id, newCard.prices))
-            cardProjectionPort.update(knownCard.id, newCard.prices)
+            cardProjection.update(knownCard.id, newCard.prices)
         }
         return events
     }

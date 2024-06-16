@@ -55,20 +55,20 @@ class JdbcUtils(
                 it.id.value,
                 it.name.value,
                 it.setCode.value,
-                it.images.value.joinToString { it.value },
+                it.images.value.joinToString { (value) -> value },
                 it.collectionNumber.value,
                 "${it.prices.scryfall.eur}|${it.prices.scryfall.eurFoil}|${it.prices.scryfall.usd}|${it.prices.scryfall.usdFoil}",
-                it.finishes.value.joinToString { it.value },
+                it.finishes.value.joinToString { (value) -> value },
                 it.isOwned.value,
                 it.isOwnedFoil.value,
             )
         }
     }
 
-    fun getEvents() = template.query("SELECT * FROM events", EventRowMapper(objectMapper))
+    fun getEvents(): List<Event<*, *, *>> = template.query("SELECT * FROM events", EventRowMapper(objectMapper))
 
-    fun getSets() = template.query("SELECT * FROM sets", SetRowMapper())
+    fun getSets(): List<Set> = template.query("SELECT * FROM sets", SetRowMapper())
 
-    fun getCards() = template.query("SELECT * FROM cards", CardRowMapper())
+    fun getCards(): List<Card> = template.query("SELECT * FROM cards", CardRowMapper())
 
 }

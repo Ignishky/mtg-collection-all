@@ -16,13 +16,13 @@ class RemoveCardFromCollection(
 
 @Named
 class RemoveCardFromCollectionHandler(
-    private val cardProjectionPort: CardProjectionPort,
+    private val cardProjection: CardProjectionPort,
 ) : CommandHandler<RemoveCardFromCollection> {
 
     override fun handle(command: Command): List<Event<*, *, *>> {
         command as RemoveCardFromCollection
-        return cardProjectionPort.get(command.cardId)
-            ?.run { cardProjectionPort.update(command.cardId, CardIsOwned(false), CardIsOwnedFoil(false)) }
+        return cardProjection.get(command.cardId)
+            ?.run { cardProjection.update(command.cardId, CardIsOwned(false), CardIsOwnedFoil(false)) }
             ?.let { listOf(CardDisowned(command.cardId)) }
             ?: emptyList()
     }
