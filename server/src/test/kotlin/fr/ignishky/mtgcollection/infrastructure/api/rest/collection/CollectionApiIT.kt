@@ -10,7 +10,7 @@ import fr.ignishky.mtgcollection.domain.card.event.CardOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
-import fr.ignishky.mtgcollection.infrastructure.TestUtils
+import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -31,9 +31,7 @@ class CollectionApiIT(
 ) {
 
     @BeforeEach
-    fun setUp() {
-        jdbc.dropAll()
-    }
+    fun setUp() = jdbc.dropAll()
 
     @Test
     fun should_add_non_foil_card_to_the_collection() {
@@ -108,7 +106,7 @@ class CollectionApiIT(
         results.andExpectAll(
             status().isOk,
             content().contentType(APPLICATION_JSON),
-            content().json(TestUtils.readFile("collection/cardsResponse.json"), true)
+            content().json(readFile("collection/cardsResponse.json"), true)
         )
     }
 

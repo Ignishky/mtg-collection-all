@@ -30,6 +30,8 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+private val previousKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @MockServerTest("scryfall.base-url=http://localhost:\${mockServerPort}")
@@ -38,14 +40,10 @@ class RefreshApiIT(
     @Autowired private val jdbc: JdbcUtils,
 ) {
 
-    private val previousKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))
-
     private lateinit var mockServer: MockServerClient
 
     @BeforeEach
-    fun setUp() {
-        jdbc.dropAll()
-    }
+    fun setUp() = jdbc.dropAll()
 
     @Test
     fun should_create_new_set_and_cards() {

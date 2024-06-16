@@ -26,5 +26,9 @@
       "owned": true,
       "ownedFoil": false
     }
-  ]
+  ],
+  "prices": {
+    "eur": 10,
+    "eurFoil": 0
+  }
 }

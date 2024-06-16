@@ -34,9 +34,7 @@ internal class SetApiIT(
 ) {
 
     @BeforeEach
-    fun setUp() {
-        jdbc.dropAll()
-    }
+    fun setUp() = jdbc.dropAll()
 
     @Test
     fun should_return_sets() {

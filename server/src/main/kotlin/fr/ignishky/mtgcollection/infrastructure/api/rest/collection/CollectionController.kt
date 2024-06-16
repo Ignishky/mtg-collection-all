@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CollectionController(
-    val commandBus: CommandBus,
-    val collectionApi: CollectionApiPort,
+    private val commandBus: CommandBus,
+    private val collectionApi: CollectionApiPort,
 ) : CollectionApi {
 
     override fun addCard(cardId: String, ownedBody: OwnedBody) {
@@ -28,6 +28,7 @@ class CollectionController(
 
     override fun getCollection(): ResponseEntity<CollectionResponse> {
         val cards = collectionApi.getAll()
+        val cardResponses = cards
             .map {
                 CardResponse(
                     it.id.value,
@@ -40,6 +41,10 @@ class CollectionController(
                     it.isOwnedFoil.value,
                 )
             }
-        return ok(CollectionResponse(cards))
+
+        val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur), card ->
+            PricesResponse(eur + if (card.isOwnedFoil.value) card.prices.scryfall.eurFoil else card.prices.scryfall.eur, 0)
+        }
+        return ok(CollectionResponse(pricesResponse, cardResponses))
     }
 }
