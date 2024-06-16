@@ -129,14 +129,15 @@ class RefreshCardTest {
     fun should_return_CardPricesUpdated_event_for_card_with_only_new_prices() {
         every { setProjection.getAll() } returns listOf(afr)
         every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(0, 250, 0, 450))))
 
         val events = handler.handle(RefreshCard())
 
+        val updatedCardPrices = CardPrices(Price(110, 250, 330, 450))
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardPricesUpdated(plus2Mace.id, plus2Mace.prices))
-        verify { cardProjection.update(plus2Mace.id, plus2Mace.prices) }
+            .containsOnly(CardPricesUpdated(plus2Mace.id, updatedCardPrices))
+        verify { cardProjection.update(plus2Mace.id, updatedCardPrices) }
     }
 
     @Test
@@ -148,7 +149,7 @@ class RefreshCardTest {
                 setCode = CardSetCode("old set code"),
                 images = CardImages(listOf(CardImage("old image"))),
                 collectionNumber = CardNumber("old collection number"),
-                prices = CardPrices(Price(110, 220, 330, 440)),
+                prices = CardPrices(Price(110, 0, 330, 0)),
             )
         )
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)

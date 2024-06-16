@@ -50,16 +50,17 @@ class RefreshCardHandler(
         return listOf(CardCreated(card))
     }
 
-    private fun updateCard(knownCard: Card, newCard: Card): List<Event<CardId, Card, out Payload>> {
+    private fun updateCard(knownCard: Card, updatedCard: Card): List<Event<CardId, Card, out Payload>> {
         var events = emptyList<Event<CardId, Card, out Payload>>()
-        val delta = knownCard.updatedFields(newCard)
+        val delta = knownCard.updatedCardProperties(updatedCard)
         if (delta.isNotEmpty()) {
-            events = events.plus(CardUpdated(newCard.id, *delta.toTypedArray()))
+            events = events.plus(CardUpdated(updatedCard.id, *delta.toTypedArray()))
             cardProjection.update(knownCard.id, delta)
         }
-        if (newCard.hasPrices() && knownCard.prices != newCard.prices) {
-            events = events.plus(CardPricesUpdated(newCard.id, newCard.prices))
-            cardProjection.update(knownCard.id, newCard.prices)
+        if (updatedCard.hasPrices() && knownCard.prices != updatedCard.prices) {
+            val updatedPrices = knownCard.prices.update(updatedCard.prices)
+            events = events.plus(CardPricesUpdated(updatedCard.id, updatedPrices))
+            cardProjection.update(knownCard.id, updatedPrices)
         }
         return events
     }

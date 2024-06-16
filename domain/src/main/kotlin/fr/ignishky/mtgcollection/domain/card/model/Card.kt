@@ -17,7 +17,7 @@ data class Card(
 
     override fun id() = id
 
-    fun updatedFields(newCard: Card): List<CardProperty> {
+    fun updatedCardProperties(newCard: Card): List<CardProperty> {
         var result = emptyList<CardProperty>()
         for (prop in Card::class.memberProperties) {
             val newProperty = prop.call(newCard)!!
