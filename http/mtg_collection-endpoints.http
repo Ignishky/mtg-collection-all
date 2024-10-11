@@ -2,22 +2,22 @@
 PUT http://localhost:8585/refresh-all
 
 ### Get all sets
-GET http://localhost:8585/sets
+GET http://localhost:8080/sets
 
 >>! {{$historyFolder}}/sets.json
 
 ### Get given set's cards
-GET http://localhost:8585/sets/{{set_code}}/cards
+GET http://localhost:8080/sets/{{set_code}}/cards
 
 >>! {{$historyFolder}}/set.json
 
 ### Get all collected cards
-GET http://localhost:8585/collection
+GET http://localhost:8080/collection
 
 >>! {{$historyFolder}}/collection.json
 
 ### Add card to collection
-PUT http://localhost:8585/collection/{{card_id}}
+PUT http://localhost:8080/collection/{{card_id}}
 Content-Type: application/json
 
 {

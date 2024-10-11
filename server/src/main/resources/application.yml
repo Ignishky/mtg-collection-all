@@ -10,11 +10,20 @@ management:
       exposure:
         include: "*"
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8083/eureka
+
 scryfall:
   base-url: "https://api.scryfall.com"
 
 server:
   port: 8585
+
+spring:
+  application:
+    name: mtg-collection-server
 
 springdoc:
   api-docs:

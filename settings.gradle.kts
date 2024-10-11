@@ -1,2 +1,2 @@
 rootProject.name = "mtg-collection-all"
-include("server", "domain", "cqrs")
+include("eurekaServer", "apiGateway", "server", "domain", "cqrs")
