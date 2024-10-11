@@ -42,8 +42,11 @@ class CollectionController(
                 )
             }
 
-        val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur), card ->
-            PricesResponse(eur + if (card.isOwnedFoil.value) card.prices.scryfall.eurFoil else card.prices.scryfall.eur, 0)
+        val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur, eurFoil), card ->
+            PricesResponse(
+                eur + if (!card.isOwnedFoil.value) card.prices.scryfall.eur else 0,
+                eurFoil + if (card.isOwnedFoil.value) card.prices.scryfall.eurFoil else 0
+            )
         }
         return ok(CollectionResponse(pricesResponse, cardResponses))
     }
