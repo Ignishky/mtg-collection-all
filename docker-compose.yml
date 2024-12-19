@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15.1
+    container_name: mtg_collection_database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: mtg_collection
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+
+  eureka_server:
+    image: ignishky/eureka_server:latest
+    container_name: eureka_server
+    build:
+      context: eurekaServer
+      dockerfile: Dockerfile
+    environment:
+      SPRING_EUREKA_URL: http://localhost:8083/eureka
+    ports:
+      - "8083:8083"
+    networks:
+      - my_network
+
+  mtg_collection_server:
+    image: ignishky/mtg_collection_server:latest
+    container_name: mtg_collection_server
+    build:
+      context: server
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://mtg_collection_database:5432/mtg_collection
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_EUREKA_URL: http://localhost:8083/eureka
+    ports:
+      - "8585:8585"
+    depends_on:
+      - database
+      - eureka_server
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

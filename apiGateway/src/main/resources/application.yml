@@ -10,12 +10,12 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8083/eureka
+      defaultZone: ${SPRING_EUREKA_URL}
 
 management:
   endpoint:
     gateway:
-      enabled: true
+      access: true
   endpoints:
     web:
       exposure:
