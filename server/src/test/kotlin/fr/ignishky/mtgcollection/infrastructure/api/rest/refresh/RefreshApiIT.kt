@@ -66,8 +66,7 @@ class RefreshApiIT(
         givenSets(khm)
         givenCards(axgardBraggart, halvar)
         givenEvents(
-            toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
-            toSetUpdated(khm),
+            toSetCreated(khm),
             toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
             toCardUpdated(axgardBraggart),
             toCardCreated(halvar),
@@ -79,8 +78,7 @@ class RefreshApiIT(
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
-                toSetUpdated(khm),
+                toSetCreated(khm),
                 toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toCardUpdated(axgardBraggart),
                 toCardCreated(halvar),
@@ -92,13 +90,14 @@ class RefreshApiIT(
     @Test
     fun should_update_modified_set_and_cards() {
         prepareMockServer()
-        givenSets(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon")))
+        val oldKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))
+        givenSets(oldKhm)
         givenCards(
             axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
             halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber("")),
         )
         givenEvents(
-            toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+            toSetCreated(oldKhm),
             toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
             toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
         )
@@ -109,7 +108,7 @@ class RefreshApiIT(
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+                toSetCreated(oldKhm),
                 toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
                 toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toSetUpdated(khm),
