@@ -15,7 +15,7 @@ eureka:
 management:
   endpoint:
     gateway:
-      access: true
+      enabled: true
   endpoints:
     web:
       exposure:

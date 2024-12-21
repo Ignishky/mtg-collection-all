@@ -15,7 +15,7 @@ services:
     networks:
       - my_network
 
-  eureka_server:
+  eureka-server:
     image: ignishky/eureka_server:latest
     container_name: eureka_server
     build:
@@ -25,6 +25,21 @@ services:
       SPRING_EUREKA_URL: http://localhost:8083/eureka
     ports:
       - "8083:8083"
+    networks:
+      - my_network
+
+  mtg_collection_gateway:
+    image: ignishky/mtg_collection_gateway:latest
+    container_name: mtg_collection_gateway
+    build:
+      context: apiGateway
+      dockerfile: Dockerfile
+    environment:
+      SPRING_EUREKA_URL: http://eureka-server:8083/eureka
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
     networks:
       - my_network
 
@@ -39,12 +54,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://mtg_collection_database:5432/mtg_collection
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
-      SPRING_EUREKA_URL: http://localhost:8083/eureka
+      SPRING_EUREKA_URL: http://eureka-server:8083/eureka
     ports:
       - "8585:8585"
     depends_on:
       - database
-      - eureka_server
+      - eureka-server
     networks:
       - my_network
 
