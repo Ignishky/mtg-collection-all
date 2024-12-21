@@ -16,10 +16,10 @@ import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.domain.set.model.SetName
+import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockserver.client.MockServerClient
 import org.mockserver.springtest.MockServerTest
@@ -30,20 +30,17 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-private val previousKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @MockServerTest("scryfall.base-url=http://localhost:\${mockServerPort}")
 class RefreshApiIT(
     @Autowired private val mockMvc: MockMvc,
-    @Autowired private val jdbc: JdbcUtils,
+    @Autowired private val jdbcUtils: JdbcUtils,
+) : AbstractIT(
+    jdbcUtils
 ) {
 
     private lateinit var mockServer: MockServerClient
-
-    @BeforeEach
-    fun setUp() = jdbc.dropAll()
 
     @Test
     fun should_create_new_set_and_cards() {
@@ -66,16 +63,14 @@ class RefreshApiIT(
     @Test
     fun should_skip_update_on_unmodified_set_and_cards() {
         prepareMockServer()
-        jdbc.save(
-            listOf(
-                toSetCreated(previousKhm),
-                toSetUpdated(khm),
-                toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
-                toCardUpdated(axgardBraggart),
-                toCardCreated(halvar),
-            ),
-            listOf(khm),
-            listOf(axgardBraggart, halvar),
+        givenSets(khm)
+        givenCards(axgardBraggart, halvar)
+        givenEvents(
+            toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+            toSetUpdated(khm),
+            toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
+            toCardUpdated(axgardBraggart),
+            toCardCreated(halvar),
         )
 
         val resultActions = performCall()
@@ -84,7 +79,7 @@ class RefreshApiIT(
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreated(previousKhm),
+                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
                 toSetUpdated(khm),
                 toCardCreated(axgardBraggart.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toCardUpdated(axgardBraggart),
@@ -97,17 +92,15 @@ class RefreshApiIT(
     @Test
     fun should_update_modified_set_and_cards() {
         prepareMockServer()
-        jdbc.save(
-            listOf(
-                toSetCreated(previousKhm),
-                toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
-                toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
-            ),
-            listOf(previousKhm),
-            listOf(
-                axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
-                halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber("")),
-            )
+        givenSets(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon")))
+        givenCards(
+            axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
+            halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber("")),
+        )
+        givenEvents(
+            toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
+            toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
+            toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
         )
 
         val resultActions = performCall()
@@ -116,7 +109,7 @@ class RefreshApiIT(
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(
-                toSetCreated(previousKhm),
+                toSetCreated(khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))),
                 toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
                 toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
                 toSetUpdated(khm),

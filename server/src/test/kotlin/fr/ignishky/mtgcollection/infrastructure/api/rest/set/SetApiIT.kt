@@ -11,9 +11,9 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.pafr
 import fr.ignishky.mtgcollection.domain.SetFixtures.tkhm
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
+import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockserver.springtest.MockServerTest
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,16 +30,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @MockServerTest("scryfall.base-url=http://localhost:\${mockServerPort}")
 internal class SetApiIT(
     @Autowired private val mockMvc: MockMvc,
-    @Autowired private val jdbc: JdbcUtils,
+    @Autowired private val jdbcUtils: JdbcUtils,
+) : AbstractIT(
+    jdbcUtils
 ) {
-
-    @BeforeEach
-    fun setUp() = jdbc.dropAll()
 
     @Test
     fun should_return_sets() {
         // GIVEN
-        jdbc.save(listOf(khm, tkhm, afr, aafr, pafr), emptyList())
+        givenSets(khm, tkhm, afr, aafr, pafr)
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets"))
@@ -55,14 +54,12 @@ internal class SetApiIT(
     @Test
     fun should_return_cards_from_given_set() {
         // GIVEN
-        jdbc.save(
-            listOf(afr),
-            listOf(
-                arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
-                plus2Mace.copy(isOwned = CardIsOwned(true)),
-                valorSinger,
-                axgardBraggart.copy(isOwned = CardIsOwned(false))
-            )
+        givenSets(afr)
+        givenCards(
+            arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
+            plus2Mace.copy(isOwned = CardIsOwned(true)),
+            valorSinger,
+            axgardBraggart.copy(isOwned = CardIsOwned(false))
         )
 
         // WHEN
@@ -79,14 +76,7 @@ internal class SetApiIT(
     @Test
     fun should_return_404_from_unknown_set() {
         // GIVEN
-        jdbc.save(
-            listOf(afr),
-            listOf(
-                arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
-                plus2Mace.copy(isOwned = CardIsOwned(true)),
-                axgardBraggart.copy(isOwned = CardIsOwned(false))
-            )
-        )
+        givenSets(afr)
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/fake/cards"))

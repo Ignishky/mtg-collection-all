@@ -9,10 +9,10 @@ import fr.ignishky.mtgcollection.domain.card.event.CardDisowned
 import fr.ignishky.mtgcollection.domain.card.event.CardOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
+import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -27,15 +27,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @AutoConfigureMockMvc
 class CollectionApiIT(
     @Autowired private val mockMvc: MockMvc,
-    @Autowired private val jdbc: JdbcUtils,
+    @Autowired private val jdbcUtils: JdbcUtils,
+) : AbstractIT(
+    jdbcUtils
 ) {
-
-    @BeforeEach
-    fun setUp() = jdbc.dropAll()
 
     @Test
     fun should_add_non_foil_card_to_the_collection() {
-        jdbc.save(listOf(afr), listOf(plus2Mace))
+        givenSets(afr)
+        givenCards(plus2Mace)
 
         val results = mockMvc.perform(
             put("/collection/${plus2Mace.id.value}")
@@ -56,7 +56,8 @@ class CollectionApiIT(
 
     @Test
     fun should_add_foil_card_to_the_collection() {
-        jdbc.save(listOf(afr), listOf(plus2Mace))
+        givenSets(afr)
+        givenCards(plus2Mace)
 
         val results = mockMvc.perform(
             put("/collection/${plus2Mace.id.value}")
@@ -77,7 +78,8 @@ class CollectionApiIT(
 
     @Test
     fun should_remove_card_from_the_collection() {
-        jdbc.save(listOf(afr), listOf(plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))))
+        givenSets(afr)
+        givenCards(plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)))
 
         val results = mockMvc.perform(
             delete("/collection/${plus2Mace.id.value}")
@@ -92,13 +94,11 @@ class CollectionApiIT(
 
     @Test
     fun should_retrieve_owned_cards() {
-        jdbc.save(
-            listOf(afr, khm),
-            listOf(
-                arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
-                plus2Mace.copy(isOwned = CardIsOwned(true)),
-                axgardBraggart.copy(isOwned = CardIsOwned(false))
-            )
+        givenSets(afr, khm)
+        givenCards(
+            arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
+            plus2Mace.copy(isOwned = CardIsOwned(true)),
+            axgardBraggart.copy(isOwned = CardIsOwned(false))
         )
 
         val results = mockMvc.perform(get("/collection"))

@@ -23,7 +23,7 @@ class JdbcUtils(
         template.execute("TRUNCATE TABLE cards")
     }
 
-    fun save(events: List<Event<*, *, *>>, sets: List<Set>, cards: List<Card>) {
+    fun saveEvents(vararg events: Event<*, *, *>) {
         events.forEach {
             template.update(
                 "INSERT INTO events (aggregate_id, aggregate_name, label, instant, payload) VALUES (?, ?, ?, ?, ?::jsonb)",
@@ -34,10 +34,9 @@ class JdbcUtils(
                 objectMapper.writeValueAsString(it.payload),
             )
         }
-        save(sets, cards)
     }
 
-    fun save(sets: List<Set>, cards: List<Card>) {
+    fun saveSets(vararg sets: Set) {
         sets.forEach {
             template.update(
                 "INSERT INTO sets (id, code, name, type, icon, released_at) VALUES (?, ?, ?, ?, ?, ?)",
@@ -49,6 +48,9 @@ class JdbcUtils(
                 it.releasedAt.value,
             )
         }
+    }
+
+    fun saveCards(vararg cards: Card) {
         cards.forEach {
             template.update(
                 "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, is_owned, is_owned_foil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
