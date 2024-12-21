@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.test.json.JsonCompareMode.STRICT
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -106,7 +107,7 @@ class CollectionApiIT(
         results.andExpectAll(
             status().isOk,
             content().contentType(APPLICATION_JSON),
-            content().json(readFile("collection/cardsResponse.json"), true)
+            content().json(readFile("collection/cardsResponse.json"), STRICT)
         )
     }
 

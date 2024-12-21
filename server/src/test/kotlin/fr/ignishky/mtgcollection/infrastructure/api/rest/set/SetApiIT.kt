@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.test.json.JsonCompareMode.STRICT
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -47,7 +48,7 @@ internal class SetApiIT(
         resultActions.andExpectAll(
             status().isOk,
             content().contentType(APPLICATION_JSON),
-            content().json(readFile("sets/setsResponse.json"), true)
+            content().json(readFile("sets/setsResponse.json"), STRICT)
         )
     }
 
@@ -69,7 +70,7 @@ internal class SetApiIT(
         resultActions.andExpectAll(
             status().isOk,
             content().contentType(APPLICATION_JSON),
-            content().json(readFile("sets/cardsResponse.json"), true)
+            content().json(readFile("sets/cardsResponse.json"), STRICT)
         )
     }
 
