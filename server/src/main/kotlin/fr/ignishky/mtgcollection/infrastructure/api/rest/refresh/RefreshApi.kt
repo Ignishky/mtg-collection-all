@@ -19,6 +19,6 @@ fun interface RefreshApi {
             ApiResponse(responseCode = "200", description = "OK - Everything is up to date")
         ],
     )
-    fun loadAll(): ResponseEntity<Void>
+    fun loadAll(): ResponseEntity<Unit>
 
 }

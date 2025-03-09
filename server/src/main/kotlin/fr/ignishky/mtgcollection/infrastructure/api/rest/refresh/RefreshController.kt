@@ -12,7 +12,7 @@ internal class RefreshController(
     private val commandBus: CommandBus,
 ) : RefreshApi {
 
-    override fun loadAll(): ResponseEntity<Void> {
+    override fun loadAll(): ResponseEntity<Unit> {
         commandBus.dispatch(RefreshSet())
         commandBus.dispatch(RefreshCard())
         return ResponseEntity(NO_CONTENT)
