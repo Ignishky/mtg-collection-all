@@ -3,6 +3,8 @@ name: Build
 on:
   push:
     branches: [ "main", "dependabot/*" ]
+    paths-ignore:
+      - http/**
   pull_request:
     branches: [ "main" ]
 
