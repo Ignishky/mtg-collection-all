@@ -1,0 +1,7 @@
+### GET all sets
+GET https://api.scryfall.com/sets
+
+### Get given set's cards
+GET https://api.scryfall.com/cards/search?order=set&q=e:{{set_code}}&unique=prints
+
+###
