@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/collection")
 @Tag(name = "Collection", description = "All the needed endpoints to manipulate a collection")
-interface CollectionFetcherApi {
+fun interface CollectionFetcherApi {
 
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
     @Operation(

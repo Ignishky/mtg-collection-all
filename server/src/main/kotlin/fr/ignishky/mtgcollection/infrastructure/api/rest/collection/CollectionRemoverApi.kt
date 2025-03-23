@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 
 @RequestMapping("/collection/{cardId}")
 @Tag(name = "Collection", description = "All the needed endpoints to manipulate a collection")
-interface CollectionRemoverApi {
+fun interface CollectionRemoverApi {
 
     @DeleteMapping
     @Operation(

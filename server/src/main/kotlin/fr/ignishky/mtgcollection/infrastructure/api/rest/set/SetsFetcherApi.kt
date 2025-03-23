@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/sets")
 @Tag(name = "Card Sets", description = "All the needed endpoints to manipulate card sets")
-interface SetsFetcherApi {
+fun interface SetsFetcherApi {
 
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
     @Operation(
