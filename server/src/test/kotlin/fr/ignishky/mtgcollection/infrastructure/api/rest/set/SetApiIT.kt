@@ -37,7 +37,20 @@ internal class SetApiIT(
 ) {
 
     @Test
-    fun should_return_sets() {
+    fun should_return_empty_sets() {
+        // WHEN
+        val resultActions = mockMvc.perform(get("/sets"))
+
+        // THEN
+        resultActions.andExpectAll(
+            status().isOk,
+            content().contentType(APPLICATION_JSON),
+            content().json(readFile("sets/emptySetsResponse.json"), STRICT)
+        )
+    }
+
+    @Test
+    fun should_return_existing_sets() {
         // GIVEN
         givenSets(khm, tkhm, afr, aafr, pafr)
 
