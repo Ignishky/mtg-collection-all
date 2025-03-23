@@ -1,16 +1,10 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
-import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
-import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
-import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
-import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
 import fr.ignishky.mtgcollection.domain.SetFixtures.aafr
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
 import fr.ignishky.mtgcollection.domain.SetFixtures.pafr
 import fr.ignishky.mtgcollection.domain.SetFixtures.tkhm
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
@@ -29,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest
 @AutoConfigureMockMvc
 @MockServerTest("scryfall.base-url=http://localhost:\${mockServerPort}")
-internal class SetApiIT(
+internal class SetsFetcherApiIT(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val jdbcUtils: JdbcUtils,
 ) : AbstractIT(
@@ -62,42 +56,6 @@ internal class SetApiIT(
             status().isOk,
             content().contentType(APPLICATION_JSON),
             content().json(readFile("sets/setsResponse.json"), STRICT)
-        )
-    }
-
-    @Test
-    fun should_return_cards_from_given_set() {
-        // GIVEN
-        givenSets(afr)
-        givenCards(
-            arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
-            plus2Mace.copy(isOwned = CardIsOwned(true)),
-            valorSinger,
-            axgardBraggart.copy(isOwned = CardIsOwned(false))
-        )
-
-        // WHEN
-        val resultActions = mockMvc.perform(get("/sets/afr/cards"))
-
-        // THEN
-        resultActions.andExpectAll(
-            status().isOk,
-            content().contentType(APPLICATION_JSON),
-            content().json(readFile("sets/cardsResponse.json"), STRICT)
-        )
-    }
-
-    @Test
-    fun should_return_404_from_unknown_set() {
-        // GIVEN
-        givenSets(afr)
-
-        // WHEN
-        val resultActions = mockMvc.perform(get("/sets/fake/cards"))
-
-        // THEN
-        resultActions.andExpectAll(
-            status().isNotFound,
         )
     }
 

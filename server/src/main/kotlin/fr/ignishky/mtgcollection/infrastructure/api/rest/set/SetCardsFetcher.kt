@@ -10,22 +10,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class SetController(
+class SetCardsFetcher(
     private val setApi: SetApiPort,
     private val cardApi: CardApiPort,
-) : SetApi {
+) : SetCardsFetcherApi {
 
     private val logger = KotlinLogging.logger {}
-
-    override fun getAll(): ResponseEntity<SetsResponse> {
-        logger.info { "Requesting all sets ..." }
-
-        val sets = setApi.getAll()
-            .map { SetResponse(it.code.value, it.name.value, it.type.value, it.icon.value) }
-
-        logger.info { "Returning ${sets.size} sets." }
-        return ResponseEntity(SetsResponse(sets), OK)
-    }
 
     override fun getCards(setCode: String): ResponseEntity<CardsResponse> {
         logger.info { "Requesting all cards from '$setCode'" }

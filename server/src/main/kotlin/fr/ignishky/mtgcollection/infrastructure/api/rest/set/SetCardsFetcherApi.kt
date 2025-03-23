@@ -13,19 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/sets")
 @Tag(name = "Card Sets", description = "All the needed endpoints to manipulate card sets")
-interface SetApi {
-
-    @GetMapping(produces = [APPLICATION_JSON_VALUE])
-    @Operation(
-        summary = "Retrieve the list of all the sets",
-        description = "The list is sorted from the most recent set to the oldest.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "OK - The sets list")
-        ],
-    )
-    fun getAll(): ResponseEntity<SetsResponse>
+interface SetCardsFetcherApi {
 
     @GetMapping("/{setCode}/cards", produces = [APPLICATION_JSON_VALUE])
     @Operation(
@@ -45,3 +33,25 @@ interface SetApi {
     fun getCards(@PathVariable setCode: String): ResponseEntity<CardsResponse>
 
 }
+
+data class CardsResponse(
+    val name: String,
+    val cards: List<CardResponse>,
+    val prices: PricesResponse,
+)
+
+data class CardResponse(
+    val id: String,
+    val name: String,
+    val image: String,
+    val isFoil: Boolean,
+    val isNonFoil: Boolean,
+    val prices: PricesResponse,
+    val isOwned: Boolean,
+    val isOwnedFoil: Boolean
+)
+
+data class PricesResponse(
+    val eur: Long,
+    val eurFoil: Long,
+)
