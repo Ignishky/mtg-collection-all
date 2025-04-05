@@ -1,6 +1,9 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort
+import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.SetResponse
+import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.SetsFetcherApi
+import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.SetsResponse
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity

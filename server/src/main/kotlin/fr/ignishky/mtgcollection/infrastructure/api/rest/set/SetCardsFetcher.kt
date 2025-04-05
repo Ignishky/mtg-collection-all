@@ -3,6 +3,10 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 import fr.ignishky.mtgcollection.domain.card.port.CardApiPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort
+import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.CardResponse
+import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.CardsResponse
+import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.PricesResponse
+import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.SetCardsFetcherApi
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK

@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure.api.rest.set
+package fr.ignishky.mtgcollection.infrastructure.api.rest.set.api
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
