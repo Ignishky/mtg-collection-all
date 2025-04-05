@@ -31,6 +31,24 @@ class CollectionFetcherApiIT(
 ) {
 
     @Test
+    fun should_return_empty_collection_when_no_card_owned() {
+        givenSets(afr, khm)
+        givenCards(
+            arboreaPegasus,
+            plus2Mace,
+            axgardBraggart
+        )
+
+        val results = mockMvc.perform(get("/collection"))
+
+        results.andExpectAll(
+            status().isOk,
+            content().contentType(APPLICATION_JSON),
+            content().json(readFile("collection/emptyResponse.json"), STRICT)
+        )
+    }
+
+    @Test
     fun should_retrieve_owned_cards() {
         givenSets(afr, khm)
         givenCards(
