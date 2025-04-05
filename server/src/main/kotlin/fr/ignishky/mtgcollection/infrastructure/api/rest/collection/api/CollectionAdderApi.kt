@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure.api.rest.collection
+package fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

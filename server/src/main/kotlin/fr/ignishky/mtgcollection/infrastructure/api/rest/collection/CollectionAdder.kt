@@ -4,6 +4,8 @@ import fr.ignishky.framework.cqrs.command.CommandBus
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.usecase.AddCardToCollection
+import fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api.CollectionAdderApi
+import fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api.OwnedBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController

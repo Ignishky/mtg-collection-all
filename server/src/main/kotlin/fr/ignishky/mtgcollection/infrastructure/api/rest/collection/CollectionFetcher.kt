@@ -1,6 +1,7 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.collection
 
 import fr.ignishky.mtgcollection.domain.card.port.CollectionApiPort
+import fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api.CollectionFetcherApi
 import fr.ignishky.mtgcollection.infrastructure.api.rest.set.CardResponse
 import fr.ignishky.mtgcollection.infrastructure.api.rest.set.PricesResponse
 import org.springframework.http.ResponseEntity

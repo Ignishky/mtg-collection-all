@@ -3,6 +3,7 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.collection
 import fr.ignishky.framework.cqrs.command.CommandBus
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.usecase.RemoveCardFromCollection
+import fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api.CollectionRemoverApi
 import org.springframework.web.bind.annotation.RestController
 
 @RestController

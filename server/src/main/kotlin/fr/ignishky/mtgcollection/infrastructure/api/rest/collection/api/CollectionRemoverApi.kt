@@ -1,10 +1,10 @@
-package fr.ignishky.mtgcollection.infrastructure.api.rest.collection
+package fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.HttpStatus.NO_CONTENT
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,7 +24,7 @@ fun interface CollectionRemoverApi {
             ApiResponse(responseCode = "204", description = "OK - The card has been removed from the collection"),
         ],
     )
-    @ResponseStatus(NO_CONTENT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun removeCard(
         @PathVariable cardId: String,
     )
