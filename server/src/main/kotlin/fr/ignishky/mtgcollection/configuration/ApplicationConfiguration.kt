@@ -20,7 +20,7 @@ class ApplicationConfiguration {
                     "http://localhost:5000", // build mode
                 )
             registry.addMapping("/collection/**")
-                .allowedMethods("GET", "PUT", "DELETE")
+                .allowedMethods("GET", "PUT", "DELETE", "OPTIONS")
                 .allowedOrigins(
                     "http://localhost:3000", // dev mode
                     "http://localhost:5000", // build mode
