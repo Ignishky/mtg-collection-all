@@ -38,7 +38,11 @@ class RefreshCardHandler(
         return cardReferer.getCards(set.code)
             .flatMap { card ->
                 if (!knownCardsById.contains(card.id)) {
-                    createCard(card)
+                    runCatching {
+                        createCard(card)
+                    }.onFailure {
+                        logger.error(it) { "Error while creating card ${card.id.value}" }
+                    }.getOrDefault(emptyList())
                 } else {
                     updateCard(knownCardsById[card.id]!!, card)
                 }

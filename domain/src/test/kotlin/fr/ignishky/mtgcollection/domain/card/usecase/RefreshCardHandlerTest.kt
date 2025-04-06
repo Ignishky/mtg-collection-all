@@ -15,7 +15,7 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class RefreshCardTest {
+class RefreshCardHandlerTest {
 
     private val setProjection = mockk<SetProjectionPort>()
     private val cardReferer = mockk<CardRefererPort>()
@@ -27,6 +27,18 @@ class RefreshCardTest {
         every { setProjection.getAll() } returns listOf(afr)
         every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace)
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+
+        val events = handler.handle(RefreshCard())
+
+        assertThat(events).isEmpty()
+    }
+
+    @Test
+    fun should_return_no_events_when_card_creation_throws_exception() {
+        every { setProjection.getAll() } returns listOf(afr)
+        every { cardProjection.getAll(afr.code) } returns emptyList()
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.add(any()) } throws IllegalStateException("Test Exception")
 
         val events = handler.handle(RefreshCard())
 
