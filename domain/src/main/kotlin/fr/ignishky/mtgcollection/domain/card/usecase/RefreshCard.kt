@@ -50,13 +50,21 @@ class RefreshCardHandler(
                 if (!knownCardsById.contains(card.id)) {
                     runCatching {
                         createCard(card)
-                    }.onFailure {
-                        logger.error(it) { "Error while creating card ${card.id.value}" }
-                    }.getOrDefault(emptyList())
+                    }.fold(
+                        onSuccess = { it },
+                        onFailure = {
+                            cardProjection.get(card.id)?.let { updateCard(it, card) } ?: handleFallbackFailure(it, card)
+                        }
+                    )
                 } else {
                     updateCard(knownCardsById[card.id]!!, card)
                 }
             }
+    }
+
+    private fun handleFallbackFailure(t: Throwable, card: Card): List<Event<CardId, Card, out Payload>> {
+        logger.error(t) { "Error while creating card ${card.id.value}" }
+        return emptyList()
     }
 
     private fun createCard(card: Card): List<CardCreated> {

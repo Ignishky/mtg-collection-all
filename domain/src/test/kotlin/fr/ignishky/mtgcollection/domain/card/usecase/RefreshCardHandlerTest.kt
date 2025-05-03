@@ -1,6 +1,7 @@
 package fr.ignishky.mtgcollection.domain.card.usecase
 
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
+import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
@@ -39,6 +40,7 @@ class RefreshCardHandlerTest {
         every { cardProjection.getAll(afr.code) } returns emptyList()
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
         every { cardProjection.add(any()) } throws IllegalStateException("Test Exception")
+        every { cardProjection.get(plus2Mace.id) } returns null
 
         val events = handler.handle(RefreshCard())
 
@@ -194,6 +196,35 @@ class RefreshCardHandlerTest {
             )
         }
         verify { cardProjection.update(plus2Mace.id, plus2Mace.prices) }
+    }
+
+    @Test
+    fun should_return_events_for_card_with_different_setCode() {
+        every { setProjection.getAll() } returns listOf(afr)
+        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace)
+        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace, valorSinger)
+        every { cardProjection.add(valorSinger) } throws IllegalStateException("Test Exception")
+        every { cardProjection.get(valorSinger.id) } returns valorSinger.copy(
+            setCode = CardSetCode("old set code"),
+            prices = CardPrices(Price(110, 0, 330, 0)),
+        )
+
+        val events = handler.handle(RefreshCard())
+
+        assertThat(events)
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
+            .containsOnly(
+                CardUpdated(
+                    valorSinger.id,
+                    valorSinger.setCode,
+                ),
+                CardPricesUpdated(
+                    valorSinger.id,
+                    valorSinger.prices,
+                )
+            )
+        verify { cardProjection.update(valorSinger.id, listOf(valorSinger.setCode)) }
+        verify { cardProjection.update(valorSinger.id, valorSinger.prices) }
     }
 
     @Test
