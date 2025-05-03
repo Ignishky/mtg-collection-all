@@ -14,6 +14,10 @@ import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import jakarta.inject.Named
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging.logger
 
 class RefreshCard : Command
@@ -29,11 +33,17 @@ class RefreshCardHandler(
 
     override fun handle(command: Command): List<Event<CardId, Card, out Payload>> {
         val sets = setProjection.getAll()
-        return sets.flatMapIndexed { index, set -> processSet(index, set, sets.size) }
+        return runBlocking {
+            sets.map { set ->
+                async(Dispatchers.Default) {
+                    processSet(set)
+                }
+            }.awaitAll().flatten()
+        }
     }
 
-    private fun processSet(index: Number, set: Set, setsNumber: Number): List<Event<CardId, Card, out Payload>> {
-        logger.info { "($index/$setsNumber) Refreshing cards from ${set.code.value} ..." }
+    private fun processSet(set: Set): List<Event<CardId, Card, out Payload>> {
+        logger.info { "Refreshing cards from ${set.code.value} ..." }
         val knownCardsById = cardProjection.getAll(set.code).associateBy { it.id }
         return cardReferer.getCards(set.code)
             .flatMap { card ->
