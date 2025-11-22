@@ -13,7 +13,8 @@ sealed interface SetProperty {
         CODE,
         TYPE,
         ICON,
-        RELEASED_AT;
+        RELEASED_AT,
+        PARENT_CODE;
 
         fun withValue(value: String) = when (this) {
             NAME -> SetName(value)
@@ -21,6 +22,7 @@ sealed interface SetProperty {
             TYPE -> SetType(value)
             ICON -> SetIcon(value)
             RELEASED_AT -> SetReleasedAt(LocalDate.parse(value))
+            PARENT_CODE -> SetParentCode(value)
         }
     }
 

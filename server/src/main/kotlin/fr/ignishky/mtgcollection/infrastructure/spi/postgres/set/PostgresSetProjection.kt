@@ -16,13 +16,14 @@ class PostgresSetProjection(
 
     override fun add(set: Set) {
         jdbcTemplate.update(
-            "INSERT INTO sets (id, code, name, type, icon, released_at) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO sets (id, code, name, type, icon, released_at, parent_code) VALUES (?, ?, ?, ?, ?, ?, ?)",
             set.id.value,
             set.code.value,
             set.name.value,
             set.type.value,
             set.icon.value,
             set.releasedAt.value,
+            set.parentCode?.value,
         )
     }
 

@@ -15,6 +15,7 @@ class SetRowMapper : RowMapper<Set> {
         SetType(rs.getString("type")),
         SetIcon(rs.getString("icon")),
         SetReleasedAt(LocalDate.parse(rs.getString("released_at"))),
+        rs.getString("parent_code")?.let { SetParentCode(it) },
     )
 
 }

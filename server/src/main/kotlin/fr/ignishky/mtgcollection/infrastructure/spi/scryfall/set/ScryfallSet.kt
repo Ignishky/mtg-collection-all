@@ -21,9 +21,11 @@ data class ScryfallSetData(
     val setType: String,
     @param:JsonProperty("icon_svg_uri")
     val iconSvgUri: String,
+    @param:JsonProperty("parent_set_code")
+    val parentCode: String?,
 ) {
 
     @Suppress("unused")
-    constructor() : this("", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "")
 
 }

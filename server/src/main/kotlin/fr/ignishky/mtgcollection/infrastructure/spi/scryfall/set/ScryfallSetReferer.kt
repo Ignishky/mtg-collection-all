@@ -25,6 +25,7 @@ class ScryfallSetReferer(
                 SetType(it.setType),
                 SetIcon(it.iconSvgUri.split("?")[0]),
                 SetReleasedAt(parse(it.releasedAt)),
+                it.parentCode?.let { parentCode -> SetParentCode(parentCode) },
             )
         }
 
