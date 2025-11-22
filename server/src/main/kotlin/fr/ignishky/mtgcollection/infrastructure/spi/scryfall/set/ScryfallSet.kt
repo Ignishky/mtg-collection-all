@@ -15,11 +15,11 @@ data class ScryfallSetData(
     val id: String,
     val code: String,
     val name: String,
-    @JsonProperty("released_at")
+    @param:JsonProperty("released_at")
     val releasedAt: String,
-    @JsonProperty("set_type")
+    @param:JsonProperty("set_type")
     val setType: String,
-    @JsonProperty("icon_svg_uri")
+    @param:JsonProperty("icon_svg_uri")
     val iconSvgUri: String,
 ) {
 

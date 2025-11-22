@@ -3,9 +3,9 @@ package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.card
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ScryfallCard(
-    @JsonProperty("has_more")
+    @param:JsonProperty("has_more")
     val hasMore: Boolean,
-    @JsonProperty("next_page")
+    @param:JsonProperty("next_page")
     val nextPage: String?,
     val data: List<ScryfallCardData>,
 ) {
@@ -18,12 +18,12 @@ data class ScryfallCardData(
     val name: String,
     val set: String,
     val prices: ScryfallPrices,
-    @JsonProperty("image_uris")
+    @param:JsonProperty("image_uris")
     val imageUris: ImageUris?,
-    @JsonProperty("card_faces")
+    @param:JsonProperty("card_faces")
     val cardFaces: List<CardFaces>?,
     val finishes: List<String>,
-    @JsonProperty("collector_number")
+    @param:JsonProperty("collector_number")
     val collectionNumber: String,
 ) {
     @Suppress("unused")
@@ -41,10 +41,10 @@ data class ScryfallCardData(
 
 data class ScryfallPrices(
     val eur: String?,
-    @JsonProperty("eur_foil")
+    @param:JsonProperty("eur_foil")
     val eurFoil: String?,
     val usd: String?,
-    @JsonProperty("usd_foil")
+    @param:JsonProperty("usd_foil")
     val usdFoil: String?,
 ) {
     @Suppress("unused")
@@ -52,7 +52,7 @@ data class ScryfallPrices(
 }
 
 data class ImageUris(
-    @JsonProperty("border_crop")
+    @param:JsonProperty("border_crop")
     val borderCrop: String,
 ) {
     @Suppress("unused")
@@ -60,7 +60,7 @@ data class ImageUris(
 }
 
 data class CardFaces(
-    @JsonProperty("image_uris")
+    @param:JsonProperty("image_uris")
     val imageUris: ImageUris?,
 ) {
     @Suppress("unused")
