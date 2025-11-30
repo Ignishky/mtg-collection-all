@@ -1,0 +1,3 @@
+--ALTER TABLE cards
+--    ADD COLUMN nb_owned INT DEFAULT 0,
+--    ADD COLUMN nb_owned_foil INT DEFAULT 0;

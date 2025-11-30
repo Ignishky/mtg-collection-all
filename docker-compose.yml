@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: mtg_collection
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./db-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
