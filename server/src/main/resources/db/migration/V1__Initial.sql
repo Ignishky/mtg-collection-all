@@ -12,6 +12,7 @@ CREATE TABLE sets
 (
     id          VARCHAR(36) PRIMARY KEY,
     code        VARCHAR(6) NOT NULL,
+    parent_code VARCHAR(6) NULL,
     name        VARCHAR    NOT NULL,
     type        VARCHAR    NOT NULL,
     icon        VARCHAR    NOT NULL,
