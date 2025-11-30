@@ -12,7 +12,9 @@ data class Card(
     val prices: CardPrices,
     val finishes: CardFinishes,
     val isOwned: CardIsOwned = CardIsOwned(false),
+    val nbOwned: CardNbOwned = CardNbOwned(0),
     val isOwnedFoil: CardIsOwnedFoil = CardIsOwnedFoil(false),
+    val nbOwnedFoil: CardNbOwnedFoil = CardNbOwnedFoil(0),
 ) : Aggregate<CardId> {
 
     override fun id() = id

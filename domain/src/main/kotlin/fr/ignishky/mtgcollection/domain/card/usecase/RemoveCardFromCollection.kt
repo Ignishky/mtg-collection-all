@@ -4,9 +4,7 @@ import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.command.CommandHandler
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.mtgcollection.domain.card.event.CardDisowned
-import fr.ignishky.mtgcollection.domain.card.model.CardId
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import jakarta.inject.Named
 
@@ -22,7 +20,15 @@ class RemoveCardFromCollectionHandler(
     override fun handle(command: Command): List<Event<*, *, *>> {
         command as RemoveCardFromCollection
         return cardProjection.get(command.cardId)
-            ?.run { cardProjection.update(command.cardId, CardIsOwned(false), CardIsOwnedFoil(false)) }
+            ?.run {
+                cardProjection.update(
+                    command.cardId,
+                    CardIsOwned(false),
+                    CardNbOwned(0),
+                    CardIsOwnedFoil(false),
+                    CardNbOwnedFoil(0),
+                )
+            }
             ?.let { listOf(CardDisowned(command.cardId)) }
             ?: emptyList()
     }

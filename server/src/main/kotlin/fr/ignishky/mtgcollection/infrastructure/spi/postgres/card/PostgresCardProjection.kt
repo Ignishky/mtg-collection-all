@@ -26,7 +26,8 @@ class PostgresCardProjection(
     }
 
     override fun update(cardId: CardId, properties: List<CardProperty>) {
-        val arguments = properties.map { "${it.propertyName().name.lowercase()}='${it.propertyValue()}'" }.joinToString { it }
+        val arguments =
+            properties.map { "${it.propertyName().name.lowercase()}='${it.propertyValue()}'" }.joinToString { it }
         jdbcTemplate.update(
             "UPDATE cards SET $arguments WHERE id=?",
             cardId.value,
@@ -41,18 +42,29 @@ class PostgresCardProjection(
         )
     }
 
-    override fun update(cardId: CardId, isOwned: CardIsOwned, isOwnedFoil: CardIsOwnedFoil) {
+    override fun update(
+        cardId: CardId,
+        isOwned: CardIsOwned,
+        nbOwned: CardNbOwned,
+        isOwnedFoil: CardIsOwnedFoil,
+        nbOwnedFoil: CardNbOwnedFoil,
+    ) {
         jdbcTemplate.update(
-            "UPDATE cards SET is_owned=?, is_owned_foil=? WHERE id=?",
+            "UPDATE cards SET is_owned=?, nb_owned=?, is_owned_foil=?, nb_owned_foil=? WHERE id=?",
             isOwned.value,
+            nbOwned.value,
             isOwnedFoil.value,
+            nbOwnedFoil.value,
             cardId.value,
         )
     }
 
-    override fun get(id: CardId) = jdbcTemplate.queryForObject("SELECT * FROM cards WHERE id=?", CardRowMapper(), id.value)
+    override fun get(id: CardId) =
+        jdbcTemplate.queryForObject("SELECT * FROM cards WHERE id=?", CardRowMapper(), id.value)
 
-    override fun getAll(code: SetCode): List<Card> = jdbcTemplate.query("SELECT * FROM cards WHERE set_code=?", CardRowMapper(), code.value)
+    override fun getAll(code: SetCode): List<Card> =
+        jdbcTemplate.query("SELECT * FROM cards WHERE set_code=?", CardRowMapper(), code.value)
 
-    override fun getCollection(): List<Card> = jdbcTemplate.query("SELECT * FROM cards WHERE is_owned=true", CardRowMapper())
+    override fun getCollection(): List<Card> =
+        jdbcTemplate.query("SELECT * FROM cards WHERE is_owned=true", CardRowMapper())
 }

@@ -4,6 +4,8 @@ import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.card.event.CardDisowned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwned
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import io.mockk.every
 import io.mockk.mockk
@@ -23,19 +25,32 @@ class RemoveCardFromCollectionHandlerTest {
         val events = handler.handle(RemoveCardFromCollection(plus2Mace.id))
 
         assertThat(events).isEmpty()
-        verify(exactly = 0) { cardProjection.update(any(), any(), any()) }
+        verify(exactly = 0) { cardProjection.update(any(), any(), any(), any(), any()) }
     }
 
     @Test
     fun should_reset_owned_state_to_false() {
-        every { cardProjection.get(plus2Mace.id) } returns plus2Mace.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true))
+        every { cardProjection.get(plus2Mace.id) } returns plus2Mace.copy(
+            isOwned = CardIsOwned(true),
+            nbOwned = CardNbOwned(1),
+            isOwnedFoil = CardIsOwnedFoil(true),
+            nbOwnedFoil = CardNbOwnedFoil(1),
+        )
 
         val events = handler.handle(RemoveCardFromCollection(plus2Mace.id))
 
         assertThat(events)
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
             .containsOnly(CardDisowned(plus2Mace.id))
-        verify { cardProjection.update(plus2Mace.id, CardIsOwned(false), CardIsOwnedFoil(false)) }
+        verify {
+            cardProjection.update(
+                plus2Mace.id,
+                CardIsOwned(false),
+                CardNbOwned(0),
+                CardIsOwnedFoil(false),
+                CardNbOwnedFoil(0),
+            )
+        }
     }
 
     @Test

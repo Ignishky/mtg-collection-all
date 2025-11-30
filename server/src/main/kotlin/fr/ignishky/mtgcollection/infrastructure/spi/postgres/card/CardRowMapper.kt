@@ -17,7 +17,9 @@ class CardRowMapper : RowMapper<Card> {
             CardPrices(Price(prices[0], prices[1], prices[2], prices[3])),
             CardFinishes(rs.getString("finishes").split(", ").map { CardFinish(it) }),
             CardIsOwned(rs.getBoolean("is_owned")),
+            CardNbOwned(rs.getInt("nb_owned")),
             CardIsOwnedFoil(rs.getBoolean("is_owned_foil")),
+            CardNbOwnedFoil(rs.getInt("nb_owned_foil")),
         )
     }
 

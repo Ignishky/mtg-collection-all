@@ -23,7 +23,15 @@ class AddCardToCollectionHandler(
     override fun handle(command: Command): List<Event<*, *, *>> {
         command as AddCardToCollection
         return cardProjection.get(command.cardId)
-            ?.run { cardProjection.update(command.cardId, CardIsOwned(true), command.isOwnedFoil) }
+            ?.run {
+                cardProjection.update(
+                    command.cardId,
+                    CardIsOwned(true),
+                    this.nbOwned.increment(),
+                    command.isOwnedFoil,
+                    if (command.isOwnedFoil.value) this.nbOwnedFoil.increment() else this.nbOwnedFoil,
+                )
+            }
             ?.let { listOf(CardOwned(command.cardId, command.isOwnedFoil)) }
             ?: emptyList()
     }
