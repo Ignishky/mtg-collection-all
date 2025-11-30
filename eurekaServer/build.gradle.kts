@@ -5,5 +5,5 @@ plugins {
 version = "1.0-SNAPSHOT"
 
 dependencies {
-    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:4.2.1")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:5.0.0")
 }
