@@ -5,17 +5,20 @@ import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import jakarta.inject.Named
-import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForObject
+import org.springframework.web.client.RestClient
 import java.time.LocalDate.parse
 
 @Named
 class ScryfallSetReferer(
-    private val restTemplate: RestTemplate,
+    private val restClient: RestClient,
     private val properties: ScryfallProperties,
 ) : SetRefererPort {
 
-    override fun getAllSets() = restTemplate.getForObject<ScryfallSet>("${properties.baseUrl}/sets")
+    override fun getAllSets() = (restClient.get()
+        .uri("${properties.baseUrl}/sets")
+        .retrieve()
+        .body(ScryfallSet::class.java)
+        ?: ScryfallSet(emptyList()))
         .data
         .map {
             Set(

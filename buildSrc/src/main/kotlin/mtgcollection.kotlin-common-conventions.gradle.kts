@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("jvm")
@@ -8,18 +8,13 @@ plugins {
 group = "fr.ignishky"
 
 kotlin {
-    jvmToolchain(21)
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget("21")
+    }
 }
 
 repositories {
     mavenCentral()
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "21"
-    }
 }
 
 dependencies {

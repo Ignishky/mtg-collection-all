@@ -7,13 +7,12 @@ import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
 import org.springframework.web.client.HttpClientErrorException.NotFound
-import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForObject
+import org.springframework.web.client.RestClient
 import java.lang.Long.parseLong
 
 @Named
 class ScryfallCardReferer(
-    private val restTemplate: RestTemplate,
+    private val restClient: RestClient,
     private val properties: ScryfallProperties,
 ) : CardRefererPort {
 
@@ -28,11 +27,20 @@ class ScryfallCardReferer(
         var scryfallCards = emptyList<ScryfallCardData>()
 
         try {
-            var response = restTemplate.getForObject<ScryfallCard>("${properties.baseUrl}/cards/search?order=set&q=e:${setCode.value}&unique=prints")
+            var response = restClient.get()
+                .uri("${properties.baseUrl}/cards/search?order=set&q=e:${setCode.value}&unique=prints")
+                .retrieve()
+                .body(ScryfallCard::class.java)
+                ?: return emptyList()
             scryfallCards = scryfallCards.plus(response.data)
 
             while (response.hasMore) {
-                response = restTemplate.getForObject(response.nextPage?.replace("%3A", ":") ?: "")
+                val next = response.nextPage?.replace("%3A", ":") ?: break
+                response = restClient.get()
+                    .uri(next)
+                    .retrieve()
+                    .body(ScryfallCard::class.java)
+                    ?: break
                 scryfallCards = scryfallCards.plus(response.data)
             }
         } catch (e: NotFound) {
