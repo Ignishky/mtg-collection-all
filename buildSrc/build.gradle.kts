@@ -10,5 +10,5 @@ dependencies {
     val kotlinVersion = "2.2.21"
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion")
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:3.5.8")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:4.0.0")
 }
