@@ -7,6 +7,8 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwned
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
@@ -36,7 +38,7 @@ class CollectionFetcherApiIT(
         givenCards(
             arboreaPegasus,
             plus2Mace,
-            axgardBraggart
+            axgardBraggart,
         )
 
         val results = mockMvc.perform(get("/collection"))
@@ -52,9 +54,14 @@ class CollectionFetcherApiIT(
     fun should_retrieve_owned_cards() {
         givenSets(afr, khm)
         givenCards(
-            arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
-            plus2Mace.copy(isOwned = CardIsOwned(true)),
-            axgardBraggart.copy(isOwned = CardIsOwned(false))
+            arboreaPegasus.copy(
+                isOwned = CardIsOwned(true),
+                nbOwned = CardNbOwned(1),
+                isOwnedFoil = CardIsOwnedFoil(true),
+                nbOwnedFoil = CardNbOwnedFoil(1),
+            ),
+            plus2Mace.copy(isOwned = CardIsOwned(true), nbOwned = CardNbOwned(3)),
+            axgardBraggart.copy(isOwned = CardIsOwned(false)),
         )
 
         val results = mockMvc.perform(get("/collection"))

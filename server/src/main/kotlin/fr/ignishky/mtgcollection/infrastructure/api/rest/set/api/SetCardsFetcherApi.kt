@@ -48,7 +48,9 @@ data class CardResponse(
     val isNonFoil: Boolean,
     val prices: PricesResponse,
     val isOwned: Boolean,
-    val isOwnedFoil: Boolean
+    val nbOwned: Int,
+    val isOwnedFoil: Boolean,
+    val nbOwnedFoil: Int,
 )
 
 data class PricesResponse(

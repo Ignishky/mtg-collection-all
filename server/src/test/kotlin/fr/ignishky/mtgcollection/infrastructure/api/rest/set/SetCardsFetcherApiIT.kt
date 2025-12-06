@@ -7,6 +7,8 @@ import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwned
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
@@ -37,10 +39,15 @@ internal class SetCardsFetcherApiIT(
         // GIVEN
         givenSets(afr)
         givenCards(
-            arboreaPegasus.copy(isOwned = CardIsOwned(true), isOwnedFoil = CardIsOwnedFoil(true)),
-            plus2Mace.copy(isOwned = CardIsOwned(true)),
+            arboreaPegasus.copy(
+                isOwned = CardIsOwned(true),
+                nbOwned = CardNbOwned(1),
+                isOwnedFoil = CardIsOwnedFoil(true),
+                nbOwnedFoil = CardNbOwnedFoil(1),
+            ),
+            plus2Mace.copy(isOwned = CardIsOwned(true), nbOwned = CardNbOwned(3)),
             valorSinger,
-            axgardBraggart.copy(isOwned = CardIsOwned(false))
+            axgardBraggart.copy(isOwned = CardIsOwned(true), nbOwned = CardNbOwned(1))
         )
 
         // WHEN

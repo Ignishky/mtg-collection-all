@@ -27,7 +27,9 @@ class CollectionFetcher(
                     it.finishes.isNonFoil(),
                     PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil),
                     it.isOwned.value,
+                    it.nbOwned.value,
                     it.isOwnedFoil.value,
+                    it.nbOwnedFoil.value,
                 )
             }
 

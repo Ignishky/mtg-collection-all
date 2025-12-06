@@ -11,7 +11,9 @@
         "eurFoil": 8
       },
       "owned": true,
-      "ownedFoil": true
+      "nbOwned": 1,
+      "ownedFoil": true,
+      "nbOwnedFoil": 1
     },
     {
       "id": "e882c9f9-bf30-46b6-bedc-379d2c80e5cb",
@@ -24,7 +26,9 @@
         "eurFoil": 0
       },
       "owned": true,
-      "ownedFoil": false
+      "nbOwned": 3,
+      "ownedFoil": false,
+      "nbOwnedFoil": 0
     }
   ],
   "prices": {
