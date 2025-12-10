@@ -2,8 +2,8 @@ package fr.ignishky.mtgcollection.domain.card.usecase
 
 import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.Price
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
@@ -21,12 +21,11 @@ class GetCollectionCardsTest {
     fun return_owned_cards_sorted_by_collection_price_decreasing() {
         val axgardBraggart = axgardBraggart.copy(
             prices = CardPrices(Price(1, 2, 1, 3)),
-            isOwned = CardIsOwned(true),
-            isOwnedFoil = CardIsOwnedFoil(true)
+            nbOwnedFoil = CardNbOwnedFoil(1),
         )
         val valorSinger = valorSinger.copy(
             prices = CardPrices(Price(1, 14, 1, 3)),
-            isOwned = CardIsOwned(true)
+            nbOwnedNonFoil = CardNbOwnedNonFoil(1),
         )
         every { cardProjection.getCollection() } returns listOf(valorSinger, axgardBraggart)
 

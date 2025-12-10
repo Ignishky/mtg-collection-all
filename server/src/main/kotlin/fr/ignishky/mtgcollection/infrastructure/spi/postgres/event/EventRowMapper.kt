@@ -76,7 +76,7 @@ class EventRowMapper(
         val payload = objectMapper.readValue(rs.getString("payload"), CardPricesUpdatedPayload::class.java)
         return CardPricesUpdated(
             CardId(rs.getString("aggregate_id")),
-            CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil))
+            CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
         )
     }
 
@@ -84,13 +84,13 @@ class EventRowMapper(
         val payload = objectMapper.readValue(rs.getString("payload"), CardOwnedPayload::class.java)
         return CardOwned(
             CardId(rs.getString("aggregate_id")),
-            CardIsOwnedFoil(payload.ownedFoil)
+            payload.ownedFoil,
         )
     }
 
     private fun toCardDisowned(rs: ResultSet): CardDisowned {
         return CardDisowned(
-            CardId(rs.getString("aggregate_id"))
+            CardId(rs.getString("aggregate_id")),
         )
     }
 

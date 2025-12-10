@@ -5,9 +5,7 @@ import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
-import fr.ignishky.mtgcollection.domain.card.model.CardNbOwned
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
 import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
@@ -55,13 +53,10 @@ class CollectionFetcherApiIT(
         givenSets(afr, khm)
         givenCards(
             arboreaPegasus.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(1),
-                isOwnedFoil = CardIsOwnedFoil(true),
                 nbOwnedFoil = CardNbOwnedFoil(1),
             ),
-            plus2Mace.copy(isOwned = CardIsOwned(true), nbOwned = CardNbOwned(3)),
-            axgardBraggart.copy(isOwned = CardIsOwned(false)),
+            plus2Mace.copy(nbOwnedNonFoil = CardNbOwnedNonFoil(3)),
+            axgardBraggart,
         )
 
         val results = mockMvc.perform(get("/collection"))

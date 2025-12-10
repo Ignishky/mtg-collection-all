@@ -5,18 +5,16 @@ import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
-import fr.ignishky.mtgcollection.domain.card.model.CardNbOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import org.junit.jupiter.api.Test
 import org.mockserver.springtest.MockServerTest
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.json.JsonCompareMode.STRICT
 import org.springframework.test.web.servlet.MockMvc
@@ -40,14 +38,12 @@ internal class SetCardsFetcherApiIT(
         givenSets(afr)
         givenCards(
             arboreaPegasus.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(1),
-                isOwnedFoil = CardIsOwnedFoil(true),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(1),
                 nbOwnedFoil = CardNbOwnedFoil(1),
             ),
-            plus2Mace.copy(isOwned = CardIsOwned(true), nbOwned = CardNbOwned(3)),
+            plus2Mace.copy(nbOwnedNonFoil = CardNbOwnedNonFoil(3)),
             valorSinger,
-            axgardBraggart.copy(isOwned = CardIsOwned(true), nbOwned = CardNbOwned(1))
+            axgardBraggart.copy(nbOwnedNonFoil = CardNbOwnedNonFoil(1))
         )
 
         // WHEN

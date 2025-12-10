@@ -17,9 +17,17 @@ GET http://localhost:8080/collection
 >>! {{$historyFolder}}/collection.json
 
 ### Add card to collection
-PUT http://localhost:8080/collection/{{card_id}}
+POST http://localhost:8080/collection/{{card_id}}/add
 Content-Type: application/json
 
 {
   "ownedFoil": true
+}
+
+### Remove card from collection
+POST http://localhost:8080/collection/{{card_id}}/remove
+Content-Type: application/json
+
+{
+  "ownedFoil": false
 }

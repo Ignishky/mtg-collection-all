@@ -4,25 +4,21 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import java.time.Instant.now
 
 class CardOwned(
     aggregateId: CardId,
-    isOwnedFoil: CardIsOwnedFoil,
+    isOwnedFoil: Boolean,
 ) : Event<CardId, Card, CardOwnedPayload>(
     0,
     aggregateId,
     Card::class,
     CardOwnedPayload(
-        isOwnedFoil.value,
+        isOwnedFoil,
     ),
     now(),
 )
 
 data class CardOwnedPayload(
-    val ownedFoil: Boolean,
-) : Payload {
-    @Suppress("unused")
-    constructor() : this(false)
-}
+    val ownedFoil: Boolean =false,
+) : Payload

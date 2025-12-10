@@ -13,9 +13,7 @@ interface CardProjectionPort {
 
     fun update(
         cardId: CardId,
-        isOwned: CardIsOwned,
-        nbOwned: CardNbOwned,
-        isOwnedFoil: CardIsOwnedFoil,
+        nbOwnedNonFoil: CardNbOwnedNonFoil,
         nbOwnedFoil: CardNbOwnedFoil,
     )
 

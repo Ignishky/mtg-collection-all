@@ -5,14 +5,12 @@ import fr.ignishky.framework.cqrs.command.CommandHandler
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.mtgcollection.domain.card.event.CardOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardId
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import jakarta.inject.Named
 
 data class AddCardToCollection(
     val cardId: CardId,
-    val isOwnedFoil: CardIsOwnedFoil,
+    val isOwnedFoil: Boolean,
 ) : Command
 
 @Named
@@ -26,10 +24,8 @@ class AddCardToCollectionHandler(
             ?.run {
                 cardProjection.update(
                     command.cardId,
-                    CardIsOwned(true),
-                    this.nbOwned.increment(),
-                    command.isOwnedFoil,
-                    if (command.isOwnedFoil.value) this.nbOwnedFoil.increment() else this.nbOwnedFoil,
+                    if (!command.isOwnedFoil) this.nbOwnedNonFoil.increment() else this.nbOwnedNonFoil,
+                    if (command.isOwnedFoil) this.nbOwnedFoil.increment() else this.nbOwnedFoil,
                 )
             }
             ?.let { listOf(CardOwned(command.cardId, command.isOwnedFoil)) }

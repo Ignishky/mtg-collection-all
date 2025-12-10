@@ -26,17 +26,15 @@ class CollectionFetcher(
                     it.finishes.isFoil(),
                     it.finishes.isNonFoil(),
                     PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil),
-                    it.isOwned.value,
-                    it.nbOwned.value,
-                    it.isOwnedFoil.value,
+                    it.nbOwnedNonFoil.value,
                     it.nbOwnedFoil.value,
                 )
             }
 
         val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur, eurFoil), card ->
             PricesResponse(
-                eur + if (!card.isOwnedFoil.value) card.prices.scryfall.eur else 0,
-                eurFoil + if (card.isOwnedFoil.value) card.prices.scryfall.eurFoil else 0
+                eur + if (card.nbOwnedNonFoil.value > 0) card.prices.scryfall.eur else 0,
+                eurFoil + if (card.nbOwnedFoil.value > 0) card.prices.scryfall.eurFoil else 0
             )
         }
         return ok(CollectionResponse(pricesResponse, cardResponses))

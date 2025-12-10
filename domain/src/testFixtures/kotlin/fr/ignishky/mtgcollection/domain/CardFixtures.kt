@@ -20,7 +20,7 @@ object CardFixtures {
         CardSetCode("afr"),
         CardImages(listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg"))),
         CardNumber("2"),
-        CardPrices(Price(0, 8, 0, 6)),
+        CardPrices(Price(1, 8, 0, 6)),
         CardFinishes(listOf(CardFinish("foil"))),
     )
 

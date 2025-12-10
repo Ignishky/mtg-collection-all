@@ -3,20 +3,18 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.collection
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.card.event.CardOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwned
-import fr.ignishky.mtgcollection.domain.card.model.CardIsOwnedFoil
-import fr.ignishky.mtgcollection.domain.card.model.CardNbOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
@@ -33,15 +31,13 @@ class CollectionAdderApiIT(
         givenSets(afr)
         givenCards(
             plus2Mace.copy(
-                isOwned = CardIsOwned(false),
-                nbOwned = CardNbOwned(0),
-                isOwnedFoil = CardIsOwnedFoil(false),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(0),
                 nbOwnedFoil = CardNbOwnedFoil(0),
             )
         )
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.id.value}")
+            post("/collection/${plus2Mace.id.value}/add")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -53,15 +49,13 @@ class CollectionAdderApiIT(
         results.andExpect(status().isNoContent)
         assertThat(jdbc.getCards()).containsOnly(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(1),
-                isOwnedFoil = CardIsOwnedFoil(false),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(1),
                 nbOwnedFoil = CardNbOwnedFoil(0),
             )
         )
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardOwned(plus2Mace.id, CardIsOwnedFoil(false)))
+            .containsOnly(CardOwned(plus2Mace.id, false))
     }
 
     @Test
@@ -69,15 +63,13 @@ class CollectionAdderApiIT(
         givenSets(afr)
         givenCards(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(1),
-                isOwnedFoil = CardIsOwnedFoil(false),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(1),
                 nbOwnedFoil = CardNbOwnedFoil(0),
             )
         )
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.id.value}")
+            post("/collection/${plus2Mace.id.value}/add")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -89,14 +81,13 @@ class CollectionAdderApiIT(
         results.andExpect(status().isNoContent)
         assertThat(jdbc.getCards()).containsOnly(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(2),
-                isOwnedFoil = CardIsOwnedFoil(false),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(2),
+                nbOwnedFoil = CardNbOwnedFoil(0),
             )
         )
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardOwned(plus2Mace.id, CardIsOwnedFoil(false)))
+            .containsOnly(CardOwned(plus2Mace.id, false))
     }
 
     @Test
@@ -104,15 +95,13 @@ class CollectionAdderApiIT(
         givenSets(afr)
         givenCards(
             plus2Mace.copy(
-                isOwned = CardIsOwned(false),
-                nbOwned = CardNbOwned(0),
-                isOwnedFoil = CardIsOwnedFoil(false),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(0),
                 nbOwnedFoil = CardNbOwnedFoil(0),
             )
         )
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.id.value}")
+            post("/collection/${plus2Mace.id.value}/add")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -124,15 +113,13 @@ class CollectionAdderApiIT(
         results.andExpect(status().isNoContent)
         assertThat(jdbc.getCards()).containsOnly(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(1),
-                isOwnedFoil = CardIsOwnedFoil(true),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(0),
                 nbOwnedFoil = CardNbOwnedFoil(1),
             )
         )
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardOwned(plus2Mace.id, CardIsOwnedFoil(true)))
+            .containsOnly(CardOwned(plus2Mace.id, true))
     }
 
     @Test
@@ -140,15 +127,13 @@ class CollectionAdderApiIT(
         givenSets(afr)
         givenCards(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(1),
-                isOwnedFoil = CardIsOwnedFoil(false),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(1),
                 nbOwnedFoil = CardNbOwnedFoil(0),
             )
         )
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.id.value}")
+            post("/collection/${plus2Mace.id.value}/add")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -160,15 +145,13 @@ class CollectionAdderApiIT(
         results.andExpect(status().isNoContent)
         assertThat(jdbc.getCards()).containsOnly(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(2),
-                isOwnedFoil = CardIsOwnedFoil(true),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(1),
                 nbOwnedFoil = CardNbOwnedFoil(1),
             )
         )
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardOwned(plus2Mace.id, CardIsOwnedFoil(true)))
+            .containsOnly(CardOwned(plus2Mace.id, true))
     }
 
     @Test
@@ -176,15 +159,13 @@ class CollectionAdderApiIT(
         givenSets(afr)
         givenCards(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(1),
-                isOwnedFoil = CardIsOwnedFoil(true),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(0),
                 nbOwnedFoil = CardNbOwnedFoil(1),
             )
         )
 
         val results = mockMvc.perform(
-            put("/collection/${plus2Mace.id.value}")
+            post("/collection/${plus2Mace.id.value}/add")
                 .contentType(APPLICATION_JSON)
                 .content(
                     """{
@@ -196,15 +177,13 @@ class CollectionAdderApiIT(
         results.andExpect(status().isNoContent)
         assertThat(jdbc.getCards()).containsOnly(
             plus2Mace.copy(
-                isOwned = CardIsOwned(true),
-                nbOwned = CardNbOwned(2),
-                isOwnedFoil = CardIsOwnedFoil(true),
+                nbOwnedNonFoil = CardNbOwnedNonFoil(0),
                 nbOwnedFoil = CardNbOwnedFoil(2),
             )
         )
         assertThat(jdbc.getEvents())
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("instant")
-            .containsOnly(CardOwned(plus2Mace.id, CardIsOwnedFoil(true)))
+            .containsOnly(CardOwned(plus2Mace.id, true))
     }
 
 }

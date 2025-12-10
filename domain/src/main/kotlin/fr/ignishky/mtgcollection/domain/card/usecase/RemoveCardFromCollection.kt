@@ -10,6 +10,7 @@ import jakarta.inject.Named
 
 class RemoveCardFromCollection(
     val cardId: CardId,
+    val isOwnedFoil: Boolean,
 ) : Command
 
 @Named
@@ -22,11 +23,9 @@ class RemoveCardFromCollectionHandler(
         return cardProjection.get(command.cardId)
             ?.run {
                 cardProjection.update(
-                    command.cardId,
-                    CardIsOwned(false),
-                    CardNbOwned(0),
-                    CardIsOwnedFoil(false),
-                    CardNbOwnedFoil(0),
+                    this.id,
+                    if (!command.isOwnedFoil) this.nbOwnedNonFoil.decrease() else this.nbOwnedNonFoil,
+                    if (command.isOwnedFoil) this.nbOwnedFoil.decrease() else this.nbOwnedFoil,
                 )
             }
             ?.let { listOf(CardDisowned(command.cardId)) }

@@ -44,16 +44,12 @@ class PostgresCardProjection(
 
     override fun update(
         cardId: CardId,
-        isOwned: CardIsOwned,
-        nbOwned: CardNbOwned,
-        isOwnedFoil: CardIsOwnedFoil,
+        nbOwnedNonFoil: CardNbOwnedNonFoil,
         nbOwnedFoil: CardNbOwnedFoil,
     ) {
         jdbcTemplate.update(
-            "UPDATE cards SET is_owned=?, nb_owned=?, is_owned_foil=?, nb_owned_foil=? WHERE id=?",
-            isOwned.value,
-            nbOwned.value,
-            isOwnedFoil.value,
+            "UPDATE cards SET nb_owned_non_foil=?, nb_owned_foil=? WHERE id=?",
+            nbOwnedNonFoil.value,
             nbOwnedFoil.value,
             cardId.value,
         )
@@ -66,5 +62,5 @@ class PostgresCardProjection(
         jdbcTemplate.query("SELECT * FROM cards WHERE set_code=?", CardRowMapper(), code.value)
 
     override fun getCollection(): List<Card> =
-        jdbcTemplate.query("SELECT * FROM cards WHERE is_owned=true", CardRowMapper())
+        jdbcTemplate.query("SELECT * FROM cards WHERE nb_owned_non_foil > 0 OR nb_owned_foil > 0", CardRowMapper())
 }

@@ -7,12 +7,10 @@
       "foil": true,
       "nonFoil": false,
       "prices": {
-        "eur": 0,
+        "eur": 1,
         "eurFoil": 8
       },
-      "owned": true,
-      "nbOwned": 1,
-      "ownedFoil": true,
+      "nbOwnedNonFoil": 0,
       "nbOwnedFoil": 1
     },
     {
@@ -25,9 +23,7 @@
         "eur": 2,
         "eurFoil": 0
       },
-      "owned": true,
-      "nbOwned": 3,
-      "ownedFoil": false,
+      "nbOwnedNonFoil": 3,
       "nbOwnedFoil": 0
     }
   ],

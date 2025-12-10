@@ -16,7 +16,7 @@ spring:
             allowedHeaders: "*"
             allowedMethods:
               - GET
-              - DELETE
+              - POST
               - PUT
               - OPTIONS
   main:

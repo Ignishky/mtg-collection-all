@@ -37,9 +37,7 @@ class SetCardsFetcher(
                     it.finishes.isFoil(),
                     it.finishes.isNonFoil(),
                     PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil),
-                    it.isOwned.value,
-                    it.nbOwned.value,
-                    it.isOwnedFoil.value,
+                    it.nbOwnedNonFoil.value,
                     it.nbOwnedFoil.value,
                 )
             }

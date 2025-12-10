@@ -12,6 +12,7 @@ CREATE TABLE sets
 (
     id          VARCHAR(36) PRIMARY KEY,
     code        VARCHAR(6) NOT NULL,
+    parent_code VARCHAR(6),
     name        VARCHAR    NOT NULL,
     type        VARCHAR    NOT NULL,
     icon        VARCHAR    NOT NULL,
@@ -27,6 +28,6 @@ CREATE TABLE cards
     collection_number VARCHAR    NOT NULL,
     finishes          VARCHAR    NOT NULL,
     scryfall_prices   VARCHAR    NOT NULL DEFAULT '0|0|0|0',
-    is_owned          boolean    NOT NULL DEFAULT false,
-    is_owned_foil     boolean    NOT NULL DEFAULT false
+    nb_owned_non_foil INT                 DEFAULT 0,
+    nb_owned_foil     INT                 DEFAULT 0
 );

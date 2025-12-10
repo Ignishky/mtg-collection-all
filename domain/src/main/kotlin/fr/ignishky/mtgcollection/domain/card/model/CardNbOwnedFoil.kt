@@ -7,4 +7,8 @@ value class CardNbOwnedFoil(
     fun increment(): CardNbOwnedFoil {
         return CardNbOwnedFoil(value.plus(1))
     }
+
+    fun decrease(): CardNbOwnedFoil {
+        return CardNbOwnedFoil(value.minus(1))
+    }
 }

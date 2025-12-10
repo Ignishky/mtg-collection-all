@@ -11,7 +11,7 @@ class GetCollectionCards(
 ) : CollectionApiPort {
 
     override fun getAll(): List<Card> {
-        val ownedPriceComparator = compareByDescending<Card> { if (it.isOwnedFoil.value) it.prices.scryfall.eurFoil else it.prices.scryfall.eur }
+        val ownedPriceComparator = compareByDescending<Card> { if (it.nbOwnedFoil.value > 0) it.prices.scryfall.eurFoil else it.prices.scryfall.eur }
         return cardProjection.getCollection().sortedWith(ownedPriceComparator)
     }
 

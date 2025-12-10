@@ -11,9 +11,7 @@
         "eur": 2,
         "eurFoil": 0
       },
-      "owned": true,
-      "nbOwned": 3,
-      "ownedFoil": false,
+      "nbOwnedNonFoil": 3,
       "nbOwnedFoil": 0
     },
     {
@@ -23,12 +21,10 @@
       "foil": true,
       "nonFoil": false,
       "prices": {
-        "eur": 0,
+        "eur": 1,
         "eurFoil": 8
       },
-      "owned": true,
-      "nbOwned": 1,
-      "ownedFoil": true,
+      "nbOwnedNonFoil": 1,
       "nbOwnedFoil": 1
     },
     {
@@ -41,9 +37,7 @@
         "eur": 1,
         "eurFoil": 14
       },
-      "owned": false,
-      "nbOwned": 0,
-      "ownedFoil": false,
+      "nbOwnedNonFoil": 0,
       "nbOwnedFoil": 0
     }
   ],
