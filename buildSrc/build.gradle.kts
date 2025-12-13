@@ -11,4 +11,5 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion")
     implementation("org.springframework.boot:spring-boot-gradle-plugin:3.5.8")
+    implementation("io.spring.gradle:dependency-management-plugin:1.1.7")
 }
