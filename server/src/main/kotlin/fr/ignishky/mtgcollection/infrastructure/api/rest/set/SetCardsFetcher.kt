@@ -41,9 +41,7 @@ class SetCardsFetcher(
                     it.nbOwnedFoil.value,
                 )
             }
-        val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur, eurFoil), card ->
-            PricesResponse(eur + card.minEurPrice(), eurFoil + card.maxEurPrice())
-        }
+        val pricesResponse = cards.fold(0L) { totalValue, card -> totalValue + card.maxValuePrice() }
 
         logger.info { "Returning ${cardResponses.size} cards." }
         return ResponseEntity(CardsResponse(set.name.value, cardResponses, pricesResponse), OK)

@@ -33,20 +33,9 @@ data class Card(
         return scryfallPrices.eur > 0 || scryfallPrices.eurFoil > 0 || scryfallPrices.usd > 0 || scryfallPrices.usdFoil > 0
     }
 
-    fun minEurPrice(): Long {
-        return if (finishes.isNonFoil()) {
-            prices.scryfall.eur
-        } else {
-            prices.scryfall.eurFoil
-        }
-    }
-
-    fun maxEurPrice(): Long {
-        return if (finishes.isFoil()) {
-            prices.scryfall.eurFoil
-        } else {
-            prices.scryfall.eur
-        }
+    fun maxValuePrice(): Long {
+        val scryfallPrices = prices.scryfall
+        return if (scryfallPrices.eurFoil > scryfallPrices.eur) scryfallPrices.eurFoil else scryfallPrices.eur
     }
 
 }

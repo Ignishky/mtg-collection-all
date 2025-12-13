@@ -41,8 +41,5 @@
       "nbOwnedFoil": 0
     }
   ],
-  "prices": {
-    "eur": 11,
-    "eurFoil": 24
-  }
+  "price": 24
 }
