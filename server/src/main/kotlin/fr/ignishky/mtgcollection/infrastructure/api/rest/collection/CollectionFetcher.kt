@@ -31,18 +31,11 @@ class CollectionFetcher(
                 )
             }
 
-        val pricesResponse = cards.fold(PricesResponse(0, 0)) { (eur, eurFoil), card ->
-            PricesResponse(
-                eur + if (card.nbOwnedNonFoil.value > 0) card.prices.scryfall.eur else 0,
-                eurFoil + if (card.nbOwnedFoil.value > 0) card.prices.scryfall.eurFoil else 0
-            )
-        }
-        return ok(CollectionResponse(pricesResponse, cardResponses))
+        return ok(CollectionResponse(cardResponses))
     }
 }
 
 @JsonInclude(NON_NULL)
 data class CollectionResponse(
-    val prices: PricesResponse,
     val cards: List<CardResponse>,
 )

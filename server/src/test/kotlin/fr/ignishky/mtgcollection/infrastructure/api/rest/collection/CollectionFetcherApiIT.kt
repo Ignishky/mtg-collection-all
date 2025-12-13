@@ -52,9 +52,7 @@ class CollectionFetcherApiIT(
     fun should_retrieve_owned_cards() {
         givenSets(afr, khm)
         givenCards(
-            arboreaPegasus.copy(
-                nbOwnedFoil = CardNbOwnedFoil(1),
-            ),
+            arboreaPegasus.copy(nbOwnedFoil = CardNbOwnedFoil(1)),
             plus2Mace.copy(nbOwnedNonFoil = CardNbOwnedNonFoil(3)),
             axgardBraggart,
         )
