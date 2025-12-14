@@ -2,7 +2,7 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.collection
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
-import fr.ignishky.mtgcollection.domain.card.port.CollectionApiPort
+import fr.ignishky.mtgcollection.domain.collection.port.CollectionApiPort
 import fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api.CollectionFetcherApi
 import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.CardResponse
 import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.PricesResponse

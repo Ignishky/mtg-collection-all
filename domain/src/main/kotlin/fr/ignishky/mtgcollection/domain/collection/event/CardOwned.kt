@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.domain.card.event
+package fr.ignishky.mtgcollection.domain.collection.event
 
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.Payload

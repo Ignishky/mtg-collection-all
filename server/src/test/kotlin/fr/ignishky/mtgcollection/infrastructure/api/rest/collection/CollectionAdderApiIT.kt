@@ -2,7 +2,7 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest.collection
 
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
-import fr.ignishky.mtgcollection.domain.card.event.CardOwned
+import fr.ignishky.mtgcollection.domain.collection.event.CardOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT

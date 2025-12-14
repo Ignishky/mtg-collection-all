@@ -1,9 +1,9 @@
-package fr.ignishky.mtgcollection.domain.card.usecase
+package fr.ignishky.mtgcollection.domain.collection.usecase
 
 import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.command.CommandHandler
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.mtgcollection.domain.card.event.CardOwned
+import fr.ignishky.mtgcollection.domain.collection.event.CardOwned
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import jakarta.inject.Named

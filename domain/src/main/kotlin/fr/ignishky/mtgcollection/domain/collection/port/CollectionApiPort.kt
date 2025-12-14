@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.domain.card.port
+package fr.ignishky.mtgcollection.domain.collection.port
 
 import fr.ignishky.mtgcollection.domain.card.model.Card
 

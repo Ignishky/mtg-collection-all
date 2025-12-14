@@ -1,7 +1,6 @@
-package fr.ignishky.mtgcollection.domain.card.usecase
+package fr.ignishky.mtgcollection.domain.collection.usecase
 
-import fr.ignishky.mtgcollection.domain.CardFixtures.axgardBraggart
-import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
+import fr.ignishky.mtgcollection.domain.CardFixtures
 import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
 import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
@@ -19,11 +18,11 @@ class GetCollectionCardsTest {
 
     @Test
     fun return_owned_cards_sorted_by_collection_price_decreasing() {
-        val axgardBraggart = axgardBraggart.copy(
+        val axgardBraggart = CardFixtures.axgardBraggart.copy(
             prices = CardPrices(Price(1, 2, 1, 3)),
             nbOwnedFoil = CardNbOwnedFoil(1),
         )
-        val valorSinger = valorSinger.copy(
+        val valorSinger = CardFixtures.valorSinger.copy(
             prices = CardPrices(Price(1, 14, 1, 3)),
             nbOwnedNonFoil = CardNbOwnedNonFoil(1),
         )

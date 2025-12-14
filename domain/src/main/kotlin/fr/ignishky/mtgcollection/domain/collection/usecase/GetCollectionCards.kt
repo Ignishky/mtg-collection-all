@@ -1,8 +1,8 @@
-package fr.ignishky.mtgcollection.domain.card.usecase
+package fr.ignishky.mtgcollection.domain.collection.usecase
 
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
-import fr.ignishky.mtgcollection.domain.card.port.CollectionApiPort
+import fr.ignishky.mtgcollection.domain.collection.port.CollectionApiPort
 import jakarta.inject.Named
 
 @Named

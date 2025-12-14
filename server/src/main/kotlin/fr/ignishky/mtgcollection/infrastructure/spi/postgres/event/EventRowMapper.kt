@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.mtgcollection.domain.card.event.*
 import fr.ignishky.mtgcollection.domain.card.model.*
+import fr.ignishky.mtgcollection.domain.collection.event.CardDisowned
+import fr.ignishky.mtgcollection.domain.collection.event.CardOwned
+import fr.ignishky.mtgcollection.domain.collection.event.CardOwnedPayload
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetCreatedPayload
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
