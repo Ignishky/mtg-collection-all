@@ -16,7 +16,7 @@ class CollectionFetcher(
 ) : CollectionFetcherApi {
 
     override fun getCollection(): ResponseEntity<CollectionResponse> {
-        val cards = collectionApi.getAll()
+        val (cards, size, value) = collectionApi.getCollection()
         val cardResponses = cards
             .map {
                 CardResponse(
@@ -31,11 +31,13 @@ class CollectionFetcher(
                 )
             }
 
-        return ok(CollectionResponse(cardResponses))
+        return ok(CollectionResponse(cardResponses, size, value))
     }
 }
 
 @JsonInclude(NON_NULL)
 data class CollectionResponse(
     val cards: List<CardResponse>,
+    val size: Int,
+    val value: Long,
 )

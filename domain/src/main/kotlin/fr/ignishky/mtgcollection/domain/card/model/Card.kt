@@ -38,4 +38,11 @@ data class Card(
         return if (scryfallPrices.eurFoil > scryfallPrices.eur) scryfallPrices.eurFoil else scryfallPrices.eur
     }
 
+    fun nbOwned(): Int {
+        return nbOwnedNonFoil.value + nbOwnedFoil.value
+    }
+
+    fun valueOwned(): Long {
+        return nbOwnedNonFoil.value * prices.scryfall.eur + nbOwnedFoil.value * prices.scryfall.eurFoil
+    }
 }

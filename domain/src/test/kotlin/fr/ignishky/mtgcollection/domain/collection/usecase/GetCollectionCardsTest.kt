@@ -6,6 +6,7 @@ import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
 import fr.ignishky.mtgcollection.domain.card.model.CardPrices
 import fr.ignishky.mtgcollection.domain.card.model.Price
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
+import fr.ignishky.mtgcollection.domain.collection.model.CardCollection
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -24,12 +25,12 @@ class GetCollectionCardsTest {
         )
         val valorSinger = CardFixtures.valorSinger.copy(
             prices = CardPrices(Price(1, 14, 1, 3)),
-            nbOwnedNonFoil = CardNbOwnedNonFoil(1),
+            nbOwnedNonFoil = CardNbOwnedNonFoil(3),
         )
         every { cardProjection.getCollection() } returns listOf(valorSinger, axgardBraggart)
 
-        val cards = query.getAll()
+        val collection = query.getCollection()
 
-        assertThat(cards).containsExactly(axgardBraggart, valorSinger)
+        assertThat(collection).isEqualTo(CardCollection(listOf(axgardBraggart, valorSinger), 4, 5))
     }
 }
