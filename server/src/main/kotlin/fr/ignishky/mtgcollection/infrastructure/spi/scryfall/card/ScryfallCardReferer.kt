@@ -2,6 +2,7 @@ package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.card
 
 import fr.ignishky.mtgcollection.configuration.ScryfallProperties
 import fr.ignishky.mtgcollection.domain.card.model.*
+import fr.ignishky.mtgcollection.domain.card.model.CardColor.UNCOLOR
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
@@ -57,6 +58,15 @@ class ScryfallCardReferer(
                 ?.map { (imageUris) -> (if (imageUris?.borderCrop != null) imageUris.borderCrop.split("?")[0] else "") }
                 ?.map { crop -> CardImage(crop) }
                 ?: emptyList()
+        val colors = when {
+            !cardData.colors.isNullOrEmpty() -> cardData.colors
+            !cardData.cardFaces.isNullOrEmpty() -> cardData.cardFaces
+                .flatMap { it.colors ?: listOf("") }
+                .ifEmpty { listOf("") }
+
+            else -> listOf("")
+        }
+
         return Card(
             CardId(cardData.id),
             CardName(cardData.name),
@@ -72,6 +82,7 @@ class ScryfallCardReferer(
                 ),
             ),
             CardFinishes(cardData.finishes.map(::CardFinish)),
+            CardColors(colors.distinct().map { CardColor.fromSymbol(it) }),
         )
     }
 

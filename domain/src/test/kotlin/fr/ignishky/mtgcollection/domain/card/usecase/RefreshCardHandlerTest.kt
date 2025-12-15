@@ -66,6 +66,7 @@ class RefreshCardHandlerTest {
                     plus2Mace.images,
                     plus2Mace.collectionNumber,
                     plus2Mace.finishes,
+                    plus2Mace.colors,
                 )
             )
         verify { cardProjection.add(plus2Mace) }

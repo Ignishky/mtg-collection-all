@@ -14,7 +14,7 @@ class PostgresCardProjection(
     override fun add(card: Card) {
         val scryfall = card.prices.scryfall
         jdbcTemplate.update(
-            "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, colors) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             card.id.value,
             card.name.value,
             card.setCode.value,
@@ -22,6 +22,7 @@ class PostgresCardProjection(
             card.collectionNumber.value,
             "${scryfall.eur}|${scryfall.eurFoil}|${scryfall.usd}|${scryfall.usdFoil}",
             card.finishes.value.joinToString { it.value },
+            card.colors.value.joinToString { it.name },
         )
     }
 

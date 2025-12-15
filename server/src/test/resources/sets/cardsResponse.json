@@ -11,6 +11,9 @@
         "eur": 2,
         "eurFoil": 0
       },
+      "colors": [
+        "WHITE"
+      ],
       "nbOwnedNonFoil": 3,
       "nbOwnedFoil": 0
     },
@@ -24,6 +27,9 @@
         "eur": 1,
         "eurFoil": 8
       },
+      "colors": [
+        "WHITE"
+      ],
       "nbOwnedNonFoil": 1,
       "nbOwnedFoil": 1
     },
@@ -37,6 +43,9 @@
         "eur": 1,
         "eurFoil": 14
       },
+      "colors": [
+        "RED"
+      ],
       "nbOwnedNonFoil": 0,
       "nbOwnedFoil": 0
     }

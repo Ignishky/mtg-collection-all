@@ -53,7 +53,7 @@ class JdbcUtils(
     fun saveCards(vararg cards: Card) {
         cards.forEach {
             template.update(
-                "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, nb_owned_non_foil, nb_owned_foil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, nb_owned_non_foil, nb_owned_foil, colors) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 it.id.value,
                 it.name.value,
                 it.setCode.value,
@@ -63,6 +63,7 @@ class JdbcUtils(
                 it.finishes.value.joinToString { (value) -> value },
                 it.nbOwnedNonFoil.value,
                 it.nbOwnedFoil.value,
+                it.colors.value.joinToString { it.name },
             )
         }
     }

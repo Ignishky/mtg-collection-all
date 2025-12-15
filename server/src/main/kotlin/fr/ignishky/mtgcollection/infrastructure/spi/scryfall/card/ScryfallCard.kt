@@ -18,6 +18,7 @@ data class ScryfallCardData(
     val name: String,
     val set: String,
     val prices: ScryfallPrices,
+    val colors: List<String>?,
     @param:JsonProperty("image_uris")
     val imageUris: ImageUris?,
     @param:JsonProperty("card_faces")
@@ -32,6 +33,7 @@ data class ScryfallCardData(
         "",
         "",
         ScryfallPrices("0", "0", "0", "0"),
+        emptyList(),
         ImageUris(""),
         emptyList(),
         emptyList(),
@@ -62,7 +64,8 @@ data class ImageUris(
 data class CardFaces(
     @param:JsonProperty("image_uris")
     val imageUris: ImageUris?,
+    val colors: List<String>?
 ) {
     @Suppress("unused")
-    constructor() : this(ImageUris(""))
+    constructor() : this(ImageUris(""), emptyList())
 }

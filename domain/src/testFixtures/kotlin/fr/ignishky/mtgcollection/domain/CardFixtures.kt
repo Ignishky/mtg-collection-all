@@ -1,6 +1,10 @@
 package fr.ignishky.mtgcollection.domain
 
 import fr.ignishky.mtgcollection.domain.card.model.*
+import fr.ignishky.mtgcollection.domain.card.model.CardColor.GREEN
+import fr.ignishky.mtgcollection.domain.card.model.CardColor.RED
+import fr.ignishky.mtgcollection.domain.card.model.CardColor.UNCOLOR
+import fr.ignishky.mtgcollection.domain.card.model.CardColor.WHITE
 
 object CardFixtures {
 
@@ -12,6 +16,7 @@ object CardFixtures {
         CardNumber("1"),
         CardPrices(Price(2, 0, 2, 0)),
         CardFinishes(listOf(CardFinish("nonfoil"))),
+        CardColors(listOf(WHITE)),
     )
 
     val arboreaPegasus = Card(
@@ -22,6 +27,7 @@ object CardFixtures {
         CardNumber("2"),
         CardPrices(Price(1, 8, 0, 6)),
         CardFinishes(listOf(CardFinish("foil"))),
+        CardColors(listOf(WHITE)),
     )
 
     val valorSinger = Card(
@@ -32,6 +38,7 @@ object CardFixtures {
         CardNumber("165"),
         CardPrices(Price(1, 14, 1, 3)),
         CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
+        CardColors(listOf(RED)),
     )
 
     val axgardBraggart = Card(
@@ -42,6 +49,7 @@ object CardFixtures {
         CardNumber("1"),
         CardPrices(Price(1, 2, 0, 0)),
         CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
+        CardColors(listOf(UNCOLOR)),
     )
 
     val halvar = Card(
@@ -57,6 +65,7 @@ object CardFixtures {
         CardNumber("15"),
         CardPrices(Price(796, 699, 692, 647)),
         CardFinishes(listOf(CardFinish("foil"), CardFinish("nonfoil"))),
+        CardColors(listOf(WHITE, GREEN)),
     )
 
 }

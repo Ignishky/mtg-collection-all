@@ -59,16 +59,25 @@ class EventRowMapper(
             CardId(rs.getString("aggregate_id")),
             CardName(payload.name),
             CardSetCode(payload.setCode),
-            CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
+            CardPrices(
+                Price(
+                    payload.scryfallEur,
+                    payload.scryfallEurFoil,
+                    payload.scryfallUsd,
+                    payload.scryfallUsdFoil,
+                )
+            ),
             CardImages(payload.images.map { CardImage(it) }),
             CardNumber(payload.collectionNumber),
             CardFinishes(payload.finishes.map { CardFinish(it) }),
+            CardColors(payload.colors.map { CardColor.valueOf(it) }),
         )
     }
 
     private fun toCardUpdated(rs: ResultSet): CardUpdated {
         val payload = objectMapper.readValue(rs.getString("payload"), CardUpdatedPayload::class.java)
-        val properties = payload.properties.map { CardProperty.PropertyName.valueOf(it.key).withValue(it.value) }.toTypedArray()
+        val properties =
+            payload.properties.map { CardProperty.PropertyName.valueOf(it.key).withValue(it.value) }.toTypedArray()
         return CardUpdated(
             CardId(rs.getString("aggregate_id")),
             *properties,
@@ -79,7 +88,14 @@ class EventRowMapper(
         val payload = objectMapper.readValue(rs.getString("payload"), CardPricesUpdatedPayload::class.java)
         return CardPricesUpdated(
             CardId(rs.getString("aggregate_id")),
-            CardPrices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
+            CardPrices(
+                Price(
+                    payload.scryfallEur,
+                    payload.scryfallEurFoil,
+                    payload.scryfallUsd,
+                    payload.scryfallUsdFoil
+                )
+            ),
         )
     }
 

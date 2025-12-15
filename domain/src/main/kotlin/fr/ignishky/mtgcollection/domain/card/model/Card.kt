@@ -11,6 +11,7 @@ data class Card(
     val collectionNumber: CardNumber,
     val prices: CardPrices,
     val finishes: CardFinishes,
+    val colors: CardColors,
     val nbOwnedNonFoil: CardNbOwnedNonFoil = CardNbOwnedNonFoil(0),
     val nbOwnedFoil: CardNbOwnedFoil = CardNbOwnedFoil(0),
 ) : Aggregate<CardId> {

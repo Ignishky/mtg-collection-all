@@ -11,7 +11,8 @@ sealed interface CardProperty {
         SET_CODE,
         IMAGES,
         COLLECTION_NUMBER,
-        FINISHES;
+        FINISHES,
+        COLORS;
 
         fun withValue(value: String) = when (this) {
             NAME -> CardName(value)
@@ -19,6 +20,7 @@ sealed interface CardProperty {
             IMAGES -> CardImages(value.split(", ").map { CardImage(it) })
             COLLECTION_NUMBER -> CardNumber(value)
             FINISHES -> CardFinishes(value.split(", ").map { CardFinish(it) })
+            COLORS -> CardColors(value.split(", ").map { CardColor.valueOf(it) })
         }
     }
 

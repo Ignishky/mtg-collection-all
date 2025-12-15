@@ -16,6 +16,7 @@ class CardRowMapper : RowMapper<Card> {
             CardNumber(rs.getString("collection_number")),
             CardPrices(Price(prices[0], prices[1], prices[2], prices[3])),
             CardFinishes(rs.getString("finishes").split(", ").map { CardFinish(it) }),
+            CardColors(rs.getString("colors").split(", ").map { CardColor.valueOf(it) }),
             CardNbOwnedNonFoil(rs.getInt("nb_owned_non_foil")),
             CardNbOwnedFoil(rs.getInt("nb_owned_foil")),
         )

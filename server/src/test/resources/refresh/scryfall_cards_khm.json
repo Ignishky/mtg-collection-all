@@ -36,9 +36,7 @@
       "oracle_text": "Boast — {1}{W}: Untap Axgard Braggart. Put a +1/+1 counter on it. (Activate only if this creature attacked this turn and only once each turn.)",
       "power": "3",
       "toughness": "3",
-      "colors": [
-        "W"
-      ],
+      "colors": [],
       "color_identity": [
         "W"
       ],
@@ -194,7 +192,7 @@
           "type_line": "Legendary Artifact — Equipment",
           "oracle_text": "Equipped creature gets +2/+0 and has vigilance.\nWhenever equipped creature dies, return it to its owner's hand.\nEquip {1}{W}",
           "colors": [
-            "W"
+            "G"
           ],
           "flavor_text": "It cuts through the Cosmos itself, carving new Omenpaths between the realms.",
           "artist": "Lie Setiawan",

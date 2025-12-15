@@ -13,6 +13,7 @@ class CardCreated(
     images: CardImages,
     collectionNumber: CardNumber,
     finishes: CardFinishes,
+    colors: CardColors,
 ) : Event<CardId, Card, CardCreatedPayload>(
     0,
     aggregateId,
@@ -26,12 +27,22 @@ class CardCreated(
         prices.scryfall.usdFoil,
         images.value.map { it.value },
         collectionNumber.value,
-        finishes.value.map { it.value }
+        finishes.value.map { it.value },
+        colors.value.map { it.name },
     ),
     now(),
 ) {
 
-    constructor(card: Card) : this(card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes)
+    constructor(card: Card) : this(
+        card.id,
+        card.name,
+        card.setCode,
+        card.prices,
+        card.images,
+        card.collectionNumber,
+        card.finishes,
+        card.colors,
+    )
 
 }
 
@@ -45,7 +56,8 @@ data class CardCreatedPayload(
     val images: List<String>,
     val collectionNumber: String,
     val finishes: List<String>,
+    val colors: List<String>,
 ) : Payload {
     @Suppress("unused")
-    constructor() : this("", "", 0, 0, 0, 0, emptyList(), "", emptyList())
+    constructor() : this("", "", 0, 0, 0, 0, emptyList(), "", emptyList(), emptyList())
 }

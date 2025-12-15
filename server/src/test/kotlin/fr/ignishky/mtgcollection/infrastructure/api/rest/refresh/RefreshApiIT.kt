@@ -11,6 +11,7 @@ import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
+import fr.ignishky.mtgcollection.domain.card.model.CardColor.RED
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.Set
@@ -29,6 +30,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import kotlin.collections.emptyList
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -94,12 +96,22 @@ class RefreshApiIT(
         givenSets(oldKhm)
         givenCards(
             axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
-            halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber("")),
+            halvar.copy(
+                images = CardImages(emptyList()),
+                collectionNumber = CardNumber(""),
+                colors = CardColors(listOf(RED)),
+            ),
         )
         givenEvents(
             toSetCreated(oldKhm),
             toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
-            toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
+            toCardCreated(
+                halvar.copy(
+                    images = CardImages(emptyList()),
+                    collectionNumber = CardNumber(""),
+                    colors = CardColors(listOf(RED)),
+                )
+            )
         )
 
         val resultActions = performCall()
@@ -110,7 +122,13 @@ class RefreshApiIT(
             .containsOnly(
                 toSetCreated(oldKhm),
                 toCardCreated(axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0)))),
-                toCardCreated(halvar.copy(images = CardImages(emptyList()), collectionNumber = CardNumber(""))),
+                toCardCreated(
+                    halvar.copy(
+                        images = CardImages(emptyList()),
+                        collectionNumber = CardNumber(""),
+                        colors = CardColors(listOf(RED)),
+                    )
+                ),
                 toSetUpdated(khm),
                 toCardPricesUpdated(axgardBraggart),
                 toCardUpdated(halvar),
@@ -153,9 +171,18 @@ class RefreshApiIT(
     private fun toSetUpdated(set: Set) = SetUpdated(set.id, set.name, set.icon)
 
     private fun toCardCreated(card: Card) =
-        CardCreated(card.id, card.name, card.setCode, card.prices, card.images, card.collectionNumber, card.finishes)
+        CardCreated(
+            card.id,
+            card.name,
+            card.setCode,
+            card.prices,
+            card.images,
+            card.collectionNumber,
+            card.finishes,
+            card.colors,
+        )
 
-    private fun toCardUpdated(card: Card) = CardUpdated(card.id, card.collectionNumber, card.images)
+    private fun toCardUpdated(card: Card) = CardUpdated(card.id, card.collectionNumber, card.images, card.colors)
 
     private fun toCardPricesUpdated(card: Card) = CardPricesUpdated(card.id, card.prices)
 
