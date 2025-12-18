@@ -1,11 +1,11 @@
 flyway:
-  url: jdbc:postgresql://34.155.49.225:5432/mtg_collection
-  user: "postgres"
-  password: ${DB_PWD}
+  url: ${SPRING_DATASOURCE_URL}
+  user: ${SPRING_DATASOURCE_USERNAME}
+  password: ${SPRING_DATASOURCE_PASSWORD}
 
 spring:
   datasource:
-    url: jdbc:postgresql://34.155.49.225:5432/mtg_collection
+    url: ${SPRING_DATASOURCE_URL}
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: ${DB_PWD}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}

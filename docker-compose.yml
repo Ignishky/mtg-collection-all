@@ -50,7 +50,7 @@ services:
       context: server
       dockerfile: Dockerfile
     environment:
-      SPRING_PROFILES_ACTIVE: local
+      SPRING_PROFILES_ACTIVE: production
       SPRING_DATASOURCE_URL: jdbc:postgresql://mtg_collection_database:5432/mtg_collection
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
