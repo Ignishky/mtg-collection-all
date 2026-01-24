@@ -32,13 +32,15 @@ class RefreshCardHandler(
     private val logger = logger {}
 
     override fun handle(command: Command): List<Event<CardId, Card, out Payload>> {
-        val sets = setProjection.getAll()
         return runBlocking {
-            sets.map { set ->
-                async(Dispatchers.Default) {
-                    processSet(set)
+            setProjection.getAll()
+                .map { set ->
+                    async(Dispatchers.Default) {
+                        processSet(set)
+                    }
                 }
-            }.awaitAll().flatten()
+                .awaitAll()
+                .flatten()
         }
     }
 

@@ -2,13 +2,13 @@ package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.card
 
 import fr.ignishky.mtgcollection.configuration.ScryfallProperties
 import fr.ignishky.mtgcollection.domain.card.model.*
-import fr.ignishky.mtgcollection.domain.card.model.CardColor.UNCOLOR
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
 import org.springframework.web.client.HttpClientErrorException.NotFound
 import org.springframework.web.client.RestClient
+import org.springframework.web.client.body
 import java.lang.Long.parseLong
 
 @Named
@@ -31,7 +31,7 @@ class ScryfallCardReferer(
             var response = restClient.get()
                 .uri("${properties.baseUrl}/cards/search?order=set&q=e:${setCode.value}&unique=prints")
                 .retrieve()
-                .body(ScryfallCard::class.java)
+                .body<ScryfallCard>()
                 ?: return emptyList()
             scryfallCards = scryfallCards.plus(response.data)
 
@@ -40,7 +40,7 @@ class ScryfallCardReferer(
                 response = restClient.get()
                     .uri(next)
                     .retrieve()
-                    .body(ScryfallCard::class.java)
+                    .body<ScryfallCard>()
                     ?: break
                 scryfallCards = scryfallCards.plus(response.data)
             }
