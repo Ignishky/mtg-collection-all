@@ -42,6 +42,7 @@ data class CardsResponse(
 
 data class CardResponse(
     val id: String,
+    val collectionNumber: String,
     val name: String,
     val image: String,
     val isFoil: Boolean,

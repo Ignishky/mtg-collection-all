@@ -9,6 +9,7 @@ object CardResponseMapper {
     fun Card.toCardResponse() =
         CardResponse(
             id.value,
+            collectionNumber.value,
             name.value,
             images.value[0].value,
             finishes.isFoil(),

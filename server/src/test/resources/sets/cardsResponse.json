@@ -3,6 +3,7 @@
   "cards": [
     {
       "id": "e882c9f9-bf30-46b6-bedc-379d2c80e5cb",
+      "collectionNumber": "1",
       "name": "+2 Mace",
       "image": "https://scryfall.mtgc.test/cards/plus2mace.svg",
       "foil": false,
@@ -19,6 +20,7 @@
     },
     {
       "id": "fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97",
+      "collectionNumber": "2",
       "name": "Arborea Pegasus",
       "image": "https://scryfall.mtgc.test/cards/arboreaPegasus.svg",
       "foil": true,
@@ -35,6 +37,7 @@
     },
     {
       "id": "89bc162c-bdf1-43f7-882f-d8cee4f3f415",
+      "collectionNumber": "165",
       "name": "Valor Singer",
       "image": "https://scryfall.mtgc.test/cards/valorSinger.svg",
       "foil": true,
