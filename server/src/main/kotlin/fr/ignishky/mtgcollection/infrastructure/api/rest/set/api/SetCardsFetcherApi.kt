@@ -36,12 +36,14 @@ fun interface SetCardsFetcherApi {
 
 data class CardsResponse(
     val name: String,
+    val setCode: String,
     val cards: List<CardResponse>,
     val price: Long,
 )
 
 data class CardResponse(
     val id: String,
+    val setCode: String,
     val collectionNumber: String,
     val name: String,
     val image: String,

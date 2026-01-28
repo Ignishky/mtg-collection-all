@@ -31,7 +31,7 @@ class SetCardsFetcher(
         val pricesResponse = cards.fold(0L) { totalValue, card -> totalValue + card.maxValuePrice() }
 
         logger.info { "Returning ${cardResponses.size} cards." }
-        return ResponseEntity(CardsResponse(set.name.value, cardResponses, pricesResponse), OK)
+        return ResponseEntity(CardsResponse(set.name.value, set.code.value, cardResponses, pricesResponse), OK)
     }
 
 }
