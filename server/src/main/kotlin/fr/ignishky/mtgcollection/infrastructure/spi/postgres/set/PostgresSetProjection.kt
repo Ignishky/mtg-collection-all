@@ -28,18 +28,21 @@ class PostgresSetProjection(
     }
 
     override fun update(setId: SetId, properties: List<SetProperty>) {
-        val arguments = properties.map { "${it.propertyName().name.lowercase()}='${it.propertyValue()}'" }.joinToString { it }
+        val arguments =
+            properties.map { "${it.propertyName().name.lowercase()}='${it.propertyValue()}'" }.joinToString { it }
         jdbcTemplate.update("UPDATE sets SET $arguments WHERE id=?", setId.value)
     }
 
-    override fun getAll(): List<Set> = jdbcTemplate.query("SELECT * FROM sets ORDER BY released_at DESC", SetRowMapper())
+    override fun getAll(): List<Set> =
+        jdbcTemplate.query("SELECT * FROM sets ORDER BY released_at DESC", SetRowMapper())
 
-    override fun get(id: SetId) = jdbcTemplate.queryForObject("SELECT * FROM sets WHERE id=?", SetRowMapper(), id.value)!!
+    override fun get(id: SetId): Set =
+        jdbcTemplate.queryForObject("SELECT * FROM sets WHERE id=?", SetRowMapper(), id.value)
 
     override fun get(setCode: SetCode): Set? {
         return try {
-            jdbcTemplate.queryForObject("SELECT * FROM sets WHERE code=?", SetRowMapper(), setCode.value) ?: return null
-        } catch (e: EmptyResultDataAccessException) {
+            jdbcTemplate.queryForObject("SELECT * FROM sets WHERE code=?", SetRowMapper(), setCode.value)
+        } catch (_: EmptyResultDataAccessException) {
             null
         }
     }

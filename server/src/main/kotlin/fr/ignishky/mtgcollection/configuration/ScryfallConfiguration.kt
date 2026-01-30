@@ -18,6 +18,6 @@ class ScryfallConfiguration {
     @Bean
     fun objectMapper(): ObjectMapper = ObjectMapper()
         .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
-        .setSerializationInclusion(NON_EMPTY)
+        .setDefaultPropertyInclusion(NON_EMPTY)
 
 }

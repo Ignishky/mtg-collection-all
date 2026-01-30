@@ -7,9 +7,15 @@ plugins {
 
 group = "fr.ignishky"
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 kotlin {
     compilerOptions {
-        jvmTarget = JvmTarget.fromTarget("21")
+        jvmTarget = JvmTarget.JVM_21
     }
 }
 
