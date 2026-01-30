@@ -38,4 +38,6 @@ data class SetResponse(
     val code: String,
     val name: String,
     val icon: String,
+    val nbCards: Int,
+    val nbOwnedCards: Int,
 )

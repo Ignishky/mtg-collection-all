@@ -20,7 +20,7 @@ class SetsFetcher(
         logger.info { "Requesting all sets ..." }
 
         val sets = setApi.getAll()
-            .map { SetResponse(it.code.value, it.name.value, it.icon.value) }
+            .map { SetResponse(it.code.value, it.name.value, it.icon.value, it.nbCards, it.nbOwnedCards) }
 
         logger.info { "Returning ${sets.size} sets." }
         return ResponseEntity(SetsResponse(sets), OK)

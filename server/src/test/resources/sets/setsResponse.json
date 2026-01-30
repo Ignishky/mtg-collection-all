@@ -3,12 +3,16 @@
     {
       "code": "afr",
       "name": "Adventures in the Forgotten Realms",
-      "icon": "https://scryfall.mtgc.test/sets/afr.svg"
+      "icon": "https://scryfall.mtgc.test/sets/afr.svg",
+      "nbCards": 3,
+      "nbOwnedCards": 2
     },
     {
       "code": "khm",
       "name": "Kaldheim",
-      "icon": "https://scryfall.mtgc.test/sets/khm.svg"
+      "icon": "https://scryfall.mtgc.test/sets/khm.svg",
+      "nbCards": 2,
+      "nbOwnedCards": 1
     }
   ]
 }
