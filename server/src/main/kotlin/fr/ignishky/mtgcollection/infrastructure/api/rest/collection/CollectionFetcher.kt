@@ -6,9 +6,12 @@ import fr.ignishky.mtgcollection.domain.collection.port.CollectionApiPort
 import fr.ignishky.mtgcollection.infrastructure.api.rest.collection.api.CollectionFetcherApi
 import fr.ignishky.mtgcollection.infrastructure.api.rest.common.CardResponseMapper.toCardResponse
 import fr.ignishky.mtgcollection.infrastructure.api.rest.set.api.CardResponse
+import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.RestController
+
+private val logger = KotlinLogging.logger {}
 
 @RestController
 class CollectionFetcher(
@@ -16,8 +19,10 @@ class CollectionFetcher(
 ) : CollectionFetcherApi {
 
     override fun getCollection(): ResponseEntity<CollectionResponse> {
+        logger.info { "Fetching collection" }
         val (cards, size, value) = collectionApi.getCollection()
 
+        logger.info { "Returning collection of size: $size" }
         return ok(
             CollectionResponse(
                 cards.map { it.toCardResponse() },
