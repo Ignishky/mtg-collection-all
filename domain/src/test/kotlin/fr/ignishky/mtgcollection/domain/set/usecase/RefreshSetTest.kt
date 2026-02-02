@@ -4,6 +4,7 @@ import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.SetName
+import fr.ignishky.mtgcollection.domain.set.model.SetNbCards
 import fr.ignishky.mtgcollection.domain.set.model.SetReleasedAt
 import fr.ignishky.mtgcollection.domain.set.model.SetType
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
@@ -70,7 +71,7 @@ class RefreshSetTest {
 
             assertThat(events)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-                .containsOnly(SetCreated(afr.id, afr.code, afr.name, afr.type, afr.icon, afr.releasedAt))
+                .containsOnly(SetCreated(afr.id, afr.code, afr.name, afr.type, afr.icon, afr.releasedAt, afr.nbCards))
             verify { setProjection.add(afr) }
         }
 
@@ -149,8 +150,8 @@ class RefreshSetTest {
 
             assertThat(events)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "instant")
-                .containsOnly(SetUpdated(afr.id, afr.name, afr.type))
-            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
+                .containsOnly(SetUpdated(afr.id, afr.name, afr.type, afr.nbCards))
+            verify { setProjection.update(afr.id, listOf(afr.name, afr.nbCards, afr.type)) }
         }
 
         @Test
@@ -159,8 +160,7 @@ class RefreshSetTest {
 
             handler.handle(RefreshSet())
 
-            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
-            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
+            verify { setProjection.update(afr.id, listOf(afr.name, afr.nbCards, afr.type)) }
         }
 
         @Test
@@ -170,11 +170,17 @@ class RefreshSetTest {
             handler.handle(RefreshSet())
 
             verify(exactly = 0) { setProjection.add(any()) }
-            verify { setProjection.update(afr.id, listOf(afr.name, afr.type)) }
+            verify { setProjection.update(afr.id, listOf(afr.name, afr.nbCards, afr.type)) }
         }
 
         private fun projectionReturnOldSetAndRefererReturnNewSet() {
-            every { setProjection.getAll() } returns listOf(afr.copy(name = SetName("Old name"), type = SetType("Old type")))
+            every { setProjection.getAll() } returns listOf(
+                afr.copy(
+                    name = SetName("Old name"),
+                    type = SetType("Old type"),
+                    nbCards = SetNbCards(0),
+                )
+            )
             every { setReferer.getAllSets() } returns listOf(afr)
         }
 

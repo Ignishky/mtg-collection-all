@@ -1,0 +1,3 @@
+ALTER TABLE sets
+    ADD COLUMN nb_cards       INT NOT NULL DEFAULT 0,
+    ADD COLUMN nb_owned_cards INT NOT NULL DEFAULT 0;

@@ -23,9 +23,11 @@ data class ScryfallSetData(
     val iconSvgUri: String,
     @param:JsonProperty("parent_set_code")
     val parentCode: String?,
+    @param:JsonProperty("card_count")
+    val cardCount: Int,
 ) {
 
     @Suppress("unused")
-    constructor() : this("", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "", 0)
 
 }

@@ -16,7 +16,7 @@ class PostgresSetProjection(
 
     override fun add(set: Set) {
         jdbcTemplate.update(
-            "INSERT INTO sets (id, code, name, type, icon, released_at, parent_code) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO sets (id, code, name, type, icon, released_at, parent_code, nb_cards) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             set.id.value,
             set.code.value,
             set.name.value,
@@ -24,6 +24,7 @@ class PostgresSetProjection(
             set.icon.value,
             set.releasedAt.value,
             set.parentCode?.value,
+            set.nbCards.value,
         )
     }
 

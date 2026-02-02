@@ -17,6 +17,7 @@ object SetFixtures {
         afrIcon,
         afrReleasedAt,
         null,
+        SetNbCards(422),
     )
 
     val pafr = Set(
@@ -27,6 +28,7 @@ object SetFixtures {
         afrIcon,
         afrReleasedAt,
         SetParentCode("afr"),
+        SetNbCards(0),
     )
 
     val aafr = Set(
@@ -37,6 +39,7 @@ object SetFixtures {
         afrIcon,
         afrReleasedAt,
         SetParentCode("afr"),
+        SetNbCards(0),
     )
 
     val khm = Set(
@@ -47,6 +50,7 @@ object SetFixtures {
         SetIcon("https://scryfall.mtgc.test/sets/khm.svg"),
         SetReleasedAt(parse("2021-02-05")),
         null,
+        SetNbCards(427),
     )
 
     val tkhm = Set(
@@ -57,6 +61,7 @@ object SetFixtures {
         SetIcon("https://scryfall.mtgc.test/sets/khm.svg"),
         SetReleasedAt(parse("2021-02-05")),
         SetParentCode("khm"),
+        SetNbCards(0),
     )
 
 }

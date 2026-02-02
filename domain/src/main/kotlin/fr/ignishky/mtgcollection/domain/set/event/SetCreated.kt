@@ -13,6 +13,7 @@ class SetCreated(
     type: SetType,
     icon: SetIcon,
     releasedAt: SetReleasedAt,
+    nbCards: SetNbCards,
 ) : Event<SetId, Set, SetCreatedPayload>(
     0,
     aggregateId,
@@ -23,11 +24,12 @@ class SetCreated(
         type.value,
         icon.value,
         releasedAt.value.toString(),
+        nbCards.value,
     ),
     now(),
 ) {
 
-    constructor(set: Set) : this(set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
+    constructor(set: Set) : this(set.id, set.code, set.name, set.type, set.icon, set.releasedAt, set.nbCards)
 
 }
 
@@ -37,7 +39,8 @@ data class SetCreatedPayload(
     val type: String,
     val icon: String,
     val releasedAt: String,
+    val nbCards: Int,
 ) : Payload {
     @Suppress("unused")
-    constructor() : this("", "", "", "", "")
+    constructor() : this("", "", "", "", "", 0)
 }

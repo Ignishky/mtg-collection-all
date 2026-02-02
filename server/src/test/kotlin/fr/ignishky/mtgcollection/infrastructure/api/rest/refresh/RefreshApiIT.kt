@@ -17,6 +17,7 @@ import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.domain.set.model.SetName
+import fr.ignishky.mtgcollection.domain.set.model.SetNbCards
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
@@ -30,7 +31,6 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import kotlin.collections.emptyList
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -92,7 +92,7 @@ class RefreshApiIT(
     @Test
     fun should_update_modified_set_and_cards() {
         prepareMockServer()
-        val oldKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"))
+        val oldKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"), nbCards = SetNbCards(0))
         givenSets(oldKhm)
         givenCards(
             axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
@@ -166,9 +166,9 @@ class RefreshApiIT(
 
     private fun performCall() = mockMvc.perform(put("/refresh-all"))
 
-    private fun toSetCreated(set: Set) = SetCreated(set.id, set.code, set.name, set.type, set.icon, set.releasedAt)
+    private fun toSetCreated(set: Set) = SetCreated(set.id, set.code, set.name, set.type, set.icon, set.releasedAt, set.nbCards)
 
-    private fun toSetUpdated(set: Set) = SetUpdated(set.id, set.name, set.icon)
+    private fun toSetUpdated(set: Set) = SetUpdated(set.id, set.name, set.icon, set.nbCards)
 
     private fun toCardCreated(card: Card) =
         CardCreated(

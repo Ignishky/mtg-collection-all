@@ -41,7 +41,8 @@ class EventRowMapper(
             SetName(payload.name),
             SetType(payload.type),
             SetIcon(payload.icon),
-            SetReleasedAt(LocalDate.parse(payload.releasedAt))
+            SetReleasedAt(LocalDate.parse(payload.releasedAt)),
+            SetNbCards(payload.nbCards),
         )
     }
 

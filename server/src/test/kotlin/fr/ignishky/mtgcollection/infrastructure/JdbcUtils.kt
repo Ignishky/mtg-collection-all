@@ -39,13 +39,14 @@ class JdbcUtils(
     fun saveSets(vararg sets: Set) {
         sets.forEach {
             template.update(
-                "INSERT INTO sets (id, code, name, type, icon, released_at) VALUES (?, ?, ?, ?, ?, ?)",
+                "INSERT INTO sets (id, code, name, type, icon, released_at, nb_cards) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 it.id.value,
                 it.code.value,
                 it.name.value,
                 it.type.value,
                 it.icon.value,
                 it.releasedAt.value,
+                it.nbCards.value,
             )
         }
     }

@@ -13,6 +13,7 @@ sealed interface SetProperty {
         CODE,
         TYPE,
         ICON,
+        NB_CARDS,
         RELEASED_AT,
         PARENT_CODE;
 
@@ -21,6 +22,7 @@ sealed interface SetProperty {
             CODE -> SetCode(value)
             TYPE -> SetType(value)
             ICON -> SetIcon(value)
+            NB_CARDS -> SetNbCards(value.toInt())
             RELEASED_AT -> SetReleasedAt(LocalDate.parse(value))
             PARENT_CODE -> SetParentCode(value)
         }

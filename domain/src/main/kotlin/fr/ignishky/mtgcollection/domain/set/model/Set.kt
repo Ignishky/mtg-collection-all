@@ -11,6 +11,7 @@ data class Set(
     val icon: SetIcon,
     val releasedAt: SetReleasedAt,
     val parentCode: SetParentCode?,
+    val nbCards: SetNbCards,
 ) : Aggregate<SetId> {
 
     override fun id() = id

@@ -29,6 +29,7 @@ class ScryfallSetReferer(
                 SetIcon(it.iconSvgUri.split("?")[0]),
                 SetReleasedAt(parse(it.releasedAt)),
                 it.parentCode?.let { parentCode -> SetParentCode(parentCode) },
+                SetNbCards(it.cardCount),
             )
         }
 
