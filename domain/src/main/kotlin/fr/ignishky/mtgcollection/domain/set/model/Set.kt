@@ -12,6 +12,7 @@ data class Set(
     val releasedAt: SetReleasedAt,
     val parentCode: SetParentCode?,
     val nbCards: SetNbCards,
+    val nbOwnedCards: SetNbOwnedCards,
 ) : Aggregate<SetId> {
 
     override fun id() = id
@@ -20,8 +21,8 @@ data class Set(
         var result = emptyList<SetProperty>()
         for (prop in Set::class.memberProperties) {
             prop.call(newSet)?.let {
-                if (prop.call(this) != it) {
-                    result = result.plus(it as SetProperty)
+                if (it is SetProperty && prop.call(this) != it) {
+                    result = result.plus(it)
                 }
             }
         }

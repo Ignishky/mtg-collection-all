@@ -3,10 +3,7 @@ package fr.ignishky.mtgcollection.domain.set.usecase
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
-import fr.ignishky.mtgcollection.domain.set.model.SetName
-import fr.ignishky.mtgcollection.domain.set.model.SetNbCards
-import fr.ignishky.mtgcollection.domain.set.model.SetReleasedAt
-import fr.ignishky.mtgcollection.domain.set.model.SetType
+import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import io.mockk.every
@@ -178,7 +175,8 @@ class RefreshSetTest {
                 afr.copy(
                     name = SetName("Old name"),
                     type = SetType("Old type"),
-                    nbCards = SetNbCards(0),
+                    nbCards = SetNbCards(10),
+                    nbOwnedCards = SetNbOwnedCards(2),
                 )
             )
             every { setReferer.getAllSets() } returns listOf(afr)

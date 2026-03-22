@@ -14,10 +14,8 @@ import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.model.CardColor.RED
 import fr.ignishky.mtgcollection.domain.set.event.SetCreated
 import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
+import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.model.SetIcon
-import fr.ignishky.mtgcollection.domain.set.model.SetName
-import fr.ignishky.mtgcollection.domain.set.model.SetNbCards
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
@@ -92,7 +90,12 @@ class RefreshApiIT(
     @Test
     fun should_update_modified_set_and_cards() {
         prepareMockServer()
-        val oldKhm = khm.copy(name = SetName("Old Name"), icon = SetIcon("Old Icon"), nbCards = SetNbCards(0))
+        val oldKhm = khm.copy(
+            name = SetName("Old Name"),
+            icon = SetIcon("Old Icon"),
+            nbCards = SetNbCards(10),
+            nbOwnedCards = SetNbOwnedCards(2),
+        )
         givenSets(oldKhm)
         givenCards(
             axgardBraggart.copy(prices = CardPrices(Price(0, 0, 0, 0))),
@@ -133,7 +136,7 @@ class RefreshApiIT(
                 toCardPricesUpdated(axgardBraggart),
                 toCardUpdated(halvar),
             )
-        assertThat(jdbc.getSets()).containsOnly(khm)
+        assertThat(jdbc.getSets()).containsOnly(khm.copy(nbOwnedCards = SetNbOwnedCards(2)))
         assertThat(jdbc.getCards()).containsOnly(axgardBraggart, halvar)
     }
 

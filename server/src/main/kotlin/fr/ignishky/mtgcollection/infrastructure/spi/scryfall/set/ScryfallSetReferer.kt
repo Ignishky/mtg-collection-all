@@ -30,6 +30,7 @@ class ScryfallSetReferer(
                 SetReleasedAt(parse(it.releasedAt)),
                 it.parentCode?.let { parentCode -> SetParentCode(parentCode) },
                 SetNbCards(it.cardCount),
+                SetNbOwnedCards(0),
             )
         }
 

@@ -18,6 +18,7 @@ object SetFixtures {
         afrReleasedAt,
         null,
         SetNbCards(422),
+        SetNbOwnedCards(0),
     )
 
     val pafr = Set(
@@ -29,6 +30,7 @@ object SetFixtures {
         afrReleasedAt,
         SetParentCode("afr"),
         SetNbCards(0),
+        SetNbOwnedCards(0),
     )
 
     val aafr = Set(
@@ -40,6 +42,7 @@ object SetFixtures {
         afrReleasedAt,
         SetParentCode("afr"),
         SetNbCards(0),
+        SetNbOwnedCards(0),
     )
 
     val khm = Set(
@@ -51,6 +54,7 @@ object SetFixtures {
         SetReleasedAt(parse("2021-02-05")),
         null,
         SetNbCards(427),
+        SetNbOwnedCards(0),
     )
 
     val tkhm = Set(
@@ -62,6 +66,7 @@ object SetFixtures {
         SetReleasedAt(parse("2021-02-05")),
         SetParentCode("khm"),
         SetNbCards(0),
+        SetNbOwnedCards(0),
     )
 
 }

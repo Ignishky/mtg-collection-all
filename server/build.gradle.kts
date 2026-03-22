@@ -15,9 +15,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
-    runtimeOnly("org.flywaydb:flyway-core")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
@@ -25,7 +25,6 @@ dependencies {
     testImplementation(testFixtures(project(":domain")))
     testImplementation("org.mock-server:mockserver-junit-jupiter:5.15.0")
     testImplementation("org.mock-server:mockserver-spring-test-listener:5.15.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-flyway")
     testImplementation("org.springframework.boot:spring-boot-starter-jdbc")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")

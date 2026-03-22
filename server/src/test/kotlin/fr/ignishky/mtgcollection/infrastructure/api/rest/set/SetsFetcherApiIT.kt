@@ -1,10 +1,16 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
+import fr.ignishky.mtgcollection.domain.CardFixtures.arboreaPegasus
+import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
+import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
 import fr.ignishky.mtgcollection.domain.SetFixtures.aafr
 import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.SetFixtures.khm
 import fr.ignishky.mtgcollection.domain.SetFixtures.pafr
 import fr.ignishky.mtgcollection.domain.SetFixtures.tkhm
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedFoil
+import fr.ignishky.mtgcollection.domain.card.model.CardNbOwnedNonFoil
+import fr.ignishky.mtgcollection.domain.set.model.SetNbOwnedCards
 import fr.ignishky.mtgcollection.infrastructure.AbstractIT
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
@@ -46,7 +52,12 @@ internal class SetsFetcherApiIT(
     @Test
     fun should_return_existing_sets() {
         // GIVEN
-        givenSets(khm, tkhm, afr, aafr, pafr)
+        givenSets(khm, tkhm, afr.copy(nbOwnedCards = SetNbOwnedCards(2)), aafr, pafr)
+        givenCards(
+            plus2Mace.copy(nbOwnedNonFoil = CardNbOwnedNonFoil(2)),
+            arboreaPegasus.copy(nbOwnedNonFoil = CardNbOwnedNonFoil(1), nbOwnedFoil = CardNbOwnedFoil(1)),
+            valorSinger,
+        )
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets"))
