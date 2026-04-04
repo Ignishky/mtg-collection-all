@@ -24,7 +24,7 @@ class RefreshCardHandlerTest {
     private val handler = RefreshCardHandler(setProjection, cardReferer, cardProjection)
 
     @Test
-    fun should_return_no_events_when_cards_are_uptoDate() {
+    fun should_return_no_events_when_cards_are_upToDate() {
         every { setProjection.getAll() } returns listOf(afr)
         every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace)
         every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)

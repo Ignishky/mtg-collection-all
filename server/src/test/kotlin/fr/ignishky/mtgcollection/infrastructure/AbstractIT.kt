@@ -10,7 +10,9 @@ abstract class AbstractIT(
 ) {
 
     @BeforeEach
-    fun setUp() = jdbc.dropAll()
+    fun setUp() {
+        jdbc.dropAll()
+    }
 
     fun givenSets(vararg set: Set) {
         jdbc.saveSets(*set)

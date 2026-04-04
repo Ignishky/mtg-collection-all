@@ -53,19 +53,19 @@ class JdbcUtils(
     }
 
     fun saveCards(vararg cards: Card) {
-        cards.forEach {
+        cards.forEach { card ->
             template.update(
                 "INSERT INTO cards (id, name, set_code, images, collection_number, scryfall_prices, finishes, nb_owned_non_foil, nb_owned_foil, colors) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                it.id.value,
-                it.name.value,
-                it.setCode.value,
-                it.images.value.joinToString { (value) -> value },
-                it.collectionNumber.value,
-                "${it.prices.scryfall.eur}|${it.prices.scryfall.eurFoil}|${it.prices.scryfall.usd}|${it.prices.scryfall.usdFoil}",
-                it.finishes.value.joinToString { (value) -> value },
-                it.nbOwnedNonFoil.value,
-                it.nbOwnedFoil.value,
-                it.colors.value.joinToString { it.name },
+                card.id.value,
+                card.name.value,
+                card.setCode.value,
+                card.images.value.joinToString { (value) -> value },
+                card.collectionNumber.value,
+                "${card.prices.scryfall.eur}|${card.prices.scryfall.eurFoil}|${card.prices.scryfall.usd}|${card.prices.scryfall.usdFoil}",
+                card.finishes.value.joinToString { (value) -> value },
+                card.nbOwnedNonFoil.value,
+                card.nbOwnedFoil.value,
+                card.colors.value.joinToString { color -> color.name },
             )
         }
     }

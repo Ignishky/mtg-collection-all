@@ -9,7 +9,7 @@ object SetFixtures {
     private val afrIcon = SetIcon("https://scryfall.mtgc.test/sets/afr.svg")
     private val afrReleasedAt = SetReleasedAt(parse("2021-07-23"))
 
-    val afr = Set(
+    val afr: Set = Set(
         SetId("e1ef87ba-ba92-4573-817f-543b996d2851"),
         SetCode("afr"),
         SetName("Adventures in the Forgotten Realms"),
@@ -21,7 +21,7 @@ object SetFixtures {
         SetNbOwnedCards(0),
     )
 
-    val pafr = Set(
+    val pafr: Set = Set(
         SetId("983f027f-76f9-462d-8eb5-458dcbf029b4"),
         SetCode("pafr"),
         SetName("Adventures in the Forgotten Realms Promos"),
@@ -33,7 +33,7 @@ object SetFixtures {
         SetNbOwnedCards(0),
     )
 
-    val aafr = Set(
+    val aafr: Set = Set(
         SetId("8696ef63-3530-4453-a0f8-7fd3bd09306a"),
         SetCode("aafr"),
         SetName("Adventures in the Forgotten Realms Art Series"),
@@ -45,7 +45,7 @@ object SetFixtures {
         SetNbOwnedCards(0),
     )
 
-    val khm = Set(
+    val khm: Set = Set(
         SetId("43057fad-b1c1-437f-bc48-0045bce6d8c9"),
         SetCode("khm"),
         SetName("Kaldheim"),
@@ -57,7 +57,7 @@ object SetFixtures {
         SetNbOwnedCards(0),
     )
 
-    val tkhm = Set(
+    val tkhm: Set = Set(
         SetId("c3ee48f1-6f93-42d4-b05c-65a04d02a488"),
         SetCode("tkhm"),
         SetName("Kaldheim Tokens"),
