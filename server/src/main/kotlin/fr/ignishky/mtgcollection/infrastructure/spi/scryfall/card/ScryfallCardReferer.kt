@@ -6,6 +6,8 @@ import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
+import org.springframework.http.HttpHeaders.USER_AGENT
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.web.client.HttpClientErrorException.NotFound
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
@@ -30,6 +32,8 @@ class ScryfallCardReferer(
         try {
             var response = restClient.get()
                 .uri("${properties.baseUrl}/cards/search?order=set&q=e:${setCode.value}&unique=prints")
+                .header(USER_AGENT, properties.userAgent)
+                .accept(APPLICATION_JSON)
                 .retrieve()
                 .body<ScryfallCard>()
                 ?: return emptyList()
@@ -39,6 +43,8 @@ class ScryfallCardReferer(
                 val next = response.nextPage?.replace("%3A", ":") ?: break
                 response = restClient.get()
                     .uri(next)
+                    .header(USER_AGENT, properties.userAgent)
+                    .accept(APPLICATION_JSON)
                     .retrieve()
                     .body<ScryfallCard>()
                     ?: break

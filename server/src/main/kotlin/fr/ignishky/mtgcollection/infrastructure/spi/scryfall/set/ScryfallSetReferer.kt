@@ -5,6 +5,8 @@ import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import jakarta.inject.Named
+import org.springframework.http.HttpHeaders.USER_AGENT
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.web.client.RestClient
 import java.time.LocalDate.parse
 
@@ -16,6 +18,8 @@ class ScryfallSetReferer(
 
     override fun getAllSets() = (restClient.get()
         .uri("${properties.baseUrl}/sets")
+        .header(USER_AGENT, properties.userAgent)
+        .accept(APPLICATION_JSON)
         .retrieve()
         .body(ScryfallSet::class.java)
         ?: ScryfallSet(emptyList()))

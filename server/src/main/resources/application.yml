@@ -17,6 +17,7 @@ eureka:
 
 scryfall:
   base-url: "https://api.scryfall.com"
+  user-agent: "MTG-Collection-All/1.0"
 
 server:
   port: 8585

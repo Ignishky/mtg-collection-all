@@ -4,6 +4,7 @@ eureka:
 
 scryfall:
   base-url: "https://fake.url.test"
+  user-agent: "MTG-Collection-Test"
 
 spring:
   datasource:
