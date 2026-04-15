@@ -1,14 +1,12 @@
 package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.card
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.mtgcollection.configuration.ScryfallProperties
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
-import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
-import mu.KotlinLogging.logger
 import org.springframework.http.HttpHeaders.USER_AGENT
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.web.client.HttpClientErrorException.NotFound
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.lang.Long.parseLong
@@ -17,43 +15,33 @@ import java.lang.Long.parseLong
 class ScryfallCardReferer(
     private val restClient: RestClient,
     private val properties: ScryfallProperties,
+    private val objectMapper: ObjectMapper,
 ) : CardRefererPort {
 
-    private val logger = logger {}
-
-    override fun getCards(setCode: SetCode): List<Card> {
-        return retrieveCards(setCode)
+    override fun getAllCards(): List<Card> {
+        return retrieveCards()
             .map(::toCard)
     }
 
-    private fun retrieveCards(setCode: SetCode): List<ScryfallCardData> {
-        var scryfallCards = emptyList<ScryfallCardData>()
+    private fun retrieveCards(): List<ScryfallCardData> {
+        val allCards = restClient.get()
+            .uri("${properties.baseUrl}/bulk-data/default_cards")
+            .header(USER_AGENT, properties.userAgent)
+            .accept(APPLICATION_JSON)
+            .retrieve()
+            .body<ScryfallBulkData>()
+            ?: return emptyList()
 
-        try {
-            var response = restClient.get()
-                .uri("${properties.baseUrl}/cards/search?order=set&q=e:${setCode.value}&unique=prints")
-                .header(USER_AGENT, properties.userAgent)
-                .accept(APPLICATION_JSON)
-                .retrieve()
-                .body<ScryfallCard>()
-                ?: return emptyList()
-            scryfallCards = scryfallCards.plus(response.data)
-
-            while (response.hasMore) {
-                val next = response.nextPage?.replace("%3A", ":") ?: break
-                response = restClient.get()
-                    .uri(next)
-                    .header(USER_AGENT, properties.userAgent)
-                    .accept(APPLICATION_JSON)
-                    .retrieve()
-                    .body<ScryfallCard>()
-                    ?: break
-                scryfallCards = scryfallCards.plus(response.data)
+        return restClient.get()
+            .uri(allCards.downloadUri)
+            .header(USER_AGENT, properties.userAgent)
+            .accept(APPLICATION_JSON)
+            .exchange { _, response ->
+                objectMapper.readerFor(ScryfallCardData::class.java)
+                    .readValues<ScryfallCardData>(response.body)
+                    .asSequence()
+                    .toList()
             }
-        } catch (e: NotFound) {
-            logger.warn("Unable to get cards for ${setCode.value}", e)
-        }
-        return scryfallCards
     }
 
     private fun toCard(cardData: ScryfallCardData): Card {

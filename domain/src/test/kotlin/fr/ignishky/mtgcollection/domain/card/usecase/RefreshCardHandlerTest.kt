@@ -2,14 +2,12 @@ package fr.ignishky.mtgcollection.domain.card.usecase
 
 import fr.ignishky.mtgcollection.domain.CardFixtures.plus2Mace
 import fr.ignishky.mtgcollection.domain.CardFixtures.valorSinger
-import fr.ignishky.mtgcollection.domain.SetFixtures.afr
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.event.CardPricesUpdated
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated
 import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
-import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -18,16 +16,14 @@ import org.junit.jupiter.api.Test
 
 class RefreshCardHandlerTest {
 
-    private val setProjection = mockk<SetProjectionPort>()
     private val cardReferer = mockk<CardRefererPort>()
     private val cardProjection = mockk<CardProjectionPort>()
-    private val handler = RefreshCardHandler(setProjection, cardReferer, cardProjection)
+    private val handler = RefreshCardHandler(cardReferer, cardProjection)
 
     @Test
     fun should_return_no_events_when_cards_are_upToDate() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace)
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.getAll() } returns listOf(plus2Mace)
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard())
 
@@ -36,9 +32,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_no_events_when_card_creation_throws_exception() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns emptyList()
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.getAll() } returns emptyList()
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
         every { cardProjection.add(any()) } throws IllegalStateException("Test Exception")
         every { cardProjection.get(plus2Mace.id) } returns null
 
@@ -49,9 +44,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_CardCreated_event_for_new_card() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns emptyList()
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.getAll() } returns emptyList()
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard())
 
@@ -74,9 +68,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_CardUpdated_event_for_card_with_new_name() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace.copy(name = CardName("old name")))
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.getAll() } returns listOf(plus2Mace.copy(name = CardName("old name")))
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard())
 
@@ -88,9 +81,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_CardUpdated_event_for_card_with_new_setCode() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.getAll() } returns listOf(plus2Mace.copy(setCode = CardSetCode("old set code")))
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard())
 
@@ -102,9 +94,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_CardUpdated_event_for_card_with_new_images() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("old image")))))
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.getAll() } returns listOf(plus2Mace.copy(images = CardImages(listOf(CardImage("old image")))))
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard())
 
@@ -116,9 +107,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_CardUpdated_event_for_card_with_new_collection_number() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("old collection number")))
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardProjection.getAll() } returns listOf(plus2Mace.copy(collectionNumber = CardNumber("old collection number")))
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard())
 
@@ -130,9 +120,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_ignore_prices_update_when_new_card_has_no_price() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace)
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(0, 0, 0, 0))))
+        every { cardProjection.getAll() } returns listOf(plus2Mace)
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace.copy(prices = CardPrices(Price(0, 0, 0, 0))))
 
         val events = handler.handle(RefreshCard())
 
@@ -142,9 +131,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_CardPricesUpdated_event_for_card_with_only_new_prices() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace.copy(prices = CardPrices(Price(0, 250, 0, 450))))
+        every { cardProjection.getAll() } returns listOf(plus2Mace.copy(prices = CardPrices(Price(110, 220, 330, 440))))
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace.copy(prices = CardPrices(Price(0, 250, 0, 450))))
 
         val events = handler.handle(RefreshCard())
 
@@ -157,8 +145,7 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_events_for_card_with_all_new_field_values() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(
+        every { cardProjection.getAll() } returns listOf(
             plus2Mace.copy(
                 name = CardName("old name"),
                 setCode = CardSetCode("old set code"),
@@ -167,7 +154,7 @@ class RefreshCardHandlerTest {
                 prices = CardPrices(Price(110, 0, 330, 0)),
             )
         )
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace)
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace)
 
         val events = handler.handle(RefreshCard())
 
@@ -201,9 +188,8 @@ class RefreshCardHandlerTest {
 
     @Test
     fun should_return_events_for_card_with_different_setCode() {
-        every { setProjection.getAll() } returns listOf(afr)
-        every { cardProjection.getAll(afr.code) } returns listOf(plus2Mace)
-        every { cardReferer.getCards(afr.code) } returns listOf(plus2Mace, valorSinger)
+        every { cardProjection.getAll() } returns listOf(plus2Mace)
+        every { cardReferer.getAllCards() } returns listOf(plus2Mace, valorSinger)
         every { cardProjection.add(valorSinger) } throws IllegalStateException("Test Exception")
         every { cardProjection.get(valorSinger.id) } returns valorSinger.copy(
             setCode = CardSetCode("old set code"),

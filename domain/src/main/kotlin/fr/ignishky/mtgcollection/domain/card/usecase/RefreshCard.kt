@@ -11,20 +11,13 @@ import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.port.CardProjectionPort
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
-import fr.ignishky.mtgcollection.domain.set.model.Set
-import fr.ignishky.mtgcollection.domain.set.port.SetProjectionPort
 import jakarta.inject.Named
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging.logger
 
 class RefreshCard : Command
 
 @Named
 class RefreshCardHandler(
-    private val setProjection: SetProjectionPort,
     private val cardReferer: CardRefererPort,
     private val cardProjection: CardProjectionPort,
 ) : CommandHandler<RefreshCard> {
@@ -32,22 +25,10 @@ class RefreshCardHandler(
     private val logger = logger {}
 
     override fun handle(command: Command): List<Event<CardId, Card, out Payload>> {
-        return runBlocking {
-            setProjection.getAll()
-                .map { set ->
-                    async(Dispatchers.Default) {
-                        processSet(set)
-                    }
-                }
-                .awaitAll()
-                .flatten()
-        }
-    }
-
-    private fun processSet(set: Set): List<Event<CardId, Card, out Payload>> {
-        logger.info { "Refreshing cards from ${set.code.value} ..." }
-        val knownCardsById = cardProjection.getAll(set.code).associateBy { it.id }
-        return cardReferer.getCards(set.code)
+        logger.info { "Downloading all cards..." }
+        val knownCardsById = cardProjection.getAll().associateBy { it.id }
+        return cardReferer.getAllCards()
+            .also { logger.info { "Processing all cards..." } }
             .flatMap { card ->
                 if (!knownCardsById.contains(card.id)) {
                     runCatching {

@@ -21,5 +21,7 @@ interface CardProjectionPort {
 
     fun getAll(code: SetCode): List<Card>
 
+    fun getAll(): List<Card>
+
     fun getCollection(): List<Card>
 }
