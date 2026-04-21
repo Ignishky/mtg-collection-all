@@ -5,7 +5,7 @@ plugins {
 version = "1.0-SNAPSHOT"
 
 dependencies {
-    val testContainersVersion = "2.0.4"
+    val testContainersVersion = "2.0.5"
     implementation(project(":cqrs"))
     implementation(project(":domain"))
 
